@@ -16,7 +16,7 @@
     <repositories>
         <repository>
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
             <id>bintray-tracebucket-X1</id>
             <name>bintray</name>
