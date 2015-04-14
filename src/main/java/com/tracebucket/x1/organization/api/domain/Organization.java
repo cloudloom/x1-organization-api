@@ -2,13 +2,14 @@ package com.tracebucket.x1.organization.api.domain;
 
 import com.tracebucket.x1.dictionary.api.domain.*;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * Created by ffl on 09-04-2015.
  */
-public interface Organization {
+public interface Organization extends Serializable{
 
 	public enum CurrencyType{
 		Base,
