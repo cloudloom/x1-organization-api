@@ -14,6 +14,8 @@ import java.util.Set;
 /**
  * Created by Vishwajit on 14-04-2015.
  */
+@Entity
+@Table(name = "ORGANIZATION_UNIT")
 public class DefaultOrganizationUnit extends BaseEntity implements OrganizationUnit {
 
     @Column(name = "NAME", nullable = false)
@@ -26,10 +28,10 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
 
     @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="ORGANIZATION__ID")
-    private Organization organization;
+    private DefaultOrganization organization;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private OrganizationUnit parent;
+    private DefaultOrganizationUnit parent;
 
     @ElementCollection(targetClass=OrganizationFunction.class, fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_UNIT_FUNCTION", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
@@ -59,14 +61,14 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name="ORGANIZATION_UNIT__ID", referencedColumnName="ID")
-    private Set<Department> departments = new HashSet<Department>(0);
+    private Set<DefaultDepartment> departments = new HashSet<DefaultDepartment>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name="ORGANIZATION_UNIT__ID", referencedColumnName="ID")
-    private Set<BusinessLine> businessLines = new HashSet<BusinessLine>(0);
+    private Set<DefaultBusinessLine> businessLines = new HashSet<DefaultBusinessLine>(0);
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<OrganizationUnit> children = new HashSet<OrganizationUnit>(0);
+    private Set<DefaultOrganizationUnit> children = new HashSet<DefaultOrganizationUnit>(0);
 
  /*   @OneToMany(mappedBy="organizationUnit", fetch = FetchType.EAGER)
     private Set<SaleChannel> saleChannels = new HashSet<SaleChannel>(0);*/
@@ -81,7 +83,7 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     }
 
     @Override
-    public OrganizationUnit address(Address address) {
+    public DefaultOrganizationUnit address(Address address) {
         this.addresses.add(address);
         return this;
     }
@@ -91,23 +93,31 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
         return this.addresses;
     }
 
+    public void setParent(DefaultOrganizationUnit parent) {
+        this.parent = parent;
+    }
+
+    public void setOrganization(DefaultOrganization organization) {
+        this.organization = organization;
+    }
+
     @Override
-    public OrganizationUnit parent() {
+    public DefaultOrganizationUnit parent() {
         return this.parent;
     }
 
     @Override
-    public Set<OrganizationUnit> children() {
+    public Set<DefaultOrganizationUnit> children() {
         return this.children;
     }
 
     @Override
-    public OrganizationUnit owner() {
+    public DefaultOrganizationUnit owner() {
         return null;
     }
 
     @Override
-    public OrganizationUnit function(OrganizationFunction organizationFunction) {
+    public DefaultOrganizationUnit function(OrganizationFunction organizationFunction) {
         this.organizationFunctions.add(organizationFunction);
         return this;
     }
@@ -118,7 +128,7 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     }
 
     @Override
-    public OrganizationUnit department(Department department) {
+    public DefaultOrganizationUnit department(DefaultDepartment department) {
         this.departments.add(department);
         return this;
     }
@@ -140,12 +150,12 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     }
 
     @Override
-    public OrganizationUnit getOrganization() {
+    public DefaultOrganizationUnit getOrganization() {
         return null;
     }
 
     @Override
-    public OrganizationUnit getParent() {
+    public DefaultOrganizationUnit getParent() {
         return parent;
     }
 
@@ -160,23 +170,23 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     }
 
     @Override
-    public Set<Department> getDepartments() {
+    public Set<DefaultDepartment> getDepartments() {
         return departments;
     }
 
     @Override
-    public Set<BusinessLine> getBusinessLines() {
+    public Set<DefaultBusinessLine> getBusinessLines() {
         return businessLines;
     }
 
     @Override
-    public Set<OrganizationUnit> getChildren() {
+    public Set<DefaultOrganizationUnit> getChildren() {
         return children;
     }
 
     @Override
-    public void addChild(OrganizationUnit child) {
-        //child.setParent(this);
+    public void addChild(DefaultOrganizationUnit child) {
+        child.setParent(this);
         this.children.add(child);
     }
 
@@ -193,5 +203,50 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     @Override
     public Set<Email> getEmails() {
         return emails;
+    }
+
+    @Override
+    public Object getId() {
+        return super.getId();
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setOrganizationFunctions(Set<OrganizationFunction> organizationFunctions) {
+        this.organizationFunctions = organizationFunctions;
+    }
+
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public void setContactPersons(Set<Person> contactPersons) {
+        this.contactPersons = contactPersons;
+    }
+
+    public void setPhones(Set<Phone> phones) {
+        this.phones = phones;
+    }
+
+    public void setEmails(Set<Email> emails) {
+        this.emails = emails;
+    }
+
+    public void setDepartments(Set<DefaultDepartment> departments) {
+        this.departments = departments;
+    }
+
+    public void setBusinessLines(Set<DefaultBusinessLine> businessLines) {
+        this.businessLines = businessLines;
+    }
+
+    public void setChildren(Set<DefaultOrganizationUnit> children) {
+        this.children = children;
     }
 }

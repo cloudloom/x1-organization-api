@@ -1,5 +1,7 @@
 package com.tracebucket.x1.organization.api.domain.impl.jpa;
 
+import com.tracebucket.tron.ddd.annotation.DomainMethod;
+import com.tracebucket.tron.ddd.domain.BaseAggregateRoot;
 import com.tracebucket.tron.ddd.domain.BaseEntity;
 import com.tracebucket.x1.dictionary.api.domain.*;
 import com.tracebucket.x1.organization.api.domain.Organization;
@@ -16,7 +18,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "ORGANIZATION")
-public class DefaultOrganization extends BaseEntity implements Organization{
+public class DefaultOrganization extends BaseAggregateRoot implements Organization{
 
 
     @Column(name = "CODE", nullable = false)
@@ -43,16 +45,11 @@ public class DefaultOrganization extends BaseEntity implements Organization{
     @JoinTable(name = "ORGANIZATION_ADDRESS", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
     private Set<Address> addresses = new HashSet<Address>(0);
 
-    public enum CurrencyType{
-        Base,
-        Optional
-    }
-
-    @ElementCollection
+ /*   @ElementCollection
     @CollectionTable(name = "ORGANIZATION_CURRENCY", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
     @Column(name = "CURRENCY_TYPE")
     @MapKeyJoinColumn(name = "CURRENCY__ID", referencedColumnName = "ID")
-    private Map<Currency, CurrencyType> currencies = new HashMap<>(0);
+    private Map<Currency, CurrencyType> currencies = new HashMap<>(0);*/
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinTable(
@@ -71,7 +68,7 @@ public class DefaultOrganization extends BaseEntity implements Organization{
     private Set<Person> contactPersons = new HashSet<Person>(0);
 
     @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<OrganizationUnit> organizationUnits = new HashSet<OrganizationUnit>(0);
+    private Set<DefaultOrganizationUnit> organizationUnits = new HashSet<DefaultOrganizationUnit>(0);
 
     @ElementCollection
     @JoinTable(name = "ORGANIZATION_CONTACT_PHONE", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
@@ -99,26 +96,30 @@ public class DefaultOrganization extends BaseEntity implements Organization{
     }
 
 
-    @Override
+/*    @Override
+    @DomainMethod(event = "BaseCurrencyAdded")
     public void addBaseCurrency(Currency baseCurrency) {
         this.currencies.put(baseCurrency, CurrencyType.Base);
-    }
+    }*/
 
     @Override
+    @DomainMethod(event = "TimezoneAdded")
     public void addTimezone(Timezone timezone) {
         this.timezones.add(timezone);
     }
 
-    /*@Override
-    public void addOrganizationUnit(OrganizationUnit organizationUnit) {
+    @Override
+    @DomainMethod(event = "OrganizationUnitAdded")
+    public void addOrganizationUnit(DefaultOrganizationUnit organizationUnit) {
         if(organizationUnit != null) {
             organizationUnit.setOrganization(this);
             this.organizationUnits.add(organizationUnit);
         }
-    }*/
+    }
 
-   /* @Override
-    public void addOrganizationUnitBelow(OrganizationUnit organizationUnit, OrganizationUnit parentOrganizationUnit) {
+    @Override
+    @DomainMethod(event = "OrganizationUnitBelowAdded")
+    public void addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, DefaultOrganizationUnit parentOrganizationUnit) {
 
         OrganizationUnit parentOrganizationUnitFetched = organizationUnits.parallelStream()
                 .filter(t -> t.getId() == parentOrganizationUnit.getId())
@@ -128,44 +129,51 @@ public class DefaultOrganization extends BaseEntity implements Organization{
             parentOrganizationUnitFetched.addChild(organizationUnit);
         }
 
-    }*/
-
+    }
     @Override
+    @DomainMethod(event = "ContactPersonAdded")
     public void addContactPerson(Person contactPerson) {
         this.contactPersons.add(contactPerson);
     }
 
     @Override
+    @DomainMethod(event = "DefaultContactPersonSet")
     public void setDefaultContactPerson(Person defaultContactPerson) {
         this.contactPersons.add(defaultContactPerson);
     }
 
     @Override
+    @DomainMethod(event = "ContactNumberAdded")
     public void addContactNumber(Phone phone) {
         this.phones.add(phone);
     }
 
     @Override
+    @DomainMethod(event = "DefaultContactNumberSet")
     public void setDefaultContactNumber(Phone defaultContactNumber) {
         this.phones.add(defaultContactNumber);
     }
 
     @Override
+    @DomainMethod(event = "EmailAdded")
     public void addEmail(Email email) {
         this.emails.add(email);
     }
 
     @Override
+    @DomainMethod(event = "DefaultEmailSet")
     public void setDefaultEmail(Email defaultEmail) {
         this.emails.add(defaultEmail);
     }
 
     @Override
+    @DomainMethod(event = "HeadOfficeSet")
     public void setHeadOffice(Address headOfficeAddress) {
         this.addresses.add(headOfficeAddress);
     }
 
     @Override
+    @DomainMethod(event = "HeadOfficeModedTo")
     public void moveHeadOfficeTo(Address newHeadOfficeAddress) {
         this.addresses.add(newHeadOfficeAddress);
     }
@@ -206,7 +214,7 @@ public class DefaultOrganization extends BaseEntity implements Organization{
         return headOfficeAddress;
     }
 
-    @Override
+/*    @Override
     public Set<Currency> getBaseCurrencies() {
         Set<Currency> baseCurrencies = new HashSet<Currency>();
 
@@ -218,10 +226,10 @@ public class DefaultOrganization extends BaseEntity implements Organization{
             }
         }
         return baseCurrencies;
-    }
+    }*/
 
     @Override
-    public Set<OrganizationUnit> getOrganizationUnits() {
+    public Set<DefaultOrganizationUnit> getOrganizationUnits() {
         return this.organizationUnits;
     }
 
@@ -255,7 +263,7 @@ public class DefaultOrganization extends BaseEntity implements Organization{
         return addresses;
     }
 
- /*   @Override
+/*    @Override
     public Map<Currency, CurrencyType> getCurrencies() {
         return currencies;
     }*/

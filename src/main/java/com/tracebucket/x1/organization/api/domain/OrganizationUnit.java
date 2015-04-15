@@ -4,6 +4,10 @@ import com.tracebucket.x1.dictionary.api.domain.Address;
 import com.tracebucket.x1.dictionary.api.domain.Email;
 import com.tracebucket.x1.dictionary.api.domain.Person;
 import com.tracebucket.x1.dictionary.api.domain.Phone;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultBusinessLine;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 
 import java.util.Set;
 
@@ -13,21 +17,21 @@ import java.util.Set;
 public interface OrganizationUnit {
 	Boolean hasAddresses();
 
-	OrganizationUnit address(Address address);
+	DefaultOrganizationUnit address(Address address);
 
 	Set<Address> addresses();
 
-	OrganizationUnit parent();
+	DefaultOrganizationUnit parent();
 
-	Set<OrganizationUnit> children();
+	Set<DefaultOrganizationUnit> children();
 
-	OrganizationUnit owner();
+	DefaultOrganizationUnit owner();
 
-	OrganizationUnit function(OrganizationFunction organizationFunction);
+	DefaultOrganizationUnit function(OrganizationFunction organizationFunction);
 
 	Set<OrganizationFunction> functions();
 
-	OrganizationUnit department(Department department);
+	DefaultOrganizationUnit department(DefaultDepartment department);
 
 	Boolean hasSaleChannels();
 
@@ -35,25 +39,31 @@ public interface OrganizationUnit {
 
 	String getDescription();
 
-	OrganizationUnit getOrganization();
+	DefaultOrganizationUnit getOrganization();
 
-	OrganizationUnit getParent();
+	DefaultOrganizationUnit getParent();
 
 	Set<OrganizationFunction> getOrganizationFunctions();
 
 	Set<Address> getAddresses();
 
-	Set<Department> getDepartments();
+	Set<DefaultDepartment> getDepartments();
 
-	Set<BusinessLine> getBusinessLines();
+	Set<DefaultBusinessLine> getBusinessLines();
 
-	Set<OrganizationUnit> getChildren();
+	Set<DefaultOrganizationUnit> getChildren();
 
-	void addChild(OrganizationUnit child);
+	void addChild(DefaultOrganizationUnit child);
 
 	Set<Person> getContactPersons();
 
 	Set<Phone> getPhones();
 
 	Set<Email> getEmails();
+
+    void setParent(DefaultOrganizationUnit parent);
+
+    void setOrganization(DefaultOrganization organization);
+
+    Object getId();
 }

@@ -1,6 +1,7 @@
 package com.tracebucket.x1.organization.api.domain;
 
 import com.tracebucket.x1.dictionary.api.domain.*;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -16,16 +17,16 @@ public interface Organization extends Serializable{
 		Optional
 	}
 
-	void addBaseCurrency(Currency baseCurrency);
+	//void addBaseCurrency(Currency baseCurrency);
 
 
 	void addTimezone(Timezone timezone);
 
 
-	void addOrganizationUnit(OrganizationUnit organizationUnit);
+	void addOrganizationUnit(DefaultOrganizationUnit organizationUnit);
 
 
-	void addOrganizationUnitBelow(OrganizationUnit organizationUnit, OrganizationUnit parentOrganizationUnit);
+	void addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, DefaultOrganizationUnit parentOrganizationUnit);
 
 
 	void addContactPerson(Person contactPerson);
@@ -63,9 +64,9 @@ public interface Organization extends Serializable{
 
 	Address getHeadOfficeAddress();
 
-	Set<Currency> getBaseCurrencies();
+	//Set<Currency> getBaseCurrencies();
 
-	Set<OrganizationUnit> getOrganizationUnits();
+	Set<DefaultOrganizationUnit> getOrganizationUnits();
 
 	Set<Phone> getContactNumbers();
 
@@ -79,5 +80,5 @@ public interface Organization extends Serializable{
 
 	Set<Address> getAddresses();
 
-	Map<Currency, CurrencyType> getCurrencies();
+	//Map<Currency, CurrencyType> getCurrencies();
 }
