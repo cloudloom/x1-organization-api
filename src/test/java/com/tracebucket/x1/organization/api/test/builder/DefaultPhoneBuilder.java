@@ -10,6 +10,7 @@ public class DefaultPhoneBuilder {
     private Long number;
     private Integer extension;
     private PhoneType phoneType;
+    private boolean defaultPhone;
 
     private DefaultPhoneBuilder(){ }
 
@@ -32,11 +33,17 @@ public class DefaultPhoneBuilder {
         return this;
     }
 
+    public DefaultPhoneBuilder withDefaultPhonee(boolean defaultPhone){
+        this.defaultPhone = defaultPhone;
+        return this;
+    }
+
     public DefaultPhone build() {
         DefaultPhone phone = new DefaultPhone();
         phone.setNumber(number);
         phone.setExtension(extension);
         phone.setPhoneType(phoneType);
+        phone.setDefaultPhone(defaultPhone);
         return phone;
     }
 }

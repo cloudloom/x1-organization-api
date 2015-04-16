@@ -35,9 +35,8 @@ public class OrganizationController {
     @Autowired
     private AssemblerResolver assemblerResolver;
 
-
     @RequestMapping(value = "/organization", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> createOrganizaton(@RequestBody DefaultOrganizationResource organizationResource) {
+    public ResponseEntity<DefaultOrganizationResource> createOrganization(@RequestBody DefaultOrganizationResource organizationResource) {
         DefaultOrganization organization = assemblerResolver.resolveEntityAssembler(DefaultOrganization.class, DefaultOrganizationResource.class).toEntity(organizationResource, DefaultOrganization.class);
         organization = organizationService.save(organization);
         organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);

@@ -1,7 +1,15 @@
 package com.tracebucket.x1.organization.api.rest.resource;
 
 import com.tracebucket.tron.assembler.BaseResource;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultAddress;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultEmail;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPerson;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPhone;
 import com.tracebucket.x1.organization.api.domain.OrganizationFunction;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultBusinessLine;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +23,10 @@ public class DefaultOrganizationUnitResource extends BaseResource {
     private DefaultOrganizationResource organization;
     private DefaultOrganizationUnitResource parent;
     private Set<OrganizationFunction> organizationFunctions = new HashSet<OrganizationFunction>(0);
+    private Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
+    private Set<DefaultPersonResource> contactPersons = new HashSet<DefaultPersonResource>(0);
+    private Set<DefaultPhoneResource> phones = new HashSet<DefaultPhoneResource>(0);
+    private Set<DefaultEmailResource> emails = new HashSet<DefaultEmailResource>(0);
     private Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>(0);
     private Set<DefaultBusinessLineResource> businessLines = new HashSet<DefaultBusinessLineResource>(0);
     private Set<DefaultOrganizationUnitResource> children = new HashSet<DefaultOrganizationUnitResource>(0);
@@ -57,6 +69,38 @@ public class DefaultOrganizationUnitResource extends BaseResource {
 
     public void setOrganizationFunctions(Set<OrganizationFunction> organizationFunctions) {
         this.organizationFunctions = organizationFunctions;
+    }
+
+    public Set<DefaultAddressResource> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(Set<DefaultAddressResource> addresses) {
+        this.addresses = addresses;
+    }
+
+    public Set<DefaultPersonResource> getContactPersons() {
+        return contactPersons;
+    }
+
+    public void setContactPersons(Set<DefaultPersonResource> contactPersons) {
+        this.contactPersons = contactPersons;
+    }
+
+    public Set<DefaultPhoneResource> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(Set<DefaultPhoneResource> phones) {
+        this.phones = phones;
+    }
+
+    public Set<DefaultEmailResource> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(Set<DefaultEmailResource> emails) {
+        this.emails = emails;
     }
 
     public Set<DefaultDepartmentResource> getDepartments() {

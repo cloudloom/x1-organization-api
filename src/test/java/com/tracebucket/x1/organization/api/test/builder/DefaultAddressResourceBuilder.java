@@ -1,12 +1,12 @@
 package com.tracebucket.x1.organization.api.test.builder;
 
 import com.tracebucket.x1.dictionary.api.domain.AddressType;
-import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultAddress;
+import com.tracebucket.x1.organization.api.rest.resource.DefaultAddressResource;
 
 /**
- * Created by sadath on 25-Nov-14.
+ * Created by sadath on 16-Apr-15.
  */
-public class DefaultAddressBuilder {
+public class DefaultAddressResourceBuilder {
     private String name;
     private String building;
     private String street;
@@ -19,71 +19,71 @@ public class DefaultAddressBuilder {
     private AddressType addressType;
     private boolean defaultAddress;
 
-    private DefaultAddressBuilder(){
+    private DefaultAddressResourceBuilder(){
 
     }
 
-    public static DefaultAddressBuilder anAddress(){
-        return new DefaultAddressBuilder();
+    public static DefaultAddressResourceBuilder anAddress(){
+        return new DefaultAddressResourceBuilder();
     }
 
-    public DefaultAddressBuilder withName(String name){
+    public DefaultAddressResourceBuilder withName(String name){
         this.name = name;
         return this;
     }
 
-    public DefaultAddressBuilder withBuilding(String building){
+    public DefaultAddressResourceBuilder withBuilding(String building){
         this.building = building;
         return this;
     }
 
-    public DefaultAddressBuilder withStreet(String street){
+    public DefaultAddressResourceBuilder withStreet(String street){
         this.street = street;
         return this;
     }
 
-    public DefaultAddressBuilder withRegion(String region){
+    public DefaultAddressResourceBuilder withRegion(String region){
         this.region = region;
         return this;
     }
 
-    public DefaultAddressBuilder withCity(String city){
+    public DefaultAddressResourceBuilder withCity(String city){
         this.city = city;
         return this;
     }
 
-    public DefaultAddressBuilder withDistrict(String district){
+    public DefaultAddressResourceBuilder withDistrict(String district){
         this.district = district;
         return this;
     }
 
-    public DefaultAddressBuilder withState(String state){
+    public DefaultAddressResourceBuilder withState(String state){
         this.state = state;
         return this;
     }
 
-    public DefaultAddressBuilder withCountry(String country){
+    public DefaultAddressResourceBuilder withCountry(String country){
         this.country = country;
         return this;
     }
 
-    public DefaultAddressBuilder withZip(String zip){
+    public DefaultAddressResourceBuilder withZip(String zip){
         this.zip = zip;
         return this;
     }
 
-    public DefaultAddressBuilder withAddressType(AddressType addressType){
+    public DefaultAddressResourceBuilder withAddressType(AddressType addressType){
         this.addressType = addressType;
         return this;
     }
 
-    public DefaultAddressBuilder withDefaultAddress(boolean defaultAddress){
+    public DefaultAddressResourceBuilder withDefaultAddressResource(boolean defaultAddress){
         this.defaultAddress = defaultAddress;
         return this;
     }
 
-    public DefaultAddress build(){
-        DefaultAddress address = new DefaultAddress();
+    public DefaultAddressResource build(){
+        DefaultAddressResource address = new DefaultAddressResource();
         address.setName(name);
         address.setBuilding(building);
         address.setStreet(street);

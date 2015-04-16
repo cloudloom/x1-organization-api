@@ -9,6 +9,7 @@ import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultEmail;
 public class DefaultEmailBuilder {
     private String email;
     private EmailType emailType;
+    private boolean defaultEmail;
 
     private DefaultEmailBuilder(){ }
 
@@ -26,10 +27,16 @@ public class DefaultEmailBuilder {
         return this;
     }
 
+    public DefaultEmailBuilder withDefaultEmail(boolean defaultEmail){
+        this.defaultEmail = defaultEmail;
+        return this;
+    }
+
     public DefaultEmail build(){
         DefaultEmail email = new DefaultEmail();
         email.setEmail(this.email);
         email.setEmailType(emailType);
+        email.setDefaultEmail(defaultEmail);
         return email;
     }
 

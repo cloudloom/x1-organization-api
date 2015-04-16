@@ -13,11 +13,6 @@ import java.util.Set;
  */
 public interface Organization extends Serializable{
 
-	public enum CurrencyType{
-		Base,
-		Optional
-	}
-
 	void addBaseCurrency(DefaultCurrency baseCurrency);
 
 
@@ -81,7 +76,7 @@ public interface Organization extends Serializable{
 
 	Set<DefaultAddress> getAddresses();
 
-	Map<DefaultCurrency, CurrencyType> getCurrencies();
+	Set<DefaultCurrency> getCurrencies();
 
     void setCode(String code);
 
@@ -94,4 +89,16 @@ public interface Organization extends Serializable{
     void setImage(String image);
 
     void setOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits);
+
+    void setAddresses(Set<DefaultAddress> addresses);
+
+    void setCurrencies(Set<DefaultCurrency> currencies);
+
+    void setTimezones(Set<DefaultTimezone> timezones);
+
+    void setContactPersons(Set<DefaultPerson> contactPersons);
+
+    void setPhones(Set<DefaultPhone> phones);
+
+    void setEmails(Set<DefaultEmail> emails);
 }

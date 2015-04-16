@@ -1,10 +1,7 @@
 package com.tracebucket.x1.organization.api.test.fixture;
 
 import com.tracebucket.x1.organization.api.domain.OrganizationFunction;
-import com.tracebucket.x1.organization.api.rest.resource.DefaultBusinessLineResource;
-import com.tracebucket.x1.organization.api.rest.resource.DefaultDepartmentResource;
-import com.tracebucket.x1.organization.api.rest.resource.DefaultOrganizationResource;
-import com.tracebucket.x1.organization.api.rest.resource.DefaultOrganizationUnitResource;
+import com.tracebucket.x1.organization.api.rest.resource.*;
 import com.tracebucket.x1.organization.api.test.builder.DefaultOrganizationUnitResourceBuilder;
 
 import java.util.Date;
@@ -33,6 +30,19 @@ public class DefaultOrganizationUnitResourceFixture {
 /*        Set<DefaultOrganizationUnitResource> children = new HashSet<DefaultOrganizationUnitResource>();
         children.add(OrganizationUnitFixture.standardOrganizationUnit());*/
 
+        Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
+        addresses.add(DefaultAddressResourceFixture.standardAddress());
+        addresses.add(DefaultAddressResourceFixture.headOffice());
+
+        Set<DefaultPersonResource> contactPersons = new HashSet<DefaultPersonResource>(0);
+        contactPersons.add(DefaultPersonResourceFixture.standardPerson());
+
+        Set<DefaultPhoneResource> phones = new HashSet<DefaultPhoneResource>(0);
+        phones.add(DefaultPhoneResourceFixture.standardPhone());
+
+        Set<DefaultEmailResource> emails = new HashSet<DefaultEmailResource>(0);
+        emails.add(DefaultEmailResourceFixture.standardEmail());
+
         DefaultOrganizationUnitResource organizationUnit = DefaultOrganizationUnitResourceBuilder.anOrganizationUnitResourceBuilder()
                 .withName("DefaultOrganizationResource " + new Date().getTime())
                 .withDescription(UUID.randomUUID().toString())
@@ -42,6 +52,10 @@ public class DefaultOrganizationUnitResourceFixture {
                 .withOrganizationFunctions(organizationFunctions)
                 .withOrganization(organization)
                 .withParent(parent)
+                .withAddresses(addresses)
+                .withContactPersons(contactPersons)
+                .withPhones(phones)
+                .withEmails(emails)
                 .build();
         return organizationUnit;
     }

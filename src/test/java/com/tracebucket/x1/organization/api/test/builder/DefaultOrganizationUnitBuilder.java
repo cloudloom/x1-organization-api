@@ -1,5 +1,9 @@
 package com.tracebucket.x1.organization.api.test.builder;
 
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultAddress;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultEmail;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPerson;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPhone;
 import com.tracebucket.x1.organization.api.domain.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultBusinessLine;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
@@ -18,6 +22,10 @@ public class DefaultOrganizationUnitBuilder {
     private DefaultOrganization organization;
     private DefaultOrganizationUnit parent;
     private Set<OrganizationFunction> organizationFunctions = new HashSet<OrganizationFunction>(0);
+    private Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
+    private Set<DefaultPerson> contactPersons = new HashSet<DefaultPerson>(0);
+    private Set<DefaultPhone> phones = new HashSet<DefaultPhone>(0);
+    private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
     private Set<DefaultDepartment> departments = new HashSet<DefaultDepartment>(0);
     private Set<DefaultBusinessLine> businessLines = new HashSet<DefaultBusinessLine>(0);
     private Set<DefaultOrganizationUnit> children = new HashSet<DefaultOrganizationUnit>(0);
@@ -53,6 +61,26 @@ public class DefaultOrganizationUnitBuilder {
         return this;
     }
 
+    public DefaultOrganizationUnitBuilder withAddresses(Set<DefaultAddress> addresses){
+        this.addresses = addresses;
+        return this;
+    }
+
+    public DefaultOrganizationUnitBuilder withContactPersons(Set<DefaultPerson> contactPersons){
+        this.contactPersons = contactPersons;
+        return this;
+    }
+
+    public DefaultOrganizationUnitBuilder withPhones(Set<DefaultPhone> phones){
+        this.phones = phones;
+        return this;
+    }
+
+    public DefaultOrganizationUnitBuilder withEmails(Set<DefaultEmail> emails){
+        this.emails = emails;
+        return this;
+    }
+
     public DefaultOrganizationUnitBuilder withDepartments(Set<DefaultDepartment> departments){
         this.departments = departments;
         return this;
@@ -78,7 +106,10 @@ public class DefaultOrganizationUnitBuilder {
         organizationUnit.setOrganizationFunctions(organizationFunctions);
         organizationUnit.setParent(parent);
         organizationUnit.setOrganization(organization);
+        organizationUnit.setEmails(emails);
+        organizationUnit.setContactPersons(contactPersons);
+        organizationUnit.setPhones(phones);
+        organizationUnit.setAddresses(addresses);
         return organizationUnit;
     }
-
 }

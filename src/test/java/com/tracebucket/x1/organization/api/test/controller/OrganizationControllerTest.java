@@ -54,9 +54,6 @@ public class OrganizationControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private DefaultOrganizationService organizationService;
-
     private DefaultOrganizationResource organization = null;
 
     @Before
