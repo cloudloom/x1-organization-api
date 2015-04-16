@@ -7,6 +7,7 @@ import com.tracebucket.x1.organization.api.domain.OrganizationUnit;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,4 +35,5 @@ public interface DefaultOrganizationService {
 	public Set<DefaultOrganizationUnit> getOrganizationUnits(AggregateId organizationAggregateId);
 	public Set<DefaultPhone> getContactNumbers(AggregateId organizationAggregateId);
 	public Set<DefaultEmail> getEmails(AggregateId organizationAggregateId);
+    public List<DefaultOrganization> findAll();
 }

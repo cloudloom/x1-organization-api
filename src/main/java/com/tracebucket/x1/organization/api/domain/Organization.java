@@ -18,7 +18,7 @@ public interface Organization extends Serializable{
 		Optional
 	}
 
-	//void addBaseCurrency(Currency baseCurrency);
+	void addBaseCurrency(DefaultCurrency baseCurrency);
 
 
 	void addTimezone(DefaultTimezone timezone);
@@ -65,7 +65,7 @@ public interface Organization extends Serializable{
 
 	DefaultAddress getHeadOfficeAddress();
 
-	//Set<Currency> getBaseCurrencies();
+	Set<DefaultCurrency> getBaseCurrencies();
 
 	Set<DefaultOrganizationUnit> getOrganizationUnits();
 
@@ -81,5 +81,17 @@ public interface Organization extends Serializable{
 
 	Set<DefaultAddress> getAddresses();
 
-	//Map<Currency, CurrencyType> getCurrencies();
+	Map<DefaultCurrency, CurrencyType> getCurrencies();
+
+    void setCode(String code);
+
+    void setName(String name);
+
+    void setDescription(String description);
+
+    void setWebsite(String website);
+
+    void setImage(String image);
+
+    void setOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits);
 }

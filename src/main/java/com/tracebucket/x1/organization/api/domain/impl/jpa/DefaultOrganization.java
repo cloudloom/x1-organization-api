@@ -46,11 +46,11 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @JoinTable(name = "ORGANIZATION_ADDRESS", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
     private Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
 
- /*   @ElementCollection
+    @ElementCollection
     @CollectionTable(name = "ORGANIZATION_CURRENCY", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
     @Column(name = "CURRENCY_TYPE")
     @MapKeyJoinColumn(name = "CURRENCY__ID", referencedColumnName = "ID")
-    private Map<Currency, CurrencyType> currencies = new HashMap<>(0);*/
+    private Map<DefaultCurrency, CurrencyType> currencies = new HashMap<>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinTable(
@@ -97,11 +97,11 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
 
-/*    @Override
+    @Override
     @DomainMethod(event = "BaseCurrencyAdded")
-    public void addBaseCurrency(Currency baseCurrency) {
+    public void addBaseCurrency(DefaultCurrency baseCurrency) {
         this.currencies.put(baseCurrency, CurrencyType.Base);
-    }*/
+    }
 
     @Override
     @DomainMethod(event = "TimezoneAdded")
@@ -131,6 +131,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
         }
 
     }
+
     @Override
     @DomainMethod(event = "ContactPersonAdded")
     public void addContactPerson(DefaultPerson contactPerson) {
@@ -215,19 +216,19 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
         return headOfficeAddress;
     }
 
-/*    @Override
-    public Set<Currency> getBaseCurrencies() {
-        Set<Currency> baseCurrencies = new HashSet<Currency>();
+    @Override
+    public Set<DefaultCurrency> getBaseCurrencies() {
+        Set<DefaultCurrency> baseCurrencies = new HashSet<DefaultCurrency>();
 
         if(currencies != null && currencies.size() > 0) {
-            for (Map.Entry<Currency, CurrencyType> currencyTypeEntry : currencies.entrySet()) {
+            for (Map.Entry<DefaultCurrency, CurrencyType> currencyTypeEntry : currencies.entrySet()) {
                 if(currencyTypeEntry.getValue().equals(CurrencyType.Base)) {
                     baseCurrencies.add(currencyTypeEntry.getKey());
                 }
             }
         }
         return baseCurrencies;
-    }*/
+    }
 
     @Override
     public Set<DefaultOrganizationUnit> getOrganizationUnits() {
@@ -264,8 +265,38 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
         return addresses;
     }
 
-/*    @Override
-    public Map<Currency, CurrencyType> getCurrencies() {
+    @Override
+    public Map<DefaultCurrency, CurrencyType> getCurrencies() {
         return currencies;
-    }*/
+    }
+
+    @Override
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    @Override
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    @Override
+    public void setOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits) {
+        this.organizationUnits = organizationUnits;
+    }
 }

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -233,6 +234,11 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
             return organization.getEmails();
         }
         return null;
+    }
+
+    @Override
+    public List<DefaultOrganization> findAll() {
+        return organizationRepository.findAll();
     }
 
 }

@@ -1,12 +1,9 @@
 package com.tracebucket.x1.organization.api.test.service;
 
+import com.tracebucket.x1.organization.api.DefaultOrganizationStarter;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
-import com.tracebucket.x1.organization.api.test.config.ApplicationTestConfig;
-import com.tracebucket.x1.organization.api.test.config.InfrastructureTestConfiguration;
-import com.tracebucket.x1.organization.api.test.config.JPATestConfiguration;
-import com.tracebucket.x1.organization.api.test.config.ServiceTestConfiguration;
 import com.tracebucket.x1.organization.api.test.fixture.DefaultOrganizationFixture;
 import com.tracebucket.x1.organization.api.test.fixture.DefaultOrganizationUnitFixture;
 import org.junit.After;
@@ -24,7 +21,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@SpringApplicationConfiguration(classes  = {ApplicationTestConfig.class, JPATestConfiguration.class, ServiceTestConfiguration.class, InfrastructureTestConfiguration.class})
+@SpringApplicationConfiguration(classes  = {DefaultOrganizationStarter.class})
 public class OrganizationServiceTest {
 
     @Autowired

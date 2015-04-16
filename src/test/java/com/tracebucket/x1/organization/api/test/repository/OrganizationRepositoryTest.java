@@ -1,11 +1,8 @@
 package com.tracebucket.x1.organization.api.test.repository;
 
+import com.tracebucket.x1.organization.api.DefaultOrganizationStarter;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.repository.jpa.DefaultOrganizationRepository;
-import com.tracebucket.x1.organization.api.test.config.ApplicationTestConfig;
-import com.tracebucket.x1.organization.api.test.config.InfrastructureTestConfiguration;
-import com.tracebucket.x1.organization.api.test.config.JPATestConfiguration;
-import com.tracebucket.x1.organization.api.test.config.ServiceTestConfiguration;
 import com.tracebucket.x1.organization.api.test.fixture.DefaultOrganizationFixture;
 import com.tracebucket.x1.organization.api.test.fixture.DefaultOrganizationUnitFixture;
 import org.junit.After;
@@ -25,7 +22,7 @@ import javax.transaction.Transactional;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@SpringApplicationConfiguration(classes  = {ApplicationTestConfig.class, JPATestConfiguration.class, ServiceTestConfiguration.class, InfrastructureTestConfiguration.class})
+@SpringApplicationConfiguration(classes  = {DefaultOrganizationStarter.class})
 @Transactional
 public class OrganizationRepositoryTest {
 
