@@ -1,10 +1,10 @@
 package com.tracebucket.x1.organization.api.domain.impl.jpa;
 
 import com.tracebucket.tron.ddd.domain.BaseEntity;
-import com.tracebucket.x1.dictionary.api.domain.Address;
-import com.tracebucket.x1.dictionary.api.domain.Email;
-import com.tracebucket.x1.dictionary.api.domain.Person;
-import com.tracebucket.x1.dictionary.api.domain.Phone;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultAddress;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultEmail;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPerson;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPhone;
 import com.tracebucket.x1.organization.api.domain.*;
 
 import javax.persistence.*;
@@ -41,7 +41,7 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
 
     @ElementCollection
     @JoinTable(name = "ORGANIZATION_UNIT_ADDRESS", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
-    private Set<Address> addresses = new HashSet<Address>(0);
+    private Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinTable(
@@ -49,15 +49,15 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
             joinColumns={ @JoinColumn(name="ORGANIZATION_UNIT__ID", referencedColumnName="ID") },
             inverseJoinColumns={ @JoinColumn(name="PERSON__ID", referencedColumnName="ID", unique=true) }
     )
-    private Set<Person> contactPersons = new HashSet<Person>(0);
+    private Set<DefaultPerson> contactPersons = new HashSet<DefaultPerson>(0);
 
     @ElementCollection
     @JoinTable(name = "ORGANIZATION_UNIT_CONTACT_PHONE", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
-    private Set<Phone> phones = new HashSet<Phone>(0);
+    private Set<DefaultPhone> phones = new HashSet<DefaultPhone>(0);
 
     @ElementCollection
     @JoinTable(name = "ORGANIZATION_UNIT_CONTACT_EMAIL", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
-    private Set<Email> emails = new HashSet<Email>(0);
+    private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name="ORGANIZATION_UNIT__ID", referencedColumnName="ID")
@@ -83,13 +83,13 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     }
 
     @Override
-    public DefaultOrganizationUnit address(Address address) {
+    public DefaultOrganizationUnit address(DefaultAddress address) {
         this.addresses.add(address);
         return this;
     }
 
     @Override
-    public Set<Address> addresses() {
+    public Set<DefaultAddress> addresses() {
         return this.addresses;
     }
 
@@ -165,7 +165,7 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     }
 
     @Override
-    public Set<Address> getAddresses() {
+    public Set<DefaultAddress> getAddresses() {
         return addresses;
     }
 
@@ -191,17 +191,17 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     }
 
     @Override
-    public Set<Person> getContactPersons() {
+    public Set<DefaultPerson> getContactPersons() {
         return contactPersons;
     }
 
     @Override
-    public Set<Phone> getPhones() {
+    public Set<DefaultPhone> getPhones() {
         return phones;
     }
 
     @Override
-    public Set<Email> getEmails() {
+    public Set<DefaultEmail> getEmails() {
         return emails;
     }
 
@@ -222,19 +222,19 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
         this.organizationFunctions = organizationFunctions;
     }
 
-    public void setAddresses(Set<Address> addresses) {
+    public void setAddresses(Set<DefaultAddress> addresses) {
         this.addresses = addresses;
     }
 
-    public void setContactPersons(Set<Person> contactPersons) {
+    public void setContactPersons(Set<DefaultPerson> contactPersons) {
         this.contactPersons = contactPersons;
     }
 
-    public void setPhones(Set<Phone> phones) {
+    public void setPhones(Set<DefaultPhone> phones) {
         this.phones = phones;
     }
 
-    public void setEmails(Set<Email> emails) {
+    public void setEmails(Set<DefaultEmail> emails) {
         this.emails = emails;
     }
 

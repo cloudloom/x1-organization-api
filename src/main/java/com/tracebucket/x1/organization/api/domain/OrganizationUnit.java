@@ -1,9 +1,9 @@
 package com.tracebucket.x1.organization.api.domain;
 
-import com.tracebucket.x1.dictionary.api.domain.Address;
-import com.tracebucket.x1.dictionary.api.domain.Email;
-import com.tracebucket.x1.dictionary.api.domain.Person;
-import com.tracebucket.x1.dictionary.api.domain.Phone;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultAddress;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultEmail;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPerson;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPhone;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultBusinessLine;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
@@ -17,9 +17,9 @@ import java.util.Set;
 public interface OrganizationUnit {
 	Boolean hasAddresses();
 
-	DefaultOrganizationUnit address(Address address);
+	DefaultOrganizationUnit address(DefaultAddress address);
 
-	Set<Address> addresses();
+	Set<DefaultAddress> addresses();
 
 	DefaultOrganizationUnit parent();
 
@@ -45,7 +45,7 @@ public interface OrganizationUnit {
 
 	Set<OrganizationFunction> getOrganizationFunctions();
 
-	Set<Address> getAddresses();
+	Set<DefaultAddress> getAddresses();
 
 	Set<DefaultDepartment> getDepartments();
 
@@ -55,11 +55,11 @@ public interface OrganizationUnit {
 
 	void addChild(DefaultOrganizationUnit child);
 
-	Set<Person> getContactPersons();
+	Set<DefaultPerson> getContactPersons();
 
-	Set<Phone> getPhones();
+	Set<DefaultPhone> getPhones();
 
-	Set<Email> getEmails();
+	Set<DefaultEmail> getEmails();
 
     void setParent(DefaultOrganizationUnit parent);
 

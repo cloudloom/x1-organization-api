@@ -28,7 +28,7 @@ import java.beans.PropertyVetoException;
  */
 @Configuration
 @EnableJpaRepositories(basePackages = {"com.tracebucket.x1.organization.api.repository.jpa"}, repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
-@EntityScan(basePackages = {"com.tracebucket.x1.organization.api.domain"})
+@EntityScan(basePackages = {"com.tracebucket.x1.organization.api.domain", "com.tracebucket.x1.dictionary.api.domain.jpa.impl"})
 @PropertySource(value = "classpath:jpa.properties")
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaAuditing

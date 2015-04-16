@@ -53,6 +53,21 @@
             <version>1.2.0.RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.8.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.8.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>4.1.4.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -67,16 +82,54 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>1.7</version>
+                <configuration>
+                    <showWeaveInfo>true</showWeaveInfo>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <Xlint>ignore</Xlint>
+                    <complianceLevel>1.8</complianceLevel>
+                    <encoding>UTF-8</encoding>
+                    <verbose>false</verbose>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-aspects</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
+                    <weaveDependencies>
+
+                        <weaveDependency>
+                            <groupId>com.tracebucket.tron</groupId>
+                            <artifactId>tron-ddd-cqrs</artifactId>
+                        </weaveDependency>
+                    </weaveDependencies>
+                    <showWeaveInfo>true</showWeaveInfo>
+                </configuration>
                 <executions>
                     <execution>
-                        <id>attach-javadocs</id>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>compile</goal>
+                            <goal>test-compile</goal>
                         </goals>
                     </execution>
                 </executions>
+
+
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjrt</artifactId>
+                        <version>1.8.4</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjtools</artifactId>
+                        <version>1.8.4</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>

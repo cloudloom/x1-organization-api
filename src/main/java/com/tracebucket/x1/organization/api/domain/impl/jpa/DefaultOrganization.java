@@ -4,6 +4,7 @@ import com.tracebucket.tron.ddd.annotation.DomainMethod;
 import com.tracebucket.tron.ddd.domain.BaseAggregateRoot;
 import com.tracebucket.tron.ddd.domain.BaseEntity;
 import com.tracebucket.x1.dictionary.api.domain.*;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.Organization;
 import com.tracebucket.x1.organization.api.domain.OrganizationUnit;
 
@@ -43,7 +44,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
 
     @ElementCollection
     @JoinTable(name = "ORGANIZATION_ADDRESS", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
-    private Set<Address> addresses = new HashSet<Address>(0);
+    private Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
 
  /*   @ElementCollection
     @CollectionTable(name = "ORGANIZATION_CURRENCY", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
@@ -57,7 +58,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
             joinColumns={ @JoinColumn(name="ORGANIZATION__ID", referencedColumnName="ID") },
             inverseJoinColumns={ @JoinColumn(name="TIMEZONE__ID", referencedColumnName="ID", unique=true) }
     )
-    private Set<Timezone> timezones = new HashSet<Timezone>(0);
+    private Set<DefaultTimezone> timezones = new HashSet<DefaultTimezone>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinTable(
@@ -65,18 +66,18 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
             joinColumns = { @JoinColumn(name = "ORGANIZATION__ID", referencedColumnName = "ID") },
             inverseJoinColumns = { @JoinColumn(name = "PERSON__ID", referencedColumnName = "ID", unique = true) }
     )
-    private Set<Person> contactPersons = new HashSet<Person>(0);
+    private Set<DefaultPerson> contactPersons = new HashSet<DefaultPerson>(0);
 
     @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<DefaultOrganizationUnit> organizationUnits = new HashSet<DefaultOrganizationUnit>(0);
 
     @ElementCollection
     @JoinTable(name = "ORGANIZATION_CONTACT_PHONE", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
-    private Set<Phone> phones = new HashSet<Phone>(0);
+    private Set<DefaultPhone> phones = new HashSet<DefaultPhone>(0);
 
     @ElementCollection
     @JoinTable(name = "ORGANIZATION_CONTACT_EMAIL", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
-    private Set<Email> emails = new HashSet<Email>(0);
+    private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
 
     public DefaultOrganization() {
     }
@@ -104,7 +105,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
 
     @Override
     @DomainMethod(event = "TimezoneAdded")
-    public void addTimezone(Timezone timezone) {
+    public void addTimezone(DefaultTimezone timezone) {
         this.timezones.add(timezone);
     }
 
@@ -121,8 +122,8 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @DomainMethod(event = "OrganizationUnitBelowAdded")
     public void addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, DefaultOrganizationUnit parentOrganizationUnit) {
 
-        OrganizationUnit parentOrganizationUnitFetched = organizationUnits.parallelStream()
-                .filter(t -> t.getId() == parentOrganizationUnit.getId())
+        OrganizationUnit parentOrganizationUnitFetched = organizationUnits.stream()
+                .filter(t -> t.getId().equals(parentOrganizationUnit.getId()))
                 .findFirst()
                 .get();
         if(parentOrganizationUnitFetched != null) {
@@ -132,49 +133,49 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
     @Override
     @DomainMethod(event = "ContactPersonAdded")
-    public void addContactPerson(Person contactPerson) {
+    public void addContactPerson(DefaultPerson contactPerson) {
         this.contactPersons.add(contactPerson);
     }
 
     @Override
     @DomainMethod(event = "DefaultContactPersonSet")
-    public void setDefaultContactPerson(Person defaultContactPerson) {
+    public void setDefaultContactPerson(DefaultPerson defaultContactPerson) {
         this.contactPersons.add(defaultContactPerson);
     }
 
     @Override
     @DomainMethod(event = "ContactNumberAdded")
-    public void addContactNumber(Phone phone) {
+    public void addContactNumber(DefaultPhone phone) {
         this.phones.add(phone);
     }
 
     @Override
     @DomainMethod(event = "DefaultContactNumberSet")
-    public void setDefaultContactNumber(Phone defaultContactNumber) {
+    public void setDefaultContactNumber(DefaultPhone defaultContactNumber) {
         this.phones.add(defaultContactNumber);
     }
 
     @Override
     @DomainMethod(event = "EmailAdded")
-    public void addEmail(Email email) {
+    public void addEmail(DefaultEmail email) {
         this.emails.add(email);
     }
 
     @Override
     @DomainMethod(event = "DefaultEmailSet")
-    public void setDefaultEmail(Email defaultEmail) {
+    public void setDefaultEmail(DefaultEmail defaultEmail) {
         this.emails.add(defaultEmail);
     }
 
     @Override
     @DomainMethod(event = "HeadOfficeSet")
-    public void setHeadOffice(Address headOfficeAddress) {
+    public void setHeadOffice(DefaultAddress headOfficeAddress) {
         this.addresses.add(headOfficeAddress);
     }
 
     @Override
     @DomainMethod(event = "HeadOfficeModedTo")
-    public void moveHeadOfficeTo(Address newHeadOfficeAddress) {
+    public void moveHeadOfficeTo(DefaultAddress newHeadOfficeAddress) {
         this.addresses.add(newHeadOfficeAddress);
     }
 
@@ -204,8 +205,8 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
-    public Address getHeadOfficeAddress() {
-        Address headOfficeAddress =
+    public DefaultAddress getHeadOfficeAddress() {
+        DefaultAddress headOfficeAddress =
                 addresses.parallelStream()
                         .filter(t -> t.getAddressType() == AddressType.HEAD_OFFICE)
                                 //.filter(t -> t.isCurrentAddress())
@@ -234,32 +235,32 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
-    public Set<Phone> getContactNumbers() {
+    public Set<DefaultPhone> getContactNumbers() {
         return this.phones;
     }
 
     @Override
-    public Set<Email> getEmails() {
+    public Set<DefaultEmail> getEmails() {
         return this.emails;
     }
 
     @Override
-    public Set<Timezone> getTimezones() {
+    public Set<DefaultTimezone> getTimezones() {
         return this.timezones;
     }
 
     @Override
-    public Set<Person> getContactPersons() {
+    public Set<DefaultPerson> getContactPersons() {
         return contactPersons;
     }
 
     @Override
-    public Set<Phone> getPhones() {
+    public Set<DefaultPhone> getPhones() {
         return phones;
     }
 
     @Override
-    public Set<Address> getAddresses() {
+    public Set<DefaultAddress> getAddresses() {
         return addresses;
     }
 

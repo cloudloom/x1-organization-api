@@ -3,6 +3,7 @@ package com.tracebucket.x1.organization.api.service.impl;
 import com.tracebucket.tron.ddd.annotation.PersistChanges;
 import com.tracebucket.tron.ddd.domain.AggregateId;
 import com.tracebucket.x1.dictionary.api.domain.*;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.OrganizationUnit;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
@@ -70,7 +71,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addTimezone(Timezone timezone, AggregateId organizationAggregateId) {
+    public DefaultOrganization addTimezone(DefaultTimezone timezone, AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             organization.addTimezone(timezone);
@@ -103,7 +104,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addContactPerson(Person contactPerson, AggregateId organizationAggregateId) {
+    public DefaultOrganization addContactPerson(DefaultPerson contactPerson, AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             organization.addContactPerson(contactPerson);
@@ -114,7 +115,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization setDefaultContactPerson(Person defaultContactPerson, AggregateId organizationAggregateId) {
+    public DefaultOrganization setDefaultContactPerson(DefaultPerson defaultContactPerson, AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             organization.setDefaultContactPerson(defaultContactPerson);
@@ -125,7 +126,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addContactNumber(Phone phone, AggregateId organizationAggregateId) {
+    public DefaultOrganization addContactNumber(DefaultPhone phone, AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             organization.addContactNumber(phone);
@@ -136,7 +137,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization setDefaultContactNumber(Phone defaultContactNumber, AggregateId organizationAggregateId) {
+    public DefaultOrganization setDefaultContactNumber(DefaultPhone defaultContactNumber, AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             organization.setDefaultContactNumber(defaultContactNumber);
@@ -147,7 +148,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addEmail(Email email, AggregateId organizationAggregateId) {
+    public DefaultOrganization addEmail(DefaultEmail email, AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             organization.addEmail(email);
@@ -158,7 +159,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization setDefaultEmail(Email defaultEmail, AggregateId organizationAggregateId) {
+    public DefaultOrganization setDefaultEmail(DefaultEmail defaultEmail, AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             organization.setDefaultEmail(defaultEmail);
@@ -169,7 +170,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization setHeadOffice(Address headOfficeAddress, AggregateId organizationAggregateId) {
+    public DefaultOrganization setHeadOffice(DefaultAddress headOfficeAddress, AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             organization.setHeadOffice(headOfficeAddress);
@@ -180,7 +181,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization moveHeadOfficeTo(Address newHeadOfficeAddress, AggregateId organizationAggregateId) {
+    public DefaultOrganization moveHeadOfficeTo(DefaultAddress newHeadOfficeAddress, AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             organization.moveHeadOfficeTo(newHeadOfficeAddress);
@@ -190,7 +191,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     }
 
     @Override
-    public Address getHeadOfficeAddress(AggregateId organizationAggregateId) {
+    public DefaultAddress getHeadOfficeAddress(AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             return organization.getHeadOfficeAddress();
@@ -217,7 +218,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     }
 
     @Override
-    public Set<Phone> getContactNumbers(AggregateId organizationAggregateId) {
+    public Set<DefaultPhone> getContactNumbers(AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             return organization.getContactNumbers();
@@ -226,7 +227,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     }
 
     @Override
-    public Set<Email> getEmails(AggregateId organizationAggregateId) {
+    public Set<DefaultEmail> getEmails(AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             return organization.getEmails();

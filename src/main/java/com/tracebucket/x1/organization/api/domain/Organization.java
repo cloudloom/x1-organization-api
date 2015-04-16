@@ -1,6 +1,7 @@
 package com.tracebucket.x1.organization.api.domain;
 
 import com.tracebucket.x1.dictionary.api.domain.*;
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 
 import java.io.Serializable;
@@ -20,7 +21,7 @@ public interface Organization extends Serializable{
 	//void addBaseCurrency(Currency baseCurrency);
 
 
-	void addTimezone(Timezone timezone);
+	void addTimezone(DefaultTimezone timezone);
 
 
 	void addOrganizationUnit(DefaultOrganizationUnit organizationUnit);
@@ -29,28 +30,28 @@ public interface Organization extends Serializable{
 	void addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, DefaultOrganizationUnit parentOrganizationUnit);
 
 
-	void addContactPerson(Person contactPerson);
+	void addContactPerson(DefaultPerson contactPerson);
 
 
-	void setDefaultContactPerson(Person defaultContactPerson);
+	void setDefaultContactPerson(DefaultPerson defaultContactPerson);
 
 
-	void addContactNumber(Phone phone);
+	void addContactNumber(DefaultPhone phone);
 
 
-	void setDefaultContactNumber(Phone defaultContactNumber);
+	void setDefaultContactNumber(DefaultPhone defaultContactNumber);
 
 
-	void addEmail(Email email);
+	void addEmail(DefaultEmail email);
 
 
-	void setDefaultEmail(Email defaultEmail);
+	void setDefaultEmail(DefaultEmail defaultEmail);
 
 
-	void setHeadOffice(Address headOfficeAddress);
+	void setHeadOffice(DefaultAddress headOfficeAddress);
 
 
-	void moveHeadOfficeTo(Address newHeadOfficeAddress);
+	void moveHeadOfficeTo(DefaultAddress newHeadOfficeAddress);
 
 	String getCode();
 
@@ -62,23 +63,23 @@ public interface Organization extends Serializable{
 
 	String getImage();
 
-	Address getHeadOfficeAddress();
+	DefaultAddress getHeadOfficeAddress();
 
 	//Set<Currency> getBaseCurrencies();
 
 	Set<DefaultOrganizationUnit> getOrganizationUnits();
 
-	Set<Phone> getContactNumbers();
+	Set<DefaultPhone> getContactNumbers();
 
-	Set<Email> getEmails();
+	Set<DefaultEmail> getEmails();
 
-	Set<Timezone> getTimezones();
+	Set<DefaultTimezone> getTimezones();
 
-	Set<Person> getContactPersons();
+	Set<DefaultPerson> getContactPersons();
 
-	Set<Phone> getPhones();
+	Set<DefaultPhone> getPhones();
 
-	Set<Address> getAddresses();
+	Set<DefaultAddress> getAddresses();
 
 	//Map<Currency, CurrencyType> getCurrencies();
 }
