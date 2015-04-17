@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.tracebucket.x1.dictionary</groupId>
             <artifactId>x1-dictionary-api</artifactId>
-            <version>0.1</version>
+            <version>0.2</version>
         </dependency>
         <dependency>
             <groupId>com.tracebucket.tron</groupId>
