@@ -56,6 +56,7 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
     }
 
+
     @RequestMapping(value = "/organizations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations() {
         List<DefaultOrganizationResource> organizationResources = new ArrayList<DefaultOrganizationResource>();
@@ -67,6 +68,7 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<Boolean>(organizationService.delete(new AggregateId(organizationUid)), HttpStatus.OK);
     }
 
+
     @RequestMapping(value = "/organization/{organizationUid}/basecurrency", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addBaseCurrency(@RequestBody DefaultCurrencyResource baseCurrency, @PathVariable("organizationUid") String aggregateId) {
         DefaultCurrency defaultCurrency = assemblerResolver.resolveEntityAssembler(DefaultCurrency.class, DefaultCurrencyResource.class).toEntity(baseCurrency, DefaultCurrency.class);
@@ -75,6 +77,7 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
     }
 
+
     @RequestMapping(value = "/organization/{organizationUid}/timezone", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addTimezone(@RequestBody DefaultTimezoneResource timezone, @PathVariable("organizationUid") String aggregateId) {
         DefaultTimezone defaultTimezone = assemblerResolver.resolveEntityAssembler(DefaultTimezone.class, DefaultTimezoneResource.class).toEntity(timezone, DefaultTimezone.class);
@@ -82,6 +85,7 @@ public class OrganizationController implements Organization{
         DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
         return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
     }
+
 
     @RequestMapping(value = "/organization/{organizationUid}/organizatiounit/below", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addOrganizationUnitBelow(@RequestBody DefaultOrganizationUnitResource organizationUnit, DefaultOrganizationUnitResource parentOrganizationUnit, @PathVariable("organizationUid") String aggregateId) {
@@ -92,13 +96,14 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/organization/{organizationUid}/contactperson", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+     @RequestMapping(value = "/organization/{organizationUid}/contactperson", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addContactPerson(@RequestBody DefaultPersonResource person, @PathVariable("organizationUid") String aggregateId) {
         DefaultPerson defaultPerson = assemblerResolver.resolveEntityAssembler(DefaultPerson.class, DefaultPersonResource.class).toEntity(person, DefaultPerson.class);
         DefaultOrganization organization = organizationService.addContactPerson(defaultPerson, new AggregateId(aggregateId));
         DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
         return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
     }
+
 
     @RequestMapping(value = "/organization/{organizationUid}/contactperson/default", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> setDefaultContactPerson(@RequestBody DefaultPersonResource person, @PathVariable("organizationUid") String aggregateId) {
@@ -124,6 +129,7 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
     }
 
+
     @RequestMapping(value = "/organization/{organizationUid}/email", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addEmail(@RequestBody DefaultEmailResource email, @PathVariable("organizationUid") String aggregateId) {
         DefaultEmail defaultEmail = assemblerResolver.resolveEntityAssembler(DefaultEmail.class, DefaultEmailResource.class).toEntity(email, DefaultEmail.class);
@@ -148,6 +154,7 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
     }
 
+
     @RequestMapping(value = "/organization/{organizationUid}/headoffice/to", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> moveHeadOfficeTo(@RequestBody DefaultAddressResource address, @PathVariable("organizationUid") String aggregateId) {
         DefaultAddress defaultAddress = assemblerResolver.resolveEntityAssembler(DefaultAddress.class, DefaultAddressResource.class).toEntity(address, DefaultAddress.class);
@@ -156,6 +163,7 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
     }
 
+
     @RequestMapping(value = "/organization/{organizationUid}/headoffice/address", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultAddressResource> getHeadOfficeAddress(@PathVariable("organizationUid") String aggregateId) {
         DefaultAddress address = organizationService.getHeadOfficeAddress(new AggregateId(aggregateId));
@@ -163,12 +171,14 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultAddressResource>(addressResource, HttpStatus.OK);
     }
 
+
     @RequestMapping(value = "/organization/{organizationUid}/currencies/base", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultCurrencyResource>> getBaseCurrencies(@PathVariable("organizationUid") String aggregateId) {
         Set<DefaultCurrency> currencies = organizationService.getBaseCurrencies(new AggregateId(aggregateId));
         Set<DefaultCurrencyResource> currencyResources = assemblerResolver.resolveResourceAssembler(DefaultCurrencyResource.class, DefaultCurrency.class).toResources(currencies, DefaultCurrencyResource.class);
         return new ResponseEntity<Set<DefaultCurrencyResource>>(currencyResources, HttpStatus.OK);
     }
+
 
     @RequestMapping(value = "/organization/{organizationUid}/organizationunits", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultOrganizationUnitResource>> getOrganizationUnits(@PathVariable("organizationUid") String aggregateId) {
