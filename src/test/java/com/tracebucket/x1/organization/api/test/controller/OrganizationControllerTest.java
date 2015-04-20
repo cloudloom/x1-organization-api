@@ -20,6 +20,8 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+
 /**
  * Created by sadath on 20-Apr-15.
  */
@@ -121,6 +123,7 @@ public class OrganizationControllerTest {
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
         Assert.assertEquals(1, organization.getContactPersons().size());
+        Assert.assertTrue(new ArrayList<>(organization.getContactPersons()).get(0).isDefaultContactPerson());
     }
 
     @Test
@@ -140,7 +143,7 @@ public class OrganizationControllerTest {
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/contactnumber/default", defaultPhoneResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
-        Assert.assertEquals(1, organization.getContactPersons().size());
+        Assert.assertTrue(new ArrayList<>(organization.getPhones()).get(0).isDefaultContactNumber());
     }
     @Test
     public void testAddEmail() throws Exception{
@@ -159,7 +162,7 @@ public class OrganizationControllerTest {
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/email/default", defaultEmailResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
-        Assert.assertEquals(1, organization.getEmails().size());
+        Assert.assertTrue(new ArrayList<>(organization.getEmails()).get(0).isDefaultEmail());
     }
 
     @Test

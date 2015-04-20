@@ -43,4 +43,8 @@ public class DefaultPhoneResource extends BaseResource {
     public void setDefaultPhone(boolean defaultPhone) {
         this.defaultPhone = defaultPhone;
     }
+
+    public boolean isDefaultContactNumber(){
+        return defaultPhone;
+    }
 }
