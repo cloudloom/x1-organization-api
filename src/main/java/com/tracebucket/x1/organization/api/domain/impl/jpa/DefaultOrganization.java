@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Created by Vishwajit on 13-04-2015.
@@ -20,7 +21,6 @@ import java.util.Set;
 @Entity
 @Table(name = "ORGANIZATION")
 public class DefaultOrganization extends BaseAggregateRoot implements Organization{
-
 
     @Column(name = "CODE", nullable = false)
     @Basic(fetch = FetchType.EAGER)
@@ -42,11 +42,11 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Basic(fetch = FetchType.EAGER)
     protected String image;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_ADDRESS", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
     private Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_CURRENCY", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
     private Set<DefaultCurrency> currencies = new HashSet<DefaultCurrency>(0);
 
@@ -65,11 +65,11 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<DefaultOrganizationUnit> organizationUnits = new HashSet<DefaultOrganizationUnit>(0);
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_CONTACT_PHONE", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
     private Set<DefaultPhone> phones = new HashSet<DefaultPhone>(0);
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_CONTACT_EMAIL", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
     private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
 
@@ -118,7 +118,6 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Override
     @DomainMethod(event = "OrganizationUnitBelowAdded")
     public void addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, DefaultOrganizationUnit parentOrganizationUnit) {
-
         OrganizationUnit parentOrganizationUnitFetched = organizationUnits.stream()
                 .filter(t -> t.getId().equals(parentOrganizationUnit.getId()))
                 .findFirst()
@@ -126,55 +125,88 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
         if(parentOrganizationUnitFetched != null) {
             parentOrganizationUnitFetched.addChild(organizationUnit);
         }
-
     }
 
     @Override
     @DomainMethod(event = "ContactPersonAdded")
     public void addContactPerson(DefaultPerson contactPerson) {
-        this.contactPersons.add(contactPerson);
+        if(contactPerson != null) {
+            contactPerson.setDefaultContactPerson(false);
+            this.contactPersons.add(contactPerson);
+        }
     }
 
     @Override
     @DomainMethod(event = "DefaultContactPersonSet")
     public void setDefaultContactPerson(DefaultPerson defaultContactPerson) {
-        this.contactPersons.add(defaultContactPerson);
+        if(defaultContactPerson != null) {
+            Stream<DefaultPerson> stream = this.contactPersons.stream();
+            stream.forEach(t -> t.setDefaultContactPerson(false));
+            defaultContactPerson.setDefaultContactPerson(true);
+            this.contactPersons.add(defaultContactPerson);
+        }
     }
 
     @Override
     @DomainMethod(event = "ContactNumberAdded")
     public void addContactNumber(DefaultPhone phone) {
-        this.phones.add(phone);
+        if(phone != null) {
+            phone.setDefaultPhone(false);
+            this.phones.add(phone);
+        }
     }
 
     @Override
     @DomainMethod(event = "DefaultContactNumberSet")
     public void setDefaultContactNumber(DefaultPhone defaultContactNumber) {
-        this.phones.add(defaultContactNumber);
+        if(defaultContactNumber != null) {
+            Stream<DefaultPhone> stream = this.phones.stream();
+            stream.forEach(t -> t.setDefaultPhone(false));
+            defaultContactNumber.setDefaultPhone(true);
+            this.phones.add(defaultContactNumber);
+        }
     }
 
     @Override
     @DomainMethod(event = "EmailAdded")
     public void addEmail(DefaultEmail email) {
-        this.emails.add(email);
+        if(email != null) {
+            email.setDefaultEmail(false);
+            this.emails.add(email);
+        }
     }
 
     @Override
     @DomainMethod(event = "DefaultEmailSet")
     public void setDefaultEmail(DefaultEmail defaultEmail) {
-        this.emails.add(defaultEmail);
+        if(defaultEmail != null) {
+            Stream<DefaultEmail> stream = this.emails.stream();
+            stream.forEach(t -> t.setDefaultEmail(false));
+            defaultEmail.setDefaultEmail(true);
+            this.emails.add(defaultEmail);
+        }
     }
 
     @Override
     @DomainMethod(event = "HeadOfficeSet")
     public void setHeadOffice(DefaultAddress headOfficeAddress) {
-        this.addresses.add(headOfficeAddress);
+        if(headOfficeAddress != null) {
+            headOfficeAddress.setAddressType(AddressType.HEAD_OFFICE);
+            headOfficeAddress.setDefaultAddress(true);
+            this.addresses.add(headOfficeAddress);
+        }
     }
 
     @Override
     @DomainMethod(event = "HeadOfficeModedTo")
     public void moveHeadOfficeTo(DefaultAddress newHeadOfficeAddress) {
-        this.addresses.add(newHeadOfficeAddress);
+        if(newHeadOfficeAddress != null) {
+            Stream<DefaultAddress> stream = this.addresses.stream().filter(t -> t.getAddressType() == AddressType.HEAD_OFFICE);
+            stream.forEach(t -> t.setDefaultAddress(false));
+            newHeadOfficeAddress.setAddressType(AddressType.HEAD_OFFICE);
+            newHeadOfficeAddress.setDefaultAddress(true);
+            this.addresses.add(newHeadOfficeAddress);
+        }
     }
 
     @Override
@@ -207,7 +239,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
         DefaultAddress headOfficeAddress =
                 addresses.parallelStream()
                         .filter(t -> t.getAddressType() == AddressType.HEAD_OFFICE)
-                                //.filter(t -> t.isCurrentAddress())
+                        .filter(t -> t.isDefaultAddress())
                         .findFirst()
                         .get();
         return headOfficeAddress;
