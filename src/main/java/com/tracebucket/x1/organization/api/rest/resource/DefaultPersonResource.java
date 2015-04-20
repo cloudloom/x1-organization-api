@@ -20,6 +20,7 @@ public class DefaultPersonResource extends BaseResource {
     private Map<String, EmailType> emails = new HashMap<String, EmailType>(0);
     private Map<String, PhoneType> phones = new HashMap<String, PhoneType>(0);
     private Set<PersonType> personTypes = new HashSet<PersonType>();
+    private boolean defaultContactPerson;
 
     public String getFirstName() {
         return firstName;
@@ -83,5 +84,13 @@ public class DefaultPersonResource extends BaseResource {
 
     public void setPersonTypes(Set<PersonType> personTypes) {
         this.personTypes = personTypes;
+    }
+
+    public boolean isDefaultContactPerson() {
+        return defaultContactPerson;
+    }
+
+    public void setDefaultContactPerson(boolean defaultContactPerson) {
+        this.defaultContactPerson = defaultContactPerson;
     }
 }
