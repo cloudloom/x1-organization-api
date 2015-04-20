@@ -1,9 +1,7 @@
 package com.tracebucket.x1.organization.api.service;
 
 import com.tracebucket.tron.ddd.domain.AggregateId;
-import com.tracebucket.x1.dictionary.api.domain.*;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
-import com.tracebucket.x1.organization.api.domain.OrganizationUnit;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 
