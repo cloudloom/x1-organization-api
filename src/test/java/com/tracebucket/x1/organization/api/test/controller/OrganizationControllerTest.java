@@ -1,6 +1,5 @@
 package com.tracebucket.x1.organization.api.test.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tracebucket.x1.organization.api.DefaultOrganizationStarter;
 import com.tracebucket.x1.organization.api.rest.resource.DefaultOrganizationResource;
 import com.tracebucket.x1.organization.api.rest.resource.DefaultOrganizationUnitResource;
@@ -13,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
