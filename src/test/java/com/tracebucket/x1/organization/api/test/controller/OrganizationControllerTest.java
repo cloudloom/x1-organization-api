@@ -32,9 +32,6 @@ public class OrganizationControllerTest {
 
     RestTemplate restTemplate = null;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Value("http://localhost:${server.port}${server.contextPath}")
     private String basePath;
 
