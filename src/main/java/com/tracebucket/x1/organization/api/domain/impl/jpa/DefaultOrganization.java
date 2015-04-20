@@ -216,7 +216,6 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Override
     public Set<DefaultCurrency> getBaseCurrencies() {
         Set<DefaultCurrency> baseCurrencies = new HashSet<DefaultCurrency>();
-
         if(currencies != null && currencies.size() > 0) {
             for (DefaultCurrency currency : currencies) {
                 if(currency.getCurrencyType().equals(CurrencyType.BASE)) {

@@ -19,13 +19,13 @@ public class DefaultOrganizationResourceBuilder {
     private String description;
     private String website;
     protected String image;
-    private Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
+/*    private Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
     private Set<DefaultCurrencyResource> currencies = new HashSet<DefaultCurrencyResource>(0);
     private Set<DefaultTimezoneResource> timezones = new HashSet<DefaultTimezoneResource>(0);
     private Set<DefaultPersonResource> contactPersons = new HashSet<DefaultPersonResource>(0);
     private Set<DefaultPhoneResource> phones = new HashSet<DefaultPhoneResource>(0);
     private Set<DefaultEmailResource> emails = new HashSet<DefaultEmailResource>(0);
-    private Set<DefaultOrganizationUnitResource> organizationUnits = new HashSet<DefaultOrganizationUnitResource>(0);
+    private Set<DefaultOrganizationUnitResource> organizationUnits = new HashSet<DefaultOrganizationUnitResource>(0);*/
 
     private DefaultOrganizationResourceBuilder(){ }
 
@@ -58,7 +58,7 @@ public class DefaultOrganizationResourceBuilder {
         return this;
     }
 
-    public DefaultOrganizationResourceBuilder withAddresses(Set<DefaultAddressResource> addresses){
+/*    public DefaultOrganizationResourceBuilder withAddresses(Set<DefaultAddressResource> addresses){
         this.addresses = addresses;
         return this;
     }
@@ -91,7 +91,7 @@ public class DefaultOrganizationResourceBuilder {
     public DefaultOrganizationResourceBuilder withOrganizationUnits(Set<DefaultOrganizationUnitResource> organizationUnits){
         this.organizationUnits = organizationUnits;
         return this;
-    }
+    }*/
 
     public DefaultOrganizationResource build(){
         DefaultOrganizationResource organization = new DefaultOrganizationResource();
@@ -100,13 +100,13 @@ public class DefaultOrganizationResourceBuilder {
         organization.setCode(code);
         organization.setDescription(description);
         organization.setWebsite(website);
-        organization.setAddresses(addresses);
+/*        organization.setAddresses(addresses);
         organization.setContactPersons(contactPersons);
         organization.setCurrencies(currencies);
         organization.setTimezones(timezones);
         organization.setPhones(phones);
         organization.setEmails(emails);
-        organization.setOrganizationUnits(organizationUnits);
+        organization.setOrganizationUnits(organizationUnits);*/
         return organization;
     }
 }

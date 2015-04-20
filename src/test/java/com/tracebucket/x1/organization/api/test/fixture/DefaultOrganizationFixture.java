@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class DefaultOrganizationFixture {
     public static DefaultOrganization standardOrganization() {
-        Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
+/*        Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
         addresses.add(DefaultAddressFixture.standardAddress());
         addresses.add(DefaultAddressFixture.headOffice());
 
@@ -33,7 +33,7 @@ public class DefaultOrganizationFixture {
         emails.add(DefaultEmailFixture.standardEmail());
 
         Set<DefaultOrganizationUnit> organizationUnits = new HashSet<DefaultOrganizationUnit>(0);
-        organizationUnits.add(DefaultOrganizationUnitFixture.standardOrganizationUnit());
+        organizationUnits.add(DefaultOrganizationUnitFixture.standardOrganizationUnit());*/
 
         DefaultOrganization organization = DefaultOrganizationBuilder.anOrganizationBuilder()
                 .withName(UUID.randomUUID().toString())
@@ -41,13 +41,13 @@ public class DefaultOrganizationFixture {
                 .withImage(UUID.randomUUID().toString())
                 .withCode(UUID.randomUUID().toString())
                 .withWebsite(UUID.randomUUID().toString())
-                .withAddresses(addresses)
+/*                .withAddresses(addresses)
                 .withCurrencies(currencies)
                 .withContactPersons(contactPersons)
                 .withEmails(emails)
                 .withPhones(phones)
                 .withTimezones(timezones)
-                .withOrganizationUnits(organizationUnits)
+                .withOrganizationUnits(organizationUnits)*/
                 .build();
         return organization;
     }

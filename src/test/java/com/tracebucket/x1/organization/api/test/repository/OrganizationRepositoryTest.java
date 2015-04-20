@@ -51,7 +51,7 @@ public class OrganizationRepositoryTest {
         organization = organizationRepository.save(organization);
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getAggregateId());
-        Assert.assertEquals(2, organization.getOrganizationUnits().size());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
     }
 
     @Test

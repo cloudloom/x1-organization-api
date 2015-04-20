@@ -30,9 +30,6 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     @Autowired
     private DefaultOrganizationRepository organizationRepository;
 
-/*    @Autowired
-    private CurrencyService currencyService;*/
-
     @Override
     public DefaultOrganization save(DefaultOrganization organization) {
         return organizationRepository.save(organization);
@@ -53,22 +50,17 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         }
         return false;
     }
-/*
+
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addBaseCurrency(Currency baseCurrency, AggregateId organizationAggregateId) {
+    public DefaultOrganization addBaseCurrency(DefaultCurrency baseCurrency, AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
-            Currency currency = currencyService.findOne(baseCurrency.getEntityId());
-            if(currency != null) {
-                organization.addBaseCurrency(currency);
-                return organization;
-            }
+            organization.addBaseCurrency(baseCurrency);
+            return organization;
         }
         return null;
-    }*/
-
-
+    }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
@@ -200,14 +192,14 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         return null;
     }
 
-/*    @Override
-    public Set<Currency> getBaseCurrencies(AggregateId organizationAggregateId) {
+    @Override
+    public Set<DefaultCurrency> getBaseCurrencies(AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             return organization.getBaseCurrencies();
         }
         return null;
-    }*/
+    }
 
     @Override
     public Set<DefaultOrganizationUnit> getOrganizationUnits(AggregateId organizationAggregateId) {

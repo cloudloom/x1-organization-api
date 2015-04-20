@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class DefaultOrganizationResourceFixture {
     public static DefaultOrganizationResource standardOrganization() {
-        Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
+/*        Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
         addresses.add(DefaultAddressResourceFixture.standardAddress());
         addresses.add(DefaultAddressResourceFixture.headOffice());
 
@@ -32,7 +32,7 @@ public class DefaultOrganizationResourceFixture {
         emails.add(DefaultEmailResourceFixture.standardEmail());
 
         Set<DefaultOrganizationUnitResource> organizationUnits = new HashSet<DefaultOrganizationUnitResource>(0);
-        organizationUnits.add(DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource());
+        organizationUnits.add(DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource());*/
 
         DefaultOrganizationResource organization = DefaultOrganizationResourceBuilder.anOrganizationBuilder()
                 .withName(UUID.randomUUID().toString())
@@ -40,13 +40,13 @@ public class DefaultOrganizationResourceFixture {
                 .withImage(UUID.randomUUID().toString())
                 .withCode(UUID.randomUUID().toString())
                 .withWebsite(UUID.randomUUID().toString())
-                .withAddresses(addresses)
+/*                .withAddresses(addresses)
                 .withCurrencies(currencies)
                 .withContactPersons(contactPersons)
                 .withEmails(emails)
                 .withPhones(phones)
                 .withTimezones(timezones)
-                .withOrganizationUnits(organizationUnits)
+                .withOrganizationUnits(organizationUnits)*/
                 .build();
         return organization;
     }

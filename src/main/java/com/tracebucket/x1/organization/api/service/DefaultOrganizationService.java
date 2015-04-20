@@ -17,7 +17,7 @@ public interface DefaultOrganizationService {
 	public DefaultOrganization save(DefaultOrganization organization);
 	public DefaultOrganization findOne(AggregateId aggregateId);
 	public boolean delete(AggregateId organizationAggregateId);
-	//public DefaultOrganization addBaseCurrency(Currency baseCurrency, AggregateId organizationAggregateId);
+	public DefaultOrganization addBaseCurrency(DefaultCurrency baseCurrency, AggregateId organizationAggregateId);
 	public DefaultOrganization addTimezone(DefaultTimezone timezone, AggregateId organizationAggregateId);
 	public DefaultOrganization addOrganizationUnit(DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
 	public DefaultOrganization addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit,
@@ -31,7 +31,7 @@ public interface DefaultOrganizationService {
 	public DefaultOrganization setHeadOffice(DefaultAddress address, AggregateId organizationAggregateId);
 	public DefaultOrganization moveHeadOfficeTo(DefaultAddress address, AggregateId organizationAggregateId);
 	public DefaultAddress getHeadOfficeAddress(AggregateId organizationAggregateId);
-	//public Set<Currency> getBaseCurrencies(AggregateId organizationAggregateId);
+	public Set<DefaultCurrency> getBaseCurrencies(AggregateId organizationAggregateId);
 	public Set<DefaultOrganizationUnit> getOrganizationUnits(AggregateId organizationAggregateId);
 	public Set<DefaultPhone> getContactNumbers(AggregateId organizationAggregateId);
 	public Set<DefaultEmail> getEmails(AggregateId organizationAggregateId);
