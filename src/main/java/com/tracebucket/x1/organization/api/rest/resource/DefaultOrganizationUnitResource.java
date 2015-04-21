@@ -1,5 +1,8 @@
 package com.tracebucket.x1.organization.api.rest.resource;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultAddress;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultEmail;
@@ -21,6 +24,7 @@ public class DefaultOrganizationUnitResource extends BaseResource {
     private String name;
     private String description;
     private DefaultOrganizationResource organization;
+    @JsonBackReference
     private DefaultOrganizationUnitResource parent;
     private Set<OrganizationFunction> organizationFunctions = new HashSet<OrganizationFunction>(0);
     private Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
@@ -29,6 +33,7 @@ public class DefaultOrganizationUnitResource extends BaseResource {
     private Set<DefaultEmailResource> emails = new HashSet<DefaultEmailResource>(0);
     private Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>(0);
     private Set<DefaultBusinessLineResource> businessLines = new HashSet<DefaultBusinessLineResource>(0);
+    @JsonManagedReference
     private Set<DefaultOrganizationUnitResource> children = new HashSet<DefaultOrganizationUnitResource>(0);
 
     public String getName() {

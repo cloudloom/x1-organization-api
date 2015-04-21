@@ -1,6 +1,7 @@
 package com.tracebucket.x1.organization.api.service;
 
 import com.tracebucket.tron.ddd.domain.AggregateId;
+import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
@@ -19,7 +20,7 @@ public interface DefaultOrganizationService {
 	public DefaultOrganization addTimezone(DefaultTimezone timezone, AggregateId organizationAggregateId);
 	public DefaultOrganization addOrganizationUnit(DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
 	public DefaultOrganization addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit,
-			DefaultOrganizationUnit parentOrganizationUnit, AggregateId organizationAggregateId);
+			EntityId parentOrganizationUnitEntityId, AggregateId organizationAggregateId);
 	public DefaultOrganization addContactPerson(DefaultPerson person, AggregateId organizationAggregateId);
 	public DefaultOrganization setDefaultContactPerson(DefaultPerson person, AggregateId organizationAggregateId);
 	public DefaultOrganization addContactNumber(DefaultPhone phone, AggregateId organizationAggregateId);

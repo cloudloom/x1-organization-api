@@ -2,6 +2,7 @@ package com.tracebucket.x1.organization.api.service.impl;
 
 import com.tracebucket.tron.ddd.annotation.PersistChanges;
 import com.tracebucket.tron.ddd.domain.AggregateId;
+import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
@@ -83,8 +84,13 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, DefaultOrganizationUnit parentOrganizationUnit, AggregateId organizationAggregateId) {
+    public DefaultOrganization addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, EntityId parentOrganizationUnitEntityId, AggregateId organizationAggregateId) {
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+        final DefaultOrganizationUnit parentOrganizationUnit = organization.getOrganizationUnits()
+                .stream()
+                .filter(t -> t.getEntityId().equals(parentOrganizationUnitEntityId))
+                .findFirst()
+                .orElse(null);
         if(organization != null) {
             organization.addOrganizationUnitBelow(organizationUnit, parentOrganizationUnit);
             return  organization;

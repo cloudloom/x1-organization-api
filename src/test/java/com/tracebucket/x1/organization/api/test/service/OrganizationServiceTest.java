@@ -67,7 +67,7 @@ public class OrganizationServiceTest {
         for(DefaultOrganizationUnit organizationUnit : organization.getOrganizationUnits()) {
             parentOrganizationUnit = organizationUnit;
         }
-        organization = organizationService.addOrganizationUnitBelow(childOrganizationUnit, parentOrganizationUnit, organization.getAggregateId());
+        organization = organizationService.addOrganizationUnitBelow(childOrganizationUnit, parentOrganizationUnit.getEntityId(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getOrganizationUnits());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());

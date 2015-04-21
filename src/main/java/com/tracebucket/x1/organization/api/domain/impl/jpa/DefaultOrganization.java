@@ -50,7 +50,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @JoinTable(name = "ORGANIZATION_CURRENCY", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
     private Set<DefaultCurrency> currencies = new HashSet<DefaultCurrency>(0);
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_TIMEZONE", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
     private Set<DefaultTimezone> timezones = new HashSet<DefaultTimezone>(0);
 
@@ -121,7 +121,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
         OrganizationUnit parentOrganizationUnitFetched = organizationUnits.stream()
                 .filter(t -> t.getId().equals(parentOrganizationUnit.getId()))
                 .findFirst()
-                .get();
+                .orElse(null);
         if(parentOrganizationUnitFetched != null) {
             parentOrganizationUnitFetched.addChild(organizationUnit);
         }

@@ -17,7 +17,7 @@ public interface Organization {
     public ResponseEntity<DefaultOrganizationResource> addTimezone(DefaultTimezoneResource timezone, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> addOrganizationUnit(String aggregateId, DefaultOrganizationUnitResource organizationUnit);
     public ResponseEntity<DefaultOrganizationResource> addOrganizationUnitBelow(DefaultOrganizationUnitResource organizationUnit,
-                                                        DefaultOrganizationUnitResource parentOrganizationUnit, String aggregateId);
+                                                        String parentOrganizationUnitEntityId, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> addContactPerson(DefaultPersonResource person, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> setDefaultContactPerson(DefaultPersonResource person, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> addContactNumber(DefaultPhoneResource phone, String aggregateId);

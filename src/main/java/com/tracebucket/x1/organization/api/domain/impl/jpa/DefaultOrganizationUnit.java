@@ -39,7 +39,7 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     @Column(name = "ORGANIZATION_FUNCTION", nullable = false, columnDefinition = "ENUM('SALES','PURCHASE') default 'SALES'")
     private Set<OrganizationFunction> organizationFunctions = new HashSet<OrganizationFunction>(0);
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_UNIT_ADDRESS", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
     private Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
 
@@ -51,11 +51,11 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     )
     private Set<DefaultPerson> contactPersons = new HashSet<DefaultPerson>(0);
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_UNIT_CONTACT_PHONE", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
     private Set<DefaultPhone> phones = new HashSet<DefaultPhone>(0);
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_UNIT_CONTACT_EMAIL", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
     private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
 

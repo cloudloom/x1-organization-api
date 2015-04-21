@@ -2,6 +2,7 @@ package com.tracebucket.x1.organization.api.rest.controller;
 
 import com.tracebucket.tron.assembler.AssemblerResolver;
 import com.tracebucket.tron.ddd.domain.AggregateId;
+import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
@@ -52,14 +53,17 @@ public class OrganizationController implements Organization{
     @RequestMapping(value = "/organization/{organizationUid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> getOrganization(@PathVariable("organizationUid") String organizationUid) {
         DefaultOrganization organization = organizationService.findOne(new AggregateId(organizationUid));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/organizations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations() {
-        List<DefaultOrganizationResource> organizationResources = new ArrayList<DefaultOrganizationResource>();
         return new ResponseEntity<Set<DefaultOrganizationResource>>(assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResources(organizationService.findAll(), DefaultOrganizationResource.class), HttpStatus.OK);
     }
 
@@ -87,11 +91,10 @@ public class OrganizationController implements Organization{
     }
 
 
-    @RequestMapping(value = "/organization/{organizationUid}/organizatiounit/below", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> addOrganizationUnitBelow(@RequestBody DefaultOrganizationUnitResource organizationUnit, DefaultOrganizationUnitResource parentOrganizationUnit, @PathVariable("organizationUid") String aggregateId) {
+    @RequestMapping(value = "/organization/{organizationUid}/organizationunit/{parentOrganizationUnitUid}/below", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> addOrganizationUnitBelow(@RequestBody DefaultOrganizationUnitResource organizationUnit, @PathVariable("parentOrganizationUnitUid") String parentOrganizationUnitUid, @PathVariable("organizationUid") String aggregateId) {
         DefaultOrganizationUnit organizationUnit1 = assemblerResolver.resolveEntityAssembler(DefaultOrganizationUnit.class, DefaultOrganizationUnitResource.class).toEntity(organizationUnit, DefaultOrganizationUnit.class);
-        DefaultOrganizationUnit organizationUnitParent = assemblerResolver.resolveEntityAssembler(DefaultOrganizationUnit.class, DefaultOrganizationUnitResource.class).toEntity(parentOrganizationUnit, DefaultOrganizationUnit.class);
-        DefaultOrganization organization = organizationService.addOrganizationUnitBelow(organizationUnit1, organizationUnitParent, new AggregateId(aggregateId));
+        DefaultOrganization organization = organizationService.addOrganizationUnitBelow(organizationUnit1, new EntityId(parentOrganizationUnitUid), new AggregateId(aggregateId));
         DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
         return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
     }

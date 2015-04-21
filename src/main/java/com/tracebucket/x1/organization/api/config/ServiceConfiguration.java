@@ -16,15 +16,5 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan(basePackages = {"com.tracebucket.x1.organization.api.service.impl"}, scopedProxy = ScopedProxyMode.INTERFACES)
 @EnableTransactionManagement(proxyTargetClass = true)
 public class ServiceConfiguration {
-    @Bean
-    public Mapper mapper() {
-        return new DozerBeanMapper();
-    }
-
-    @Bean
-    public ObjectMapper objectMapper()
-    {
-        return new ObjectMapper();
-    }
 
 }
