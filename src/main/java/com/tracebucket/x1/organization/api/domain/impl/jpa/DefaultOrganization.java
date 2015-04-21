@@ -198,7 +198,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
-    @DomainMethod(event = "HeadOfficeModedTo")
+    @DomainMethod(event = "HeadOfficeMovedTo")
     public void moveHeadOfficeTo(DefaultAddress newHeadOfficeAddress) {
         if(newHeadOfficeAddress != null) {
             Stream<DefaultAddress> stream = this.addresses.stream().filter(t -> t.getAddressType() == AddressType.HEAD_OFFICE);
