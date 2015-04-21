@@ -241,7 +241,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
                         .filter(t -> t.getAddressType() == AddressType.HEAD_OFFICE)
                         .filter(t -> t.isDefaultAddress())
                         .findFirst()
-                        .get();
+                        .orElse(null);
         return headOfficeAddress;
     }
 
