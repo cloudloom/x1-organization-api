@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -38,16 +39,23 @@ public class OrganizationController implements Organization{
     public ResponseEntity<DefaultOrganizationResource> createOrganization(@RequestBody DefaultOrganizationResource organizationResource) {
         DefaultOrganization organization = assemblerResolver.resolveEntityAssembler(DefaultOrganization.class, DefaultOrganizationResource.class).toEntity(organizationResource, DefaultOrganization.class);
         organization = organizationService.save(organization);
-        organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/organizationunit", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addOrganizationUnit(@PathVariable("organizationUid") String organizationUid, @RequestBody DefaultOrganizationUnitResource organizationUnitResource) {
         DefaultOrganizationUnit organizationUnit = assemblerResolver.resolveEntityAssembler(DefaultOrganizationUnit.class, DefaultOrganizationUnitResource.class).toEntity(organizationUnitResource, DefaultOrganizationUnit.class);
         DefaultOrganization organization = organizationService.addOrganizationUnit(organizationUnit, new AggregateId(organizationUid));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -77,8 +85,12 @@ public class OrganizationController implements Organization{
     public ResponseEntity<DefaultOrganizationResource> addBaseCurrency(@RequestBody DefaultCurrencyResource baseCurrency, @PathVariable("organizationUid") String aggregateId) {
         DefaultCurrency defaultCurrency = assemblerResolver.resolveEntityAssembler(DefaultCurrency.class, DefaultCurrencyResource.class).toEntity(baseCurrency, DefaultCurrency.class);
         DefaultOrganization organization = organizationService.addBaseCurrency(defaultCurrency, new AggregateId(aggregateId));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
 
@@ -86,8 +98,12 @@ public class OrganizationController implements Organization{
     public ResponseEntity<DefaultOrganizationResource> addTimezone(@RequestBody DefaultTimezoneResource timezone, @PathVariable("organizationUid") String aggregateId) {
         DefaultTimezone defaultTimezone = assemblerResolver.resolveEntityAssembler(DefaultTimezone.class, DefaultTimezoneResource.class).toEntity(timezone, DefaultTimezone.class);
         DefaultOrganization organization = organizationService.addTimezone(defaultTimezone, new AggregateId(aggregateId));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
 
@@ -95,16 +111,24 @@ public class OrganizationController implements Organization{
     public ResponseEntity<DefaultOrganizationResource> addOrganizationUnitBelow(@RequestBody DefaultOrganizationUnitResource organizationUnit, @PathVariable("parentOrganizationUnitUid") String parentOrganizationUnitUid, @PathVariable("organizationUid") String aggregateId) {
         DefaultOrganizationUnit organizationUnit1 = assemblerResolver.resolveEntityAssembler(DefaultOrganizationUnit.class, DefaultOrganizationUnitResource.class).toEntity(organizationUnit, DefaultOrganizationUnit.class);
         DefaultOrganization organization = organizationService.addOrganizationUnitBelow(organizationUnit1, new EntityId(parentOrganizationUnitUid), new AggregateId(aggregateId));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
      @RequestMapping(value = "/organization/{organizationUid}/contactperson", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addContactPerson(@RequestBody DefaultPersonResource person, @PathVariable("organizationUid") String aggregateId) {
         DefaultPerson defaultPerson = assemblerResolver.resolveEntityAssembler(DefaultPerson.class, DefaultPersonResource.class).toEntity(person, DefaultPerson.class);
         DefaultOrganization organization = organizationService.addContactPerson(defaultPerson, new AggregateId(aggregateId));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+         DefaultOrganizationResource organizationResource = null;
+         if(organization != null) {
+             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+         }
+         return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
 
@@ -112,24 +136,36 @@ public class OrganizationController implements Organization{
     public ResponseEntity<DefaultOrganizationResource> setDefaultContactPerson(@RequestBody DefaultPersonResource person, @PathVariable("organizationUid") String aggregateId) {
         DefaultPerson defaultPerson = assemblerResolver.resolveEntityAssembler(DefaultPerson.class, DefaultPersonResource.class).toEntity(person, DefaultPerson.class);
         DefaultOrganization organization = organizationService.setDefaultContactPerson(defaultPerson, new AggregateId(aggregateId));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/contactnumber", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addContactNumber(@RequestBody DefaultPhoneResource phone, @PathVariable("organizationUid") String aggregateId) {
         DefaultPhone defaultPhone = assemblerResolver.resolveEntityAssembler(DefaultPhone.class, DefaultPhoneResource.class).toEntity(phone, DefaultPhone.class);
         DefaultOrganization organization = organizationService.addContactNumber(defaultPhone, new AggregateId(aggregateId));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/contactnumber/default", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> setDefaultContactNumber(@RequestBody DefaultPhoneResource phone, @PathVariable("organizationUid") String aggregateId) {
         DefaultPhone defaultPhone = assemblerResolver.resolveEntityAssembler(DefaultPhone.class, DefaultPhoneResource.class).toEntity(phone, DefaultPhone.class);
         DefaultOrganization organization = organizationService.setDefaultContactNumber(defaultPhone, new AggregateId(aggregateId));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
 
@@ -137,24 +173,36 @@ public class OrganizationController implements Organization{
     public ResponseEntity<DefaultOrganizationResource> addEmail(@RequestBody DefaultEmailResource email, @PathVariable("organizationUid") String aggregateId) {
         DefaultEmail defaultEmail = assemblerResolver.resolveEntityAssembler(DefaultEmail.class, DefaultEmailResource.class).toEntity(email, DefaultEmail.class);
         DefaultOrganization organization = organizationService.addEmail(defaultEmail, new AggregateId(aggregateId));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/email/default", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> setDefaultEmail(@RequestBody DefaultEmailResource email, @PathVariable("organizationUid") String aggregateId) {
         DefaultEmail defaultEmail = assemblerResolver.resolveEntityAssembler(DefaultEmail.class, DefaultEmailResource.class).toEntity(email, DefaultEmail.class);
         DefaultOrganization organization = organizationService.setDefaultEmail(defaultEmail, new AggregateId(aggregateId));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/headoffice", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> setHeadOffice(@RequestBody DefaultAddressResource address, @PathVariable("organizationUid") String aggregateId) {
         DefaultAddress defaultAddress = assemblerResolver.resolveEntityAssembler(DefaultAddress.class, DefaultAddressResource.class).toEntity(address, DefaultAddress.class);
         DefaultOrganization organization = organizationService.setHeadOffice(defaultAddress, new AggregateId(aggregateId));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
 
@@ -162,46 +210,65 @@ public class OrganizationController implements Organization{
     public ResponseEntity<DefaultOrganizationResource> moveHeadOfficeTo(@RequestBody DefaultAddressResource address, @PathVariable("organizationUid") String aggregateId) {
         DefaultAddress defaultAddress = assemblerResolver.resolveEntityAssembler(DefaultAddress.class, DefaultAddressResource.class).toEntity(address, DefaultAddress.class);
         DefaultOrganization organization = organizationService.moveHeadOfficeTo(defaultAddress, new AggregateId(aggregateId));
-        DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-        return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/organization/{organizationUid}/headoffice/address", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultAddressResource> getHeadOfficeAddress(@PathVariable("organizationUid") String aggregateId) {
         DefaultAddress address = organizationService.getHeadOfficeAddress(new AggregateId(aggregateId));
-        DefaultAddressResource addressResource = assemblerResolver.resolveResourceAssembler(DefaultAddressResource.class, DefaultAddress.class).toResource(address, DefaultAddressResource.class);
-        return new ResponseEntity<DefaultAddressResource>(addressResource, HttpStatus.OK);
+        if(address != null) {
+            DefaultAddressResource addressResource = assemblerResolver.resolveResourceAssembler(DefaultAddressResource.class, DefaultAddress.class).toResource(address, DefaultAddressResource.class);
+            return new ResponseEntity<DefaultAddressResource>(addressResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultAddressResource>(new DefaultAddressResource(), HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/organization/{organizationUid}/currencies/base", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultCurrencyResource>> getBaseCurrencies(@PathVariable("organizationUid") String aggregateId) {
         Set<DefaultCurrency> currencies = organizationService.getBaseCurrencies(new AggregateId(aggregateId));
-        Set<DefaultCurrencyResource> currencyResources = assemblerResolver.resolveResourceAssembler(DefaultCurrencyResource.class, DefaultCurrency.class).toResources(currencies, DefaultCurrencyResource.class);
-        return new ResponseEntity<Set<DefaultCurrencyResource>>(currencyResources, HttpStatus.OK);
+        if(currencies != null && currencies.size() > 0) {
+            Set<DefaultCurrencyResource> currencyResources = assemblerResolver.resolveResourceAssembler(DefaultCurrencyResource.class, DefaultCurrency.class).toResources(currencies, DefaultCurrencyResource.class);
+            return new ResponseEntity<Set<DefaultCurrencyResource>>(currencyResources, HttpStatus.OK);
+        }
+        return new ResponseEntity<Set<DefaultCurrencyResource>>(Collections.emptySet(), HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/organization/{organizationUid}/organizationunits", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultOrganizationUnitResource>> getOrganizationUnits(@PathVariable("organizationUid") String aggregateId) {
         Set<DefaultOrganizationUnit> organizationUnits = organizationService.getOrganizationUnits(new AggregateId(aggregateId));
-        Set<DefaultOrganizationUnitResource> organizationUnitResources = assemblerResolver.resolveResourceAssembler(DefaultOrganizationUnitResource.class, DefaultOrganizationUnit.class).toResources(organizationUnits, DefaultOrganizationUnitResource.class);
-        return new ResponseEntity<Set<DefaultOrganizationUnitResource>>(organizationUnitResources, HttpStatus.OK);
+        if(organizationUnits != null && organizationUnits.size() > 0) {
+            Set<DefaultOrganizationUnitResource> organizationUnitResources = assemblerResolver.resolveResourceAssembler(DefaultOrganizationUnitResource.class, DefaultOrganizationUnit.class).toResources(organizationUnits, DefaultOrganizationUnitResource.class);
+            return new ResponseEntity<Set<DefaultOrganizationUnitResource>>(organizationUnitResources, HttpStatus.OK);
+        }
+        return new ResponseEntity<Set<DefaultOrganizationUnitResource>>(Collections.emptySet(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/contactnumbers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultPhoneResource>> getContactNumbers(@PathVariable("organizationUid") String aggregateId) {
         Set<DefaultPhone> phones = organizationService.getContactNumbers(new AggregateId(aggregateId));
-        Set<DefaultPhoneResource> phoneResources = assemblerResolver.resolveResourceAssembler(DefaultPhoneResource.class, DefaultPhone.class).toResources(phones, DefaultPhoneResource.class);
-        return new ResponseEntity<Set<DefaultPhoneResource>>(phoneResources, HttpStatus.OK);
+        if(phones != null && phones.size() > 0) {
+            Set<DefaultPhoneResource> phoneResources = assemblerResolver.resolveResourceAssembler(DefaultPhoneResource.class, DefaultPhone.class).toResources(phones, DefaultPhoneResource.class);
+            return new ResponseEntity<Set<DefaultPhoneResource>>(phoneResources, HttpStatus.OK);
+        }
+        return new ResponseEntity<Set<DefaultPhoneResource>>(Collections.emptySet(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/emails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultEmailResource>> getEmails(@PathVariable("organizationUid") String aggregateId) {
         Set<DefaultEmail> emails = organizationService.getEmails(new AggregateId(aggregateId));
-        Set<DefaultEmailResource> emailResources = assemblerResolver.resolveResourceAssembler(DefaultEmailResource.class, DefaultEmail.class).toResources(emails, DefaultEmailResource.class);
-        return new ResponseEntity<Set<DefaultEmailResource>>(emailResources, HttpStatus.OK);
+        if(emails != null && emails.size() > 0) {
+            Set<DefaultEmailResource> emailResources = assemblerResolver.resolveResourceAssembler(DefaultEmailResource.class, DefaultEmail.class).toResources(emails, DefaultEmailResource.class);
+            return new ResponseEntity<Set<DefaultEmailResource>>(emailResources, HttpStatus.OK);
+        }
+        return new ResponseEntity<Set<DefaultEmailResource>>(Collections.emptySet(), HttpStatus.OK);
     }
 
 }
