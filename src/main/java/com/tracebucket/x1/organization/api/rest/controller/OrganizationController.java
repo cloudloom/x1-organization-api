@@ -72,7 +72,11 @@ public class OrganizationController implements Organization{
 
     @RequestMapping(value = "/organizations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations() {
-        return new ResponseEntity<Set<DefaultOrganizationResource>>(assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResources(organizationService.findAll(), DefaultOrganizationResource.class), HttpStatus.OK);
+        List<DefaultOrganization> organizations = organizationService.findAll();
+        if(organizations != null && organizations.size() > 0) {
+            return new ResponseEntity<Set<DefaultOrganizationResource>>(assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResources(organizations, DefaultOrganizationResource.class), HttpStatus.OK);
+        }
+        return new ResponseEntity<Set<DefaultOrganizationResource>>(Collections.emptySet(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
