@@ -51,7 +51,6 @@ public class OrganizationControllerTest {
         organization = DefaultOrganizationResourceFixture.standardOrganization();
         log.info("Create Organization : " + objectMapper.writeValueAsString(organization));
         organization = restTemplate.postForObject(basePath+"/organization", organization, DefaultOrganizationResource.class);
-        log.info("Created Organization : " + objectMapper.writeValueAsString(organization));
         Assert.assertNotNull(organization);
     }
 
@@ -77,6 +76,7 @@ public class OrganizationControllerTest {
     public void testAddOrganizationUnit() throws Exception{
         createOrganization();
         DefaultOrganizationUnitResource organizationUnit = DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource();
+        log.info("Add OrganizationUnit : " + objectMapper.writeValueAsString(organizationUnit));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationunit", organizationUnit);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -87,6 +87,7 @@ public class OrganizationControllerTest {
     public void testAddBaseCurrency() throws Exception{
         createOrganization();
         DefaultCurrencyResource defaultCurrencyResource = DefaultCurrencyResourceFixture.standardBaseCurrency();
+        log.info("Add BaseCurrency : " + objectMapper.writeValueAsString(defaultCurrencyResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/basecurrency", defaultCurrencyResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -97,6 +98,7 @@ public class OrganizationControllerTest {
     public void testAddTimezone() throws Exception{
         createOrganization();
         DefaultTimezoneResource defaultTimezoneResource = DefaultTimezoneResourceFixture.standardTimezone();
+        log.info("Add Timezone : " + objectMapper.writeValueAsString(defaultTimezoneResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/timezone", defaultTimezoneResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -107,6 +109,7 @@ public class OrganizationControllerTest {
     public void testAddOrganizationUnitBelow() throws Exception{
         createOrganization();
         DefaultOrganizationUnitResource organizationUnit = DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource();
+        log.info("Add OrganizationUnitBelow : " + objectMapper.writeValueAsString(organizationUnit));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationunit", organizationUnit);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization);
@@ -128,6 +131,7 @@ public class OrganizationControllerTest {
     public void testAddContactPerson() throws Exception{
         createOrganization();
         DefaultPersonResource defaultPersonResource = DefaultPersonResourceFixture.standardPerson();
+        log.info("Add ContactPerson : " + objectMapper.writeValueAsString(defaultPersonResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/contactperson", defaultPersonResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -138,6 +142,7 @@ public class OrganizationControllerTest {
     public void testSetDefaultContactPerson() throws Exception{
         createOrganization();
         DefaultPersonResource defaultPersonResource = DefaultPersonResourceFixture.standardPerson();
+        log.info("Set DefaultContactPerson : " + objectMapper.writeValueAsString(defaultPersonResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/contactperson/default", defaultPersonResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -149,6 +154,7 @@ public class OrganizationControllerTest {
     public void testAddContactNumber() throws Exception{
         createOrganization();
         DefaultPhoneResource defaultPhoneResource = DefaultPhoneResourceFixture.standardPhone();
+        log.info("Add ContactNumber : " + objectMapper.writeValueAsString(defaultPhoneResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/contactnumber", defaultPhoneResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -159,6 +165,7 @@ public class OrganizationControllerTest {
     public void testSetDefaultContactNumber() throws Exception{
         createOrganization();
         DefaultPhoneResource defaultPhoneResource = DefaultPhoneResourceFixture.standardPhone();
+        log.info("Set Default ContactNumber : " + objectMapper.writeValueAsString(defaultPhoneResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/contactnumber/default", defaultPhoneResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -168,6 +175,7 @@ public class OrganizationControllerTest {
     public void testAddEmail() throws Exception{
         createOrganization();
         DefaultEmailResource defaultEmailResource = DefaultEmailResourceFixture.standardEmail();
+        log.info("Add Email : " + objectMapper.writeValueAsString(defaultEmailResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/email", defaultEmailResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -178,6 +186,7 @@ public class OrganizationControllerTest {
     public void testSetDefaultEmail() throws Exception{
         createOrganization();
         DefaultEmailResource defaultEmailResource = DefaultEmailResourceFixture.standardEmail();
+        log.info("Set DefaultEmail : " + objectMapper.writeValueAsString(defaultEmailResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/email/default", defaultEmailResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -188,6 +197,7 @@ public class OrganizationControllerTest {
     public void testSetHeadOffice() throws Exception{
         createOrganization();
         DefaultAddressResource defaultAddressResource = DefaultAddressResourceFixture.standardAddress();
+        log.info("Set HeadOffice : " + objectMapper.writeValueAsString(defaultAddressResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/headoffice", defaultAddressResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -198,6 +208,7 @@ public class OrganizationControllerTest {
     public void testMoveHeadOfficeTo() throws Exception{
         createOrganization();
         DefaultAddressResource defaultAddressResource = DefaultAddressResourceFixture.standardAddress();
+        log.info("Move HeadOffice : " + objectMapper.writeValueAsString(defaultAddressResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/headoffice/to", defaultAddressResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -209,6 +220,7 @@ public class OrganizationControllerTest {
     public void testGetHeadOfficeAddress() throws Exception{
         createOrganization();
         DefaultAddressResource defaultAddressResource = DefaultAddressResourceFixture.standardAddress();
+        log.info("Get HeadOfficeAddress : " + objectMapper.writeValueAsString(defaultAddressResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/headoffice", defaultAddressResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -220,6 +232,7 @@ public class OrganizationControllerTest {
     public void testGetBaseCurrencies() throws Exception{
         createOrganization();
         DefaultCurrencyResource defaultCurrencyResource = DefaultCurrencyResourceFixture.standardBaseCurrency();
+        log.info("Get BaseCurrencies : " + objectMapper.writeValueAsString(defaultCurrencyResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/basecurrency", defaultCurrencyResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -230,6 +243,7 @@ public class OrganizationControllerTest {
     public void testGetOrganizationUnits() throws Exception{
         createOrganization();
         DefaultOrganizationUnitResource organizationResource = DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource();
+        log.info("Get OrganizationUnits : " + objectMapper.writeValueAsString(organizationResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationunit", organizationResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -240,6 +254,7 @@ public class OrganizationControllerTest {
     public void testGetContactNumbers() throws Exception{
         createOrganization();
         DefaultPhoneResource defaultPhoneResource = DefaultPhoneResourceFixture.standardPhone();
+        log.info("Get ContactNumbers : " + objectMapper.writeValueAsString(defaultPhoneResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/contactnumber", defaultPhoneResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
@@ -250,6 +265,7 @@ public class OrganizationControllerTest {
     public void testGetEmails() throws Exception{
         createOrganization();
         DefaultEmailResource defaultEmailResource = DefaultEmailResourceFixture.standardEmail();
+        log.info("Get Emails : " + objectMapper.writeValueAsString(defaultEmailResource));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/email", defaultEmailResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
