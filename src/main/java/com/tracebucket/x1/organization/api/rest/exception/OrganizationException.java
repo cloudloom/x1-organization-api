@@ -9,8 +9,6 @@ import java.io.Serializable;
 
 public class OrganizationException extends RuntimeException implements Serializable {
 
-    private static final Logger log = LoggerFactory.getLogger(OrganizationException.class);
-
     private String message;
 
     private HttpStatus httpStatus;
