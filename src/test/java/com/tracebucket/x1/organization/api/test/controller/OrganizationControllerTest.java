@@ -37,6 +37,9 @@ public class OrganizationControllerTest {
     @Value("http://localhost:${server.port}${server.contextPath}")
     private String basePath;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     private DefaultOrganizationResource organization = null;
 
     @Before
@@ -46,7 +49,9 @@ public class OrganizationControllerTest {
 
     private void createOrganization() throws Exception{
         organization = DefaultOrganizationResourceFixture.standardOrganization();
+        log.info("Create Organization : " + objectMapper.writeValueAsString(organization));
         organization = restTemplate.postForObject(basePath+"/organization", organization, DefaultOrganizationResource.class);
+        log.info("Created Organization : " + objectMapper.writeValueAsString(organization));
         Assert.assertNotNull(organization);
     }
 
@@ -60,10 +65,12 @@ public class OrganizationControllerTest {
     public void testFindOne() throws Exception {
         createOrganization();
         String uid = organization.getUid();
+        log.info("Find Organization with UID : " + organization.getUid());
         organization = restTemplate.getForObject(basePath + "/organization/" + uid, DefaultOrganizationResource.class);
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getUid());
         Assert.assertEquals(uid, organization.getUid());
+        log.info("Found : " + objectMapper.writeValueAsString(organization));
     }
 
     @Test
