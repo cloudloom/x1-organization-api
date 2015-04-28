@@ -1,6 +1,5 @@
 package com.tracebucket.x1.organization.api.test.builder;
 
-import com.tracebucket.x1.organization.api.domain.BusinessLine;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultBusinessLine;
 
 /**

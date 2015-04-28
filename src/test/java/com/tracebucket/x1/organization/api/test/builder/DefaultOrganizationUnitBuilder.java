@@ -4,7 +4,7 @@ import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultAddress;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultEmail;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPerson;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPhone;
-import com.tracebucket.x1.organization.api.domain.*;
+import com.tracebucket.x1.organization.api.domain.OrganizationFunction;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultBusinessLine;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;

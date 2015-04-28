@@ -1,12 +1,9 @@
 package com.tracebucket.x1.organization.api.test.fixture;
 
-import com.tracebucket.x1.dictionary.api.domain.CurrencyType;
-import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.test.builder.DefaultOrganizationBuilder;
 
-import java.util.*;
+import java.util.UUID;
 
 /**
  * Created by sadath on 25-Nov-14.

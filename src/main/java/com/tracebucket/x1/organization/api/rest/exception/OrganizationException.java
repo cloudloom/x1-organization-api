@@ -1,8 +1,5 @@
 package com.tracebucket.x1.organization.api.rest.exception;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;

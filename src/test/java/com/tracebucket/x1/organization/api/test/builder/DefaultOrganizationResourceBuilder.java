@@ -1,14 +1,6 @@
 package com.tracebucket.x1.organization.api.test.builder;
 
-import com.tracebucket.x1.dictionary.api.domain.CurrencyType;
-import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
-import com.tracebucket.x1.organization.api.rest.resource.*;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import com.tracebucket.x1.organization.api.rest.resource.DefaultOrganizationResource;
 
 /**
  * Created by sadath on 31-Mar-15.

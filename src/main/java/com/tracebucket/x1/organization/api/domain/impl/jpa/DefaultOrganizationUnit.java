@@ -5,7 +5,8 @@ import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultAddress;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultEmail;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPerson;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPhone;
-import com.tracebucket.x1.organization.api.domain.*;
+import com.tracebucket.x1.organization.api.domain.OrganizationFunction;
+import com.tracebucket.x1.organization.api.domain.OrganizationUnit;
 
 import javax.persistence.*;
 import java.util.HashSet;

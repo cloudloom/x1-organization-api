@@ -1,6 +1,5 @@
 package com.tracebucket.x1.organization.api.test.fixture;
 
-import com.tracebucket.x1.organization.api.domain.Department;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
 import com.tracebucket.x1.organization.api.test.builder.DefaultDepartmentBuilder;
 

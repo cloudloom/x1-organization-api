@@ -1,11 +1,9 @@
 package com.tracebucket.x1.organization.api.domain;
 
-import com.tracebucket.x1.dictionary.api.domain.*;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Set;
 
 /**

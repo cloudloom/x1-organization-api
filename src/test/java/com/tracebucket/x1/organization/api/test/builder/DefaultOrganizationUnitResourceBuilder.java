@@ -1,14 +1,6 @@
 package com.tracebucket.x1.organization.api.test.builder;
 
-import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultAddress;
-import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultEmail;
-import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPerson;
-import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPhone;
 import com.tracebucket.x1.organization.api.domain.OrganizationFunction;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultBusinessLine;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 
 import java.util.HashSet;
