@@ -2,16 +2,14 @@ package com.tracebucket.x1.organization.api.domain.impl.jpa;
 
 import com.tracebucket.tron.ddd.annotation.DomainMethod;
 import com.tracebucket.tron.ddd.domain.BaseAggregateRoot;
-import com.tracebucket.tron.ddd.domain.BaseEntity;
-import com.tracebucket.x1.dictionary.api.domain.*;
+import com.tracebucket.x1.dictionary.api.domain.AddressType;
+import com.tracebucket.x1.dictionary.api.domain.CurrencyType;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.Organization;
 import com.tracebucket.x1.organization.api.domain.OrganizationUnit;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 

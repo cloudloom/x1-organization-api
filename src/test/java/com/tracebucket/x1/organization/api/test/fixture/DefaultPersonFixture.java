@@ -2,7 +2,6 @@ package com.tracebucket.x1.organization.api.test.fixture;
 
 import com.tracebucket.x1.dictionary.api.domain.EmailType;
 import com.tracebucket.x1.dictionary.api.domain.Gender;
-import com.tracebucket.x1.dictionary.api.domain.Person;
 import com.tracebucket.x1.dictionary.api.domain.PhoneType;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPerson;
 import com.tracebucket.x1.organization.api.test.builder.DefaultPersonBuilder;

@@ -1,7 +1,6 @@
 package com.tracebucket.x1.organization.api.test.fixture;
 
 import com.tracebucket.x1.dictionary.api.domain.EmailType;
-import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultEmail;
 import com.tracebucket.x1.organization.api.rest.resource.DefaultEmailResource;
 import com.tracebucket.x1.organization.api.test.builder.DefaultEmailResourceBuilder;
 
