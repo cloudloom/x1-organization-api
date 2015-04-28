@@ -3,7 +3,6 @@ package com.tracebucket.x1.organization.api.rest.controller;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
 import java.util.Set;
 
 /**

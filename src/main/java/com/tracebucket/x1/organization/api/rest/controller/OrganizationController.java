@@ -6,17 +6,18 @@ import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
+import com.tracebucket.x1.organization.api.rest.exception.OrganizationException;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -38,24 +39,33 @@ public class OrganizationController implements Organization{
     @RequestMapping(value = "/organization", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> createOrganization(@RequestBody DefaultOrganizationResource organizationResource) {
         DefaultOrganization organization = assemblerResolver.resolveEntityAssembler(DefaultOrganization.class, DefaultOrganizationResource.class).toEntity(organizationResource, DefaultOrganization.class);
-        organization = organizationService.save(organization);
+        try {
+            organization = organizationService.save(organization);
+        } catch (DataIntegrityViolationException dive) {
+            throw new OrganizationException("Organization With Name : " + organizationResource.getName() + "Exists", HttpStatus.CONFLICT);
+        }
         if(organization != null) {
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
-            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.CREATED);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/organizationunit", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addOrganizationUnit(@PathVariable("organizationUid") String organizationUid, @RequestBody DefaultOrganizationUnitResource organizationUnitResource) {
         DefaultOrganizationUnit organizationUnit = assemblerResolver.resolveEntityAssembler(DefaultOrganizationUnit.class, DefaultOrganizationUnitResource.class).toEntity(organizationUnitResource, DefaultOrganizationUnit.class);
-        DefaultOrganization organization = organizationService.addOrganizationUnit(organizationUnit, new AggregateId(organizationUid));
+        DefaultOrganization organization = null;
+        try {
+            organization = organizationService.addOrganizationUnit(organizationUnit, new AggregateId(organizationUid));
+        } catch (DataIntegrityViolationException dive) {
+            throw new OrganizationException("Organization Unit With Name : " + organizationUnitResource.getName() + "Exists", HttpStatus.CONFLICT);
+        }
         DefaultOrganizationResource organizationResource = null;
         if(organization != null) {
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -94,7 +104,7 @@ public class OrganizationController implements Organization{
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
 
@@ -107,7 +117,7 @@ public class OrganizationController implements Organization{
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
 
@@ -120,7 +130,7 @@ public class OrganizationController implements Organization{
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
      @RequestMapping(value = "/organization/{organizationUid}/contactperson", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -132,7 +142,7 @@ public class OrganizationController implements Organization{
              organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
              return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
          }
-         return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+         return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
 
@@ -145,7 +155,7 @@ public class OrganizationController implements Organization{
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/contactnumber", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -157,7 +167,7 @@ public class OrganizationController implements Organization{
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/contactnumber/default", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -169,7 +179,7 @@ public class OrganizationController implements Organization{
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
 
@@ -182,7 +192,7 @@ public class OrganizationController implements Organization{
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/email/default", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -194,7 +204,7 @@ public class OrganizationController implements Organization{
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/headoffice", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -206,7 +216,7 @@ public class OrganizationController implements Organization{
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
 
@@ -219,7 +229,7 @@ public class OrganizationController implements Organization{
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
 
