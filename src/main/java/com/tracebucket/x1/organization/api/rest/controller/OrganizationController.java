@@ -90,7 +90,6 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/organization/{organizationUid}/organizationunit/{parentOrganizationUnitUid}/below", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addOrganizationUnitBelow(@RequestBody DefaultOrganizationUnitResource organizationUnit, @PathVariable("parentOrganizationUnitUid") String parentOrganizationUnitUid, @PathVariable("organizationUid") String aggregateId) {
         DefaultOrganizationUnit organizationUnit1 = assemblerResolver.resolveEntityAssembler(DefaultOrganizationUnit.class, DefaultOrganizationUnitResource.class).toEntity(organizationUnit, DefaultOrganizationUnit.class);
@@ -166,14 +165,12 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/organization/{organizationUid}/headoffice/address", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultAddressResource> getHeadOfficeAddress(@PathVariable("organizationUid") String aggregateId) {
         DefaultAddress address = organizationService.getHeadOfficeAddress(new AggregateId(aggregateId));
         DefaultAddressResource addressResource = assemblerResolver.resolveResourceAssembler(DefaultAddressResource.class, DefaultAddress.class).toResource(address, DefaultAddressResource.class);
         return new ResponseEntity<DefaultAddressResource>(addressResource, HttpStatus.OK);
     }
-
 
     @RequestMapping(value = "/organization/{organizationUid}/currencies/base", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultCurrencyResource>> getBaseCurrencies(@PathVariable("organizationUid") String aggregateId) {
