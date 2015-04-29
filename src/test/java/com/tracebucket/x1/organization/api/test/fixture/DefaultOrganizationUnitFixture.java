@@ -54,7 +54,7 @@ public class DefaultOrganizationUnitFixture {
                 .withName("Yorkshire")
                 .withDescription(UUID.randomUUID().toString())
                 .withBusinessLines(businessLines)
-                //.withChildren(children)
+                        //.withChildren(children)
                 .withDepartments(departments)
                 .withOrganizationFunctions(organizationFunctions)
                 .withOrganization(organization)
@@ -66,4 +66,53 @@ public class DefaultOrganizationUnitFixture {
                 .build();
         return organizationUnit;
     }
+
+    public static DefaultOrganizationUnit standardOrganizationUnit2(){
+        DefaultOrganization organization = null;
+        DefaultOrganizationUnit parent = null;
+
+        Set<DefaultDepartment> departments = new HashSet<DefaultDepartment>();
+        departments.add(DefaultDepartmentFixture.standardDepartment());
+
+        Set<DefaultBusinessLine> businessLines = new HashSet<DefaultBusinessLine>();
+        businessLines.add(DefaultBusinessLineFixture.standardBusinessLine());
+
+        Set<OrganizationFunction> organizationFunctions = new HashSet<OrganizationFunction>();
+        organizationFunctions.add(OrganizationFunction.SALES);
+        organizationFunctions.add(OrganizationFunction.PURCHASE);
+
+/*        Set<DefaultOrganizationUnit> children = new HashSet<DefaultOrganizationUnit>();
+        children.add(DefaultOrganizationUnitFixture.standardOrganizationUnit());*/
+
+        Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
+        addresses.add(DefaultAddressFixture.standardAddress());
+        addresses.add(DefaultAddressFixture.headOffice());
+
+        Set<DefaultPerson> contactPersons = new HashSet<DefaultPerson>(0);
+        contactPersons.add(DefaultPersonFixture.standardPerson());
+
+        Set<DefaultPhone> phones = new HashSet<DefaultPhone>(0);
+        phones.add(DefaultPhoneFixture.standardPhone());
+
+        Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
+        emails.add(DefaultEmailFixture.standardEmail());
+
+        DefaultOrganizationUnit organizationUnit = DefaultOrganizationUnitBuilder.anOrganizationUnitBuilder()
+                .withName("Berkshire")
+                .withDescription(UUID.randomUUID().toString())
+                .withBusinessLines(businessLines)
+                        //.withChildren(children)
+                .withDepartments(departments)
+                .withOrganizationFunctions(organizationFunctions)
+                .withOrganization(organization)
+                .withParent(parent)
+                .withAddresses(addresses)
+                .withContactPersons(contactPersons)
+                .withPhones(phones)
+                .withEmails(emails)
+                .build();
+        return organizationUnit;
+    }
+
+
 }

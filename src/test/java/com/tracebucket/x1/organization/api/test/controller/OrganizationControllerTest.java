@@ -2,6 +2,7 @@ package com.tracebucket.x1.organization.api.test.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tracebucket.x1.organization.api.DefaultOrganizationStarter;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import com.tracebucket.x1.organization.api.test.fixture.*;
 import org.junit.After;
@@ -60,6 +61,14 @@ public class OrganizationControllerTest {
     public void testCreate() throws Exception {
         createOrganization();
         Assert.assertNotNull(organization.getUid());
+        DefaultOrganizationResource organizationResource = DefaultOrganizationResourceFixture.standardOrganization();
+        organizationResource.setName(organization.getName());
+        log.info("Create Organization With Duplicate Name : " + objectMapper.writeValueAsString(organizationResource));
+        try {
+            organization = restTemplate.postForObject(basePath + "/organization", organizationResource, DefaultOrganizationResource.class);
+        } catch (HttpClientErrorException httpClientErrorException) {
+            Assert.assertEquals(HttpStatus.CONFLICT, httpClientErrorException.getStatusCode());
+        }
     }
 
     @Test
