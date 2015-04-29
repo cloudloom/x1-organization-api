@@ -15,9 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -30,7 +34,7 @@ public class OrganizationControllerTest {
 
     private static final Logger log = LoggerFactory.getLogger(OrganizationControllerTest.class);
 
-    RestTemplate restTemplate = null;
+    private RestTemplate restTemplate = null;
 
     @Value("http://localhost:${server.port}${server.contextPath}")
     private String basePath;
@@ -274,9 +278,11 @@ public class OrganizationControllerTest {
     public void tearDown() throws Exception{
         if(organization != null && organization.getUid() != null) {
             restTemplate.delete(basePath + "/organization/" + organization.getUid());
-            organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
-            Assert.assertNotNull(organization);
-            Assert.assertNull(organization.getUid());
+            try {
+                restTemplate.getForEntity(new URI(basePath + "/organization/" + organization.getUid()), DefaultOrganizationResource.class);
+            } catch (HttpClientErrorException httpClientErrorException) {
+                Assert.assertEquals(HttpStatus.NOT_FOUND, httpClientErrorException.getStatusCode());
+            }
         }
     }
 }

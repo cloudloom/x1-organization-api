@@ -76,7 +76,7 @@ public class OrganizationController implements Organization{
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_FOUND);
     }
 
 
@@ -86,7 +86,7 @@ public class OrganizationController implements Organization{
         if(organizations != null && organizations.size() > 0) {
             return new ResponseEntity<Set<DefaultOrganizationResource>>(assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResources(organizations, DefaultOrganizationResource.class), HttpStatus.OK);
         }
-        return new ResponseEntity<Set<DefaultOrganizationResource>>(Collections.emptySet(), HttpStatus.OK);
+        return new ResponseEntity<Set<DefaultOrganizationResource>>(Collections.emptySet(), HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -238,7 +238,7 @@ public class OrganizationController implements Organization{
             DefaultAddressResource addressResource = assemblerResolver.resolveResourceAssembler(DefaultAddressResource.class, DefaultAddress.class).toResource(address, DefaultAddressResource.class);
             return new ResponseEntity<DefaultAddressResource>(addressResource, HttpStatus.OK);
         }
-        return new ResponseEntity<DefaultAddressResource>(new DefaultAddressResource(), HttpStatus.OK);
+        return new ResponseEntity<DefaultAddressResource>(new DefaultAddressResource(), HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/currencies/base", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -248,7 +248,7 @@ public class OrganizationController implements Organization{
             Set<DefaultCurrencyResource> currencyResources = assemblerResolver.resolveResourceAssembler(DefaultCurrencyResource.class, DefaultCurrency.class).toResources(currencies, DefaultCurrencyResource.class);
             return new ResponseEntity<Set<DefaultCurrencyResource>>(currencyResources, HttpStatus.OK);
         }
-        return new ResponseEntity<Set<DefaultCurrencyResource>>(Collections.emptySet(), HttpStatus.OK);
+        return new ResponseEntity<Set<DefaultCurrencyResource>>(Collections.emptySet(), HttpStatus.NOT_FOUND);
     }
 
 
@@ -259,7 +259,7 @@ public class OrganizationController implements Organization{
             Set<DefaultOrganizationUnitResource> organizationUnitResources = assemblerResolver.resolveResourceAssembler(DefaultOrganizationUnitResource.class, DefaultOrganizationUnit.class).toResources(organizationUnits, DefaultOrganizationUnitResource.class);
             return new ResponseEntity<Set<DefaultOrganizationUnitResource>>(organizationUnitResources, HttpStatus.OK);
         }
-        return new ResponseEntity<Set<DefaultOrganizationUnitResource>>(Collections.emptySet(), HttpStatus.OK);
+        return new ResponseEntity<Set<DefaultOrganizationUnitResource>>(Collections.emptySet(), HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/contactnumbers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -269,7 +269,7 @@ public class OrganizationController implements Organization{
             Set<DefaultPhoneResource> phoneResources = assemblerResolver.resolveResourceAssembler(DefaultPhoneResource.class, DefaultPhone.class).toResources(phones, DefaultPhoneResource.class);
             return new ResponseEntity<Set<DefaultPhoneResource>>(phoneResources, HttpStatus.OK);
         }
-        return new ResponseEntity<Set<DefaultPhoneResource>>(Collections.emptySet(), HttpStatus.OK);
+        return new ResponseEntity<Set<DefaultPhoneResource>>(Collections.emptySet(), HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}/emails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -279,7 +279,6 @@ public class OrganizationController implements Organization{
             Set<DefaultEmailResource> emailResources = assemblerResolver.resolveResourceAssembler(DefaultEmailResource.class, DefaultEmail.class).toResources(emails, DefaultEmailResource.class);
             return new ResponseEntity<Set<DefaultEmailResource>>(emailResources, HttpStatus.OK);
         }
-        return new ResponseEntity<Set<DefaultEmailResource>>(Collections.emptySet(), HttpStatus.OK);
+        return new ResponseEntity<Set<DefaultEmailResource>>(Collections.emptySet(), HttpStatus.NOT_FOUND);
     }
-
 }
