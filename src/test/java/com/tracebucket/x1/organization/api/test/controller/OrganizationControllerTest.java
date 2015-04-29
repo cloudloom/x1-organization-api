@@ -34,7 +34,7 @@ public class OrganizationControllerTest {
 
     private static final Logger log = LoggerFactory.getLogger(OrganizationControllerTest.class);
 
-    RestTemplate restTemplate = null;
+    private RestTemplate restTemplate = null;
 
     @Value("http://localhost:${server.port}${server.contextPath}")
     private String basePath;
