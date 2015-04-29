@@ -262,9 +262,8 @@ public class OrganizationControllerTest {
     public void tearDown() throws Exception{
         if(organization != null && organization.getUid() != null) {
             restTemplate.delete(basePath + "/organization/" + organization.getUid());
-            String uri = basePath + "/organization/" + organization.getUid();
             try {
-                restTemplate.getForEntity(new URI(uri), DefaultOrganizationResource.class);
+                restTemplate.getForEntity(new URI(basePath + "/organization/" + organization.getUid()), DefaultOrganizationResource.class);
             } catch (HttpClientErrorException httpClientErrorException) {
                 Assert.assertEquals(HttpStatus.NOT_FOUND, httpClientErrorException.getStatusCode());
             }
