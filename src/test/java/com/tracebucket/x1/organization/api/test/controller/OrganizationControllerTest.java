@@ -15,9 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -258,9 +262,12 @@ public class OrganizationControllerTest {
     public void tearDown() throws Exception{
         if(organization != null && organization.getUid() != null) {
             restTemplate.delete(basePath + "/organization/" + organization.getUid());
-            organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
-            Assert.assertNotNull(organization);
-            Assert.assertNull(organization.getUid());
+            String uri = basePath + "/organization/" + organization.getUid();
+            try {
+                restTemplate.getForEntity(new URI(uri), DefaultOrganizationResource.class);
+            } catch (HttpClientErrorException httpClientErrorException) {
+                Assert.assertEquals(HttpStatus.NOT_FOUND, httpClientErrorException.getStatusCode());
+            }
         }
     }
 }
