@@ -1,8 +1,11 @@
 package com.tracebucket.x1.organization.api.test.fixture;
 
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.test.builder.DefaultOrganizationBuilder;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -27,17 +30,18 @@ public class DefaultOrganizationFixture {
         phones.add(DefaultPhoneFixture.standardPhone());
 
         Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
-        emails.add(DefaultEmailFixture.standardEmail());
+        emails.add(DefaultEmailFixture.standardEmail());*/
 
         Set<DefaultOrganizationUnit> organizationUnits = new HashSet<DefaultOrganizationUnit>(0);
-        organizationUnits.add(DefaultOrganizationUnitFixture.standardOrganizationUnit());*/
+        organizationUnits.add(DefaultOrganizationUnitFixture.standardOrganizationUnit());
 
         DefaultOrganization organization = DefaultOrganizationBuilder.anOrganizationBuilder()
-                .withName(UUID.randomUUID().toString())
+                .withName("ABC Bank")
                 .withDescription(UUID.randomUUID().toString())
                 .withImage(UUID.randomUUID().toString())
                 .withCode(UUID.randomUUID().toString())
                 .withWebsite(UUID.randomUUID().toString())
+                .withOrganizationUnits(organizationUnits)
 /*                .withAddresses(addresses)
                 .withCurrencies(currencies)
                 .withContactPersons(contactPersons)

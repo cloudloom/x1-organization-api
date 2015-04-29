@@ -1,6 +1,10 @@
 package com.tracebucket.x1.organization.api.test.builder;
 
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by sadath on 25-Nov-14.
@@ -16,8 +20,8 @@ public class DefaultOrganizationBuilder {
     private Set<DefaultTimezone> timezones = new HashSet<DefaultTimezone>(0);
     private Set<DefaultPerson> contactPersons = new HashSet<DefaultPerson>(0);
     private Set<DefaultPhone> phones = new HashSet<DefaultPhone>(0);
-    private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
-    private Set<DefaultOrganizationUnit> organizationUnits = new HashSet<DefaultOrganizationUnit>(0);*/
+    private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);*/
+    private Set<DefaultOrganizationUnit> organizationUnits = new HashSet<DefaultOrganizationUnit>(0);
 
     private DefaultOrganizationBuilder(){ }
 
@@ -78,12 +82,12 @@ public class DefaultOrganizationBuilder {
     public DefaultOrganizationBuilder withEmails(Set<DefaultEmail> emails){
         this.emails = emails;
         return this;
-    }
+    }*/
 
     public DefaultOrganizationBuilder withOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits){
         this.organizationUnits = organizationUnits;
         return this;
-    }*/
+    }
 
     public DefaultOrganization build(){
         DefaultOrganization organization = new DefaultOrganization();
