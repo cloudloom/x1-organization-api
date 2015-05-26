@@ -8,6 +8,7 @@ This project provides support to model an Organizational structure. It provides
  - Address, contact persons, email and phone numbers
 
 Download or clone from git and then use maven(3.*) Java(1.8 or better)
+
     $ git clone git@github.com:tracebucket/x1-organization-api.git
     $ mvn spring-boot:run 
     
