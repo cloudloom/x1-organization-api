@@ -17,7 +17,7 @@ Add as a dependency like
             <groupId>com.tracebucket.x1.organization</groupId>
             <artifactId>x1-organization-api</artifactId>
             <version>0.3</version>
-        </dependency>
+    </dependency>
         
         <repository>
             <snapshots>
