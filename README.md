@@ -12,6 +12,7 @@ Download or clone from git and then use maven(3.*) Java(1.8 or better)
     $ mvn spring-boot:run 
     
 Add as a dependency like
+
     <dependency>
             <groupId>com.tracebucket.x1.organization</groupId>
             <artifactId>x1-organization-api</artifactId>
