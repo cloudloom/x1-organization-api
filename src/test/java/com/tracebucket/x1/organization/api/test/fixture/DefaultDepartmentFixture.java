@@ -9,7 +9,28 @@ import com.tracebucket.x1.organization.api.test.builder.DefaultDepartmentBuilder
 public class DefaultDepartmentFixture {
     public static DefaultDepartment standardDepartment(){
         DefaultDepartment department = DefaultDepartmentBuilder.aDepartment()
-                .withName("Account")
+                .withName("Loan")
+                .withDescription("Account desc")
+                .build();
+        return department;
+    }
+    public static DefaultDepartment standardDepartment2(){
+        DefaultDepartment department = DefaultDepartmentBuilder.aDepartment()
+                .withName("Credit")
+                .withDescription("Account desc")
+                .build();
+        return department;
+    }
+    public static DefaultDepartment standardDepartment3(){
+        DefaultDepartment department = DefaultDepartmentBuilder.aDepartment()
+                .withName("Debit")
+                .withDescription("Account desc")
+                .build();
+        return department;
+    }
+    public static DefaultDepartment standardDepartment4(){
+        DefaultDepartment department = DefaultDepartmentBuilder.aDepartment()
+                .withName("Foreign Exchange")
                 .withDescription("Account desc")
                 .build();
         return department;

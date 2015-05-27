@@ -120,7 +120,6 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
-
     @RequestMapping(value = "/organization/{organizationUid}/organizationunit/{parentOrganizationUnitUid}/below", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addOrganizationUnitBelow(@RequestBody DefaultOrganizationUnitResource organizationUnit, @PathVariable("parentOrganizationUnitUid") String parentOrganizationUnitUid, @PathVariable("organizationUid") String aggregateId) {
         DefaultOrganizationUnit organizationUnit1 = assemblerResolver.resolveEntityAssembler(DefaultOrganizationUnit.class, DefaultOrganizationUnitResource.class).toEntity(organizationUnit, DefaultOrganizationUnit.class);
@@ -232,7 +231,6 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
-
     @RequestMapping(value = "/organization/{organizationUid}/headoffice/address", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultAddressResource> getHeadOfficeAddress(@PathVariable("organizationUid") String aggregateId) {
         DefaultAddress address = organizationService.getHeadOfficeAddress(new AggregateId(aggregateId));
@@ -242,7 +240,6 @@ public class OrganizationController implements Organization{
         }
         return new ResponseEntity<DefaultAddressResource>(new DefaultAddressResource(), HttpStatus.NOT_FOUND);
     }
-
 
     @RequestMapping(value = "/organization/{organizationUid}/currencies/base", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultCurrencyResource>> getBaseCurrencies(@PathVariable("organizationUid") String aggregateId) {
