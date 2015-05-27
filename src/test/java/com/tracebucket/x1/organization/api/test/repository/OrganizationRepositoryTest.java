@@ -4,7 +4,6 @@ import com.tracebucket.x1.organization.api.DefaultOrganizationStarter;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.repository.jpa.DefaultOrganizationRepository;
 import com.tracebucket.x1.organization.api.test.fixture.DefaultOrganizationFixture;
-import com.tracebucket.x1.organization.api.test.fixture.DefaultOrganizationUnitFixture;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,8 +13,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import javax.transaction.Transactional;
 
 /**
  * Created by sadath on 13-Jan-15.
