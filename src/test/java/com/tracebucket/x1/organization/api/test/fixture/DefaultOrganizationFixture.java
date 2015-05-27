@@ -36,7 +36,8 @@ public class DefaultOrganizationFixture {
         organizationUnits.add(DefaultOrganizationUnitFixture.standardOrganizationUnit());
 
         DefaultOrganization organization = DefaultOrganizationBuilder.anOrganizationBuilder()
-                .withName("ABC Bank")
+                //.withName("ABC Bank")
+                .withName(UUID.randomUUID().toString())
                 .withDescription(UUID.randomUUID().toString())
                 .withImage(UUID.randomUUID().toString())
                 .withCode(UUID.randomUUID().toString())

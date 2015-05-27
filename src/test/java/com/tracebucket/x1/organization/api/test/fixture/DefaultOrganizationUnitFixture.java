@@ -51,7 +51,8 @@ public class DefaultOrganizationUnitFixture {
         emails.add(DefaultEmailFixture.standardEmail());
 
         DefaultOrganizationUnit organizationUnit = DefaultOrganizationUnitBuilder.anOrganizationUnitBuilder()
-                .withName("Yorkshire")
+                //.withName("Yorkshire")
+                .withName("Organization " + new Date().getTime())
                 .withDescription(UUID.randomUUID().toString())
                 .withBusinessLines(businessLines)
                         //.withChildren(children)
