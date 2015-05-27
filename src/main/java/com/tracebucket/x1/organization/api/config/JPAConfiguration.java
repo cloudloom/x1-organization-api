@@ -30,7 +30,6 @@ import java.beans.PropertyVetoException;
  * Time: 4:00 PM
  */
 @Configuration(value = "x1OrganizationJPAConfig")
-@EnableAutoConfiguration(exclude = JpaRepositoriesAutoConfiguration.class)
 @EnableJpaRepositories(entityManagerFactoryRef = "x1OrganizationEntityManagerFactory",
         transactionManagerRef = "x1OrganizationTransactionManager",
         basePackages = {"com.tracebucket.x1.organization.api.repository.jpa"}, repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
