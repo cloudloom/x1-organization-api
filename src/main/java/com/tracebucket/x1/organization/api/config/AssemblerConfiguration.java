@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Created by Vishwajit on 16-04-2015.
  */
-@Configuration
+@Configuration(value = "x1OrganizationAssemblerConfig")
 @EnableAutoAssemblerResolution(basePackages = {"com.tracebucket.x1.organization.api.rest.assembler"})
 public class AssemblerConfiguration {
 }

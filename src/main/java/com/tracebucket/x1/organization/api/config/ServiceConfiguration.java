@@ -8,9 +8,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 /**
  * Created by vishwa on 24-11-2014.
  */
-@Configuration
+@Configuration(value = "x1OrganizationServiceConfig")
 @ComponentScan(basePackages = {"com.tracebucket.x1.organization.api.service.impl"}, scopedProxy = ScopedProxyMode.INTERFACES)
 @EnableTransactionManagement(proxyTargetClass = true)
 public class ServiceConfiguration {
-
 }

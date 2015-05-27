@@ -6,8 +6,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Created by sadath on 31-Mar-15.
  */
-@Configuration
+@Configuration(value = "x1OrganizationInfrastructureConfig")
 @EnableDDD
 public class InfrastructureConfiguration {
-
 }

@@ -6,9 +6,12 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -26,8 +29,11 @@ import java.beans.PropertyVetoException;
  * Date: 4/3/14
  * Time: 4:00 PM
  */
-@Configuration
-@EnableJpaRepositories(basePackages = {"com.tracebucket.x1.organization.api.repository.jpa"}, repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
+@Configuration(value = "x1OrganizationJPAConfig")
+@EnableAutoConfiguration(exclude = JpaRepositoriesAutoConfiguration.class)
+@EnableJpaRepositories(entityManagerFactoryRef = "x1OrganizationEntityManagerFactory",
+        transactionManagerRef = "x1OrganizationTransactionManager",
+        basePackages = {"com.tracebucket.x1.organization.api.repository.jpa"}, repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
 @EntityScan(basePackages = {"com.tracebucket.x1.organization.api.domain", "com.tracebucket.x1.dictionary.api.domain.jpa.impl"})
 @PropertySource(value = "classpath:jpa.properties")
 @EnableTransactionManagement(proxyTargetClass = true)
@@ -62,7 +68,7 @@ public class JPAConfiguration {
     @Value("${generateDdl}")
     private String generateDdl;
 
-    @Bean
+    @Bean(name = "x1OrganizationDataSource")
     public HikariDataSource dataSource() throws PropertyVetoException
     {
         HikariConfig config = new HikariConfig();
@@ -76,7 +82,7 @@ public class JPAConfiguration {
         return dataSource;
     }
 
-    @Bean
+    @Bean(name = "x1OrganizationJpaVendorAdapter")
     public JpaVendorAdapter jpaVendorAdapter()
     {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
@@ -86,7 +92,8 @@ public class JPAConfiguration {
         return jpaVendorAdapter;
     }
 
-    @Bean
+    @Bean(name = "x1OrganizationTransactionManager")
+    @Primary
     public PlatformTransactionManager transactionManager() throws PropertyVetoException
     {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
@@ -94,7 +101,8 @@ public class JPAConfiguration {
         return transactionManager;
     }
 
-    @Bean
+    @Bean(name = "x1OrganizationEntityManagerFactory")
+    @Primary
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws PropertyVetoException
     {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();

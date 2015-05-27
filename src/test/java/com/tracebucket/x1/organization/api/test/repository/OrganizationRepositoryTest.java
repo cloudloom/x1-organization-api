@@ -23,7 +23,6 @@ import javax.transaction.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @SpringApplicationConfiguration(classes  = {DefaultOrganizationStarter.class})
-@Transactional
 public class OrganizationRepositoryTest {
 
     @Autowired
@@ -38,20 +37,9 @@ public class OrganizationRepositoryTest {
 
     @Test
     @Rollback(value = false)
-    public void testCreate() throws Exception{
+    public void testSave() throws Exception{
         createOrganization();
         Assert.assertNotNull(organization.getAggregateId());
-    }
-
-    @Test
-    @Rollback(value = false)
-    public void testUpdate() throws Exception {
-        createOrganization();
-        organization.addOrganizationUnit(DefaultOrganizationUnitFixture.standardOrganizationUnit());
-        organization = organizationRepository.save(organization);
-        Assert.assertNotNull(organization);
-        Assert.assertNotNull(organization.getAggregateId());
-        Assert.assertEquals(1, organization.getOrganizationUnits().size());
     }
 
     @Test

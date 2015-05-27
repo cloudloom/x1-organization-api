@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -212,9 +211,8 @@ public class OrganizationControllerTest {
         createOrganization();
         DefaultAddressResource defaultAddressResource = DefaultAddressResourceFixture.standardAddress();
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/headoffice", defaultAddressResource);
-        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
-        Assert.assertNotNull(organization.getUid());
-        Assert.assertEquals(1, organization.getAddresses().size());
+        DefaultAddressResource responseEntity = restTemplate.getForObject(basePath + "/organization/" + organization.getUid() +"/headoffice/address", DefaultAddressResource.class);
+        Assert.assertNotNull(responseEntity);
 
     }
 
@@ -223,9 +221,9 @@ public class OrganizationControllerTest {
         createOrganization();
         DefaultCurrencyResource defaultCurrencyResource = DefaultCurrencyResourceFixture.standardBaseCurrency();
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/basecurrency", defaultCurrencyResource);
-        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
-        Assert.assertNotNull(organization.getUid());
-        Assert.assertEquals(1, organization.getCurrencies().size());
+        DefaultCurrencyResource[] responseEntity = restTemplate.getForObject(basePath + "/organization/" + organization.getUid() + "/currencies/base", DefaultCurrencyResource[].class);
+        Assert.assertNotNull(responseEntity);
+        Assert.assertTrue(responseEntity.length == 1);
     }
 
     @Test
