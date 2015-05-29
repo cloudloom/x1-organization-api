@@ -7,7 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.orm.jpa.EntityScan;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -25,9 +28,9 @@ import java.beans.PropertyVetoException;
  * Time: 4:00 PM
  */
 @Configuration
-@Conditional(NonExistingJpaBeans.class)
-@EnableJpaRepositories(basePackages = {"com.tracebucket.x1.organization.api.repository.jpa"}, repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
-@EntityScan(basePackages = {"com.tracebucket.x1.organization.api.domain", "com.tracebucket.x1.dictionary.api.domain.jpa.impl"})
+@Conditional(value = NonExistingJpaBeans.class)
+@EnableJpaRepositories(basePackages = {"com.tracebucket.x1.**.api.repository.jpa"}, repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
+@EntityScan(basePackages = {"com.tracebucket.x1.**.api.domain", "com.tracebucket.x1.dictionary.api.domain.jpa.impl"})
 @PropertySource(value = "classpath:jpa.properties")
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaAuditing
