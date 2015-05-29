@@ -28,3 +28,17 @@ Add as a dependency like
             <name>bintray</name>
             <url>http://dl.bintray.com/tracebucket/X1</url>
         </repository>
+        
+ add @EnableOrganization in a config class like below
+ 
+     @Configuration
+     @EnableOrganization
+     public class X1Configuration{
+     }
+     
+ 
+and the necessary beans for Organization will be enabled. 
+
+ - Jpa configuration
+ - Service configuration
+ - Controller and Assembler configuration
