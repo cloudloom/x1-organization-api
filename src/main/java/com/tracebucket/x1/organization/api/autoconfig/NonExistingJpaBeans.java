@@ -1,4 +1,4 @@
-package com.tracebucket.x1.organization.api.config;
+package com.tracebucket.x1.organization.api.autoconfig;
 
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;

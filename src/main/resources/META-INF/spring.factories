@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.tracebucket.x1.organization.api.autoconfig.JPAConfiguration

@@ -1,4 +1,4 @@
-package com.tracebucket.x1.organization.api.config;
+package com.tracebucket.x1.organization.api.autoconfig;
 
 import com.tracebucket.tron.ddd.jpa.CustomRepositoryFactoryBean;
 import com.zaxxer.hikari.HikariConfig;
