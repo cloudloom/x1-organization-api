@@ -29,7 +29,7 @@ Add as a dependency like
             <url>http://dl.bintray.com/tracebucket/X1</url>
         </repository>
         
- add @EnableOrganization in a config class like below
+ add @EnableOrganization(multiple X1 components can be enabled in the same config file) in a config class like below
  
      @Configuration
      @EnableOrganization
