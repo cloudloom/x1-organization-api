@@ -1,2 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.tracebucket.x1.organization.api.autoconfig.JPAConfiguration
+com.tracebucket.x1.organization.api.autoconfig.AssemblerConfiguration,\
+com.tracebucket.x1.organization.api.autoconfig.InfrastructureConfiguration,\
+com.tracebucket.x1.organization.api.autoconfig.JPAConfiguration,\
+com.tracebucket.x1.organization.api.autoconfig.ServiceConfiguration,\
+com.tracebucket.x1.organization.api.autoconfig.WebConfiguration
