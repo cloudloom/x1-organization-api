@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>X1-organization-api by tracebucket</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>X1-organization-api</h1>
+        <p>X1 Organization API and Default Implementation.</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/tracebucket/x1-organization-api" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/tracebucket/x1-organization-api/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/tracebucket/x1-organization-api/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>
+<a id="x1-organization-api" class="anchor" href="#x1-organization-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>x1-organization-api</h1>
+
+<p>This project provides support to model an Organizational structure. It provides</p>
+
+<ul>
+<li>Organization</li>
+<li>Organization units</li>
+<li>Currency and timezone</li>
+<li>Business lines, departments and functions</li>
+<li>Address, contact persons, email and phone numbers</li>
+</ul>
+
+<p>Download or clone from git and then use maven(3.*) Java(1.8 or better)</p>
+
+<pre><code>$ git clone git@github.com:tracebucket/x1-organization-api.git
+$ mvn spring-boot:run 
+</code></pre>
+
+<p>Add as a dependency like</p>
+
+<pre><code>&lt;dependency&gt;
+        &lt;groupId&gt;com.tracebucket.x1.organization&lt;/groupId&gt;
+        &lt;artifactId&gt;x1-organization-api&lt;/artifactId&gt;
+        &lt;version&gt;0.3&lt;/version&gt;
+&lt;/dependency&gt;
+
+    &lt;repository&gt;
+        &lt;snapshots&gt;
+            &lt;enabled&gt;false&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+        &lt;id&gt;bintray-tracebucket-X1&lt;/id&gt;
+        &lt;name&gt;bintray&lt;/name&gt;
+        &lt;url&gt;http://dl.bintray.com/tracebucket/X1&lt;/url&gt;
+    &lt;/repository&gt;
+</code></pre>
+
+<p>add @EnableOrganization(multiple X1 components can be enabled in the same config file) in a config class like below</p>
+
+<pre><code> @Configuration
+ @EnableOrganization
+ public class X1Configuration{
+ }
+</code></pre>
+
+<p>and the necessary beans for Organization will be enabled. </p>
+
+<ul>
+<li>Jpa configuration</li>
+<li>Service configuration</li>
+<li>Controller and Assembler configuration</li>
+</ul>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/tracebucket">tracebucket</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
