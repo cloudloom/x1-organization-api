@@ -6,7 +6,8 @@ This project provides support to model an Organizational structure. It provides
  - Currency and timezone
  - Business lines, departments and functions
  - Address, contact persons, email and phone numbers
- - 
+ 
+
 ##Pre requisites##
  - JDK 1.8 or later. 
  - MySQL 5.1.x or later. 
