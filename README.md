@@ -11,7 +11,7 @@ This project provides support to model an Organizational structure. It provides
 ##Pre requisites##
  - JDK 1.8 or later. 
  - MySQL 5.1.x or later. 
- - The default credentials for MySQL is assumed as root/marines . Also create a database in MySQL called `x1-organization-api`. 
+ - The default credentials for MySQL is assumed as `root/marines` . Also create a database in MySQL called `x1-organization-api`. 
 
 Download or clone from git and then use maven(3.*) Java(1.8 or better)
 
