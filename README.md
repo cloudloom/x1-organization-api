@@ -23,7 +23,7 @@ Add as a dependency like
     <dependency>
             <groupId>com.tracebucket.x1.organization</groupId>
             <artifactId>x1-organization-api</artifactId>
-            <version>0.5</version>
+            <version>0.6</version>
     </dependency>
         
         <repository>
