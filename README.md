@@ -1,3 +1,6 @@
+
+[ ![Download](https://api.bintray.com/packages/tracebucket/X1/x1-organization-api/images/download.svg) ](https://bintray.com/tracebucket/X1/x1-organization-api/_latestVersion)
+
 # x1-organization-api
 
 This project provides support to model an Organizational structure. It provides
