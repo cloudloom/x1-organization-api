@@ -8,6 +8,7 @@ import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.repository.jpa.DefaultOrganizationRepository;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
+import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,17 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     private static Logger log = LoggerFactory.getLogger(DefaultOrganizationServiceImpl.class);
 
     @Autowired
+    private Mapper mapper;
+
+    @Autowired
     private DefaultOrganizationRepository organizationRepository;
 
     @Override
     public DefaultOrganization save(DefaultOrganization organization) {
+        Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+        if(organizationUnits != null && organizationUnits.size() > 0) {
+            organizationUnits.stream().forEach(organizationUnit -> organizationUnit.setOrganization(organization));
+        }
         return organizationRepository.save(organization);
     }
 
@@ -77,6 +85,17 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
         if(organization != null) {
             organization.addOrganizationUnit(organizationUnit);
+            return organization;
+        }
+        return null;
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization updateOrganizationUnit(DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId) {
+        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+        if(organization != null) {
+            organization.updateOrganizationUnit(organizationUnit, mapper);
             return organization;
         }
         return null;

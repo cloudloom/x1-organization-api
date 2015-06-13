@@ -19,7 +19,8 @@ public interface DefaultOrganizationService {
 	public DefaultOrganization addBaseCurrency(DefaultCurrency baseCurrency, AggregateId organizationAggregateId);
 	public DefaultOrganization addTimezone(DefaultTimezone timezone, AggregateId organizationAggregateId);
 	public DefaultOrganization addOrganizationUnit(DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
-	public DefaultOrganization addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit,
+    public DefaultOrganization updateOrganizationUnit(DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
+    public DefaultOrganization addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit,
 			EntityId parentOrganizationUnitEntityId, AggregateId organizationAggregateId);
 	public DefaultOrganization addContactPerson(DefaultPerson person, AggregateId organizationAggregateId);
 	public DefaultOrganization setDefaultContactPerson(DefaultPerson person, AggregateId organizationAggregateId);

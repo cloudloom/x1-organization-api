@@ -7,6 +7,7 @@ import com.tracebucket.x1.dictionary.api.domain.CurrencyType;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.Organization;
 import com.tracebucket.x1.organization.api.domain.OrganizationUnit;
+import org.dozer.Mapper;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -110,6 +111,24 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
         if(organizationUnit != null) {
             organizationUnit.setOrganization(this);
             this.organizationUnits.add(organizationUnit);
+        }
+    }
+
+    @Override
+    @DomainMethod(event = "OrganizationUnitUpdated")
+    public void updateOrganizationUnit(DefaultOrganizationUnit organizationUnit, Mapper mapper) {
+        if(organizationUnit != null) {
+            OrganizationUnit organizationUnitFetched = organizationUnits.stream()
+                    .filter(t -> t.getId().equals(organizationUnit.getId()))
+                    .findFirst()
+                    .orElse(null);
+            if(organizationUnitFetched != null) {
+                organizationUnitFetched.getAddresses().clear();
+                organizationUnitFetched.getPhones().clear();
+                organizationUnitFetched.getEmails().clear();
+                mapper.map(organizationUnit, organizationUnitFetched);
+                organizationUnitFetched.setOrganization(this);
+            }
         }
     }
 

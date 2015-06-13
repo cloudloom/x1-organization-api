@@ -2,6 +2,7 @@ package com.tracebucket.x1.organization.api.test.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tracebucket.x1.organization.api.DefaultOrganizationStarter;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import com.tracebucket.x1.organization.api.test.fixture.*;
 import org.junit.After;
@@ -22,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by sadath on 20-Apr-15.
@@ -87,6 +89,23 @@ public class OrganizationControllerTest {
         DefaultOrganizationUnitResource organizationUnit = DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource();
         log.info("Add OrganizationUnit : " + objectMapper.writeValueAsString(organizationUnit));
         restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationunit", organizationUnit);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+    }
+
+    @Test
+    public void testUpdateOrganizationUnit() throws Exception{
+        createOrganization();
+        DefaultOrganizationUnitResource organizationUnit = DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource();
+        log.info("Add OrganizationUnit : " + objectMapper.writeValueAsString(organizationUnit));
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationunit", organizationUnit);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        Set<DefaultOrganizationUnitResource> organizationUnitSet = organization.getOrganizationUnits();
+        DefaultOrganizationUnitResource organizationUnitResource = organizationUnitSet.stream().findFirst().get();
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationunit/update", organizationUnitResource);
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());

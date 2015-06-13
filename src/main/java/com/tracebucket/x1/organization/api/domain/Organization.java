@@ -2,6 +2,7 @@ package com.tracebucket.x1.organization.api.domain;
 
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
+import org.dozer.Mapper;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -19,6 +20,7 @@ public interface Organization extends Serializable{
 
 	void addOrganizationUnit(DefaultOrganizationUnit organizationUnit);
 
+    void updateOrganizationUnit(DefaultOrganizationUnit organizationUnit, Mapper mapper);
 
 	void addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, DefaultOrganizationUnit parentOrganizationUnit);
 

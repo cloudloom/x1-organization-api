@@ -68,6 +68,23 @@ public class OrganizationController implements Organization{
         return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @RequestMapping(value = "/organization/{organizationUid}/organizationunit/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> updateOrganizationUnit(@PathVariable("organizationUid") String organizationUid, @RequestBody DefaultOrganizationUnitResource organizationUnitResource) {
+        DefaultOrganizationUnit organizationUnit = assemblerResolver.resolveEntityAssembler(DefaultOrganizationUnit.class, DefaultOrganizationUnitResource.class).toEntity(organizationUnitResource, DefaultOrganizationUnit.class);
+        DefaultOrganization organization = null;
+        try {
+            organization = organizationService.updateOrganizationUnit(organizationUnit, new AggregateId(organizationUid));
+        } catch (DataIntegrityViolationException dive) {
+            throw new OrganizationException("Organization Unit With Name : " + organizationUnitResource.getName() + "Exists", HttpStatus.CONFLICT);
+        }
+        DefaultOrganizationResource organizationResource = null;
+        if(organization != null) {
+            organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<DefaultOrganizationResource>(new DefaultOrganizationResource(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
     @RequestMapping(value = "/organization/{organizationUid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> getOrganization(@PathVariable("organizationUid") String organizationUid) {
         DefaultOrganization organization = organizationService.findOne(new AggregateId(organizationUid));
