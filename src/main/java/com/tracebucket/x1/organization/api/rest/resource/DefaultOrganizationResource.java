@@ -3,6 +3,8 @@ package com.tracebucket.x1.organization.api.rest.resource;
 
 import com.tracebucket.tron.assembler.BaseResource;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +12,9 @@ import java.util.Set;
  * Created by sadath on 31-Mar-15.
  */
 public class DefaultOrganizationResource extends BaseResource {
+
+    @NotNull(message = "Organization code cannot be empty")
+    @Size(min = 3, max = 8)
     private String code;
     private String name;
     private String description;

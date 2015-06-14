@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +38,7 @@ public class OrganizationController implements Organization{
     private AssemblerResolver assemblerResolver;
 
     @RequestMapping(value = "/organization", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> createOrganization(@RequestBody DefaultOrganizationResource organizationResource) {
+    public ResponseEntity<DefaultOrganizationResource> createOrganization(@Valid @RequestBody DefaultOrganizationResource organizationResource) {
         DefaultOrganization organization = assemblerResolver.resolveEntityAssembler(DefaultOrganization.class, DefaultOrganizationResource.class).toEntity(organizationResource, DefaultOrganization.class);
         try {
             organization = organizationService.save(organization);
