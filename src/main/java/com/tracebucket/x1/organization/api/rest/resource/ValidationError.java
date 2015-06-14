@@ -9,18 +9,18 @@ import java.util.Set;
  * @since 14/06/15
  */
 public class ValidationError implements Serializable{
-    private Set<FieldError> fieldErrors = new HashSet<>(0);
+    private Set<AttributeError> attributeErrors = new HashSet<>(0);
 
     public ValidationError(){
 
     }
 
     public void addFieldError(String objectName, Object rejectedValue, String path, String message){
-        FieldError fieldError = new FieldError(objectName,rejectedValue, path, message);
-        fieldErrors.add(fieldError);
+        AttributeError attributeError = new AttributeError(objectName,rejectedValue, path, message);
+        attributeErrors.add(attributeError);
     }
 
-    public Set<FieldError> getFieldErrors() {
-        return fieldErrors;
+    public Set<AttributeError> getAttributeErrors() {
+        return attributeErrors;
     }
 }

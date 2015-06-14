@@ -37,7 +37,7 @@ public class ValidationErrorAdvisor {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ValidationError processValidationError(MethodArgumentNotValidException ex) {
-        log.debug("Handling form validation error");
+        log.debug("Handling rest API validation error");
 
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
@@ -49,7 +49,7 @@ public class ValidationErrorAdvisor {
 
         for (FieldError fieldError: fieldErrors) {
             String localizedErrorMessage = resolveLocalizedErrorMessage(fieldError);
-            log.debug("Adding error message: {} to field: {}", localizedErrorMessage, fieldError.getField());
+            log.debug("Adding error message: {} to attribute: {}", localizedErrorMessage, fieldError.getField());
             errors.addFieldError(fieldError.getObjectName(), fieldError.getRejectedValue(), fieldError.getField(), localizedErrorMessage);
         }
 
