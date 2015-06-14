@@ -1,95 +1,102 @@
----
-# The name of your project
-title: Spring Data JPA
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>X1-organization-api by tracebucket</title>
 
-badges:
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-  # Specify your project's twitter handle, if any. Delete if none.
-  twitter: SpringCentral
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>X1-organization-api</h1>
+        <p>X1 Organization API and Default Implementation.</p>
+        <p class="view"><a href="https://github.com/tracebucket/x1-organization-api">View the Project on GitHub <small>tracebucket/x1-organization-api</small></a></p>
+        <ul>
+          <li><a href="https://github.com/tracebucket/x1-organization-api/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/tracebucket/x1-organization-api/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/tracebucket/x1-organization-api">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><a href="https://bintray.com/tracebucket/X1/x1-organization-api/_latestVersion"> <img src="https://api.bintray.com/packages/tracebucket/X1/x1-organization-api/images/download.svg" alt="Download"> </a></p>
 
-  # Customize your project's badges. Delete any entries that do not apply.
-  custom:
-    - name: Source (GitHub)
-      url:  https://github.com/spring-projects/spring-security-oauth
-      icon: github
+<h1>
+<a id="x1-organization-api" class="anchor" href="#x1-organization-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>x1-organization-api</h1>
 
-    - name: Issues (Github)
-      url:  http://github.com/spring-projects/spring-security-oauth/issues
-      icon: tracking
+<p>This project provides support to model an Organizational structure. It provides</p>
 
-    - name: CI (Bamboo)
-      url:  https://build.springsource.org/browse/SECOAUTH-NIGHTLY
-      icon: ci
+<ul>
+<li>Organization</li>
+<li>Organization units</li>
+<li>Currency and timezone</li>
+<li>Business lines, departments and functions</li>
+<li>Address, contact persons, email and phone numbers</li>
+</ul>
 
-#    - name: Forum
-#      url:  http://forum.spring.io/forum/spring-projects/data
-#      icon: forum
+<h2>
+<a id="pre-requisites" class="anchor" href="#pre-requisites" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pre requisites</h2>
 
-    - name: Questions (StackOverflow)
-      url:  http://stackoverflow.com/questions/tagged/spring-security-oauth2
-      icon: stackoverflow
+<ul>
+<li>JDK 1.8 or later. </li>
+<li>MySQL 5.1.x or later. </li>
+<li>The default credentials for MySQL is assumed as <code>root/marines</code> . Also create a database in MySQL called <code>x1-organization-api</code>. </li>
+</ul>
 
-#    - name: Metrics (SonarQube)
-#      url:  https://sonar.springsource.org/dashboard/index/org.springframework.data:spring-data-jpa
-#      icon: metrics
+<p>Download or clone from git and then use maven(3.*) Java(1.8 or better)</p>
 
----
-<!DOCTYPE HTML>
-<html lang="en-US">
+<pre><code>$ git clone git@github.com:tracebucket/x1-organization-api.git
+$ mvn spring-boot:run 
+</code></pre>
 
-<!-- Specify the parent of this project (or delete if none) to influence the rendering of the breadcrumb -->
-{% capture parent_link %}
-[Spring Parent]({{ site.projects_site_url }}/spring-security)
-{% endcapture %}
+<p>Add as a dependency like</p>
 
+<pre><code>&lt;dependency&gt;
+        &lt;groupId&gt;com.tracebucket.x1.organization&lt;/groupId&gt;
+        &lt;artifactId&gt;x1-organization-api&lt;/artifactId&gt;
+        &lt;version&gt;0.6&lt;/version&gt;
+&lt;/dependency&gt;
 
-{% capture billboard_description %}
+    &lt;repository&gt;
+        &lt;snapshots&gt;
+            &lt;enabled&gt;false&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+        &lt;id&gt;bintray-tracebucket-X1&lt;/id&gt;
+        &lt;name&gt;bintray&lt;/name&gt;
+        &lt;url&gt;http://dl.bintray.com/tracebucket/X1&lt;/url&gt;
+    &lt;/repository&gt;
+</code></pre>
 
-Support for using Spring Security with OAuth (1a) and OAuth2.
+<p>add @EnableOrganization(multiple X1 components can be enabled in the same config file) in a config class like below</p>
 
-{% endcapture %}
+<pre><code> @Configuration
+ @EnableOrganization
+ public class X1Configuration{
+ }
+</code></pre>
 
-{% capture main_content %}
+<p>and the necessary beans for Organization will be enabled. </p>
 
-Spring Security OAuth provides support for using Spring Security with OAuth
-(1a) and OAuth2 using standard Spring and Spring
-Security programming models and configuration idioms.
-
-## Features
-
-* Support for OAuth providers and OAuth consumers
-* Oauth 1(a) (including two-legged OAuth, a.k.a. "Signed Fetch")
-* OAuth 2.0.
-
-<span id="quick-start"></span>
-## Quick Start
-
-{% include download_widget.md %}
-
-Applying security to an application is not for the faint of heart, and OAuth is no exception. Before you get started,
-you're going to want to make sure you understand OAuth and the problem it's designed to address. There is good
-documentation at [the OAuth site](http://oauth.net). You will also want to make sure you understand how 
-[Spring](http://springframework.org/) and [Spring Security](http://projects.spring.io/spring-security/) work.
-
-You're going to want to be quite familiar with both [OAuth](http://oauth.net) (and/or [OAuth2](http://tools.ietf.org/html/draft-ietf-oauth-v2))
-and [Spring Security](http://projects.spring.io/spring-security/), to maximize the effectiveness of this developers guide. OAuth for
-Spring Security is tightly tied to both technologies, so the more familiar you are with them, the more likely you'll be to recognize the terminology
-and patterns that are used.
-
-
-{% endcapture %}
-
-{% capture related_resources %}
-
-### Links
-
-* [Tutorial](docs/tutorial.html)
-* [Developer's guide](docs/devguide.html)
-* [Support](docs/support.html)
-* Presentation from Spring One 2GX 2013 [Data Modelling for OAuth2](https://speakerdeck.com/dsyer/data-modelling-and-identity-management-with-oauth2)
-
-{% endcapture %}
-
-
-{% include project_page.html %}
+<ul>
+<li>Jpa configuration</li>
+<li>Service configuration</li>
+<li>Controller and Assembler configuration</li>
+</ul>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/tracebucket">tracebucket</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
 </html>
