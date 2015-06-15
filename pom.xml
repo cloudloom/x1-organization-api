@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.tracebucket.tron</groupId>
             <artifactId>tron-ddd-cqrs</artifactId>
-            <version>0.6</version>
+            <version>0.7</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

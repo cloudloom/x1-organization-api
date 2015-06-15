@@ -2,7 +2,6 @@ package com.tracebucket.x1.organization.api.test.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tracebucket.x1.organization.api.DefaultOrganizationStarter;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import com.tracebucket.x1.organization.api.test.fixture.*;
 import org.junit.After;
