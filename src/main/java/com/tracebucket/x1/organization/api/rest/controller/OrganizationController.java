@@ -3,10 +3,10 @@ package com.tracebucket.x1.organization.api.rest.controller;
 import com.tracebucket.tron.assembler.AssemblerResolver;
 import com.tracebucket.tron.ddd.domain.AggregateId;
 import com.tracebucket.tron.ddd.domain.EntityId;
+import com.tracebucket.tron.rest.exception.X1Exception;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
-import com.tracebucket.x1.organization.api.rest.exception.OrganizationException;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class OrganizationController implements Organization{
         try {
             organization = organizationService.save(organization);
         } catch (DataIntegrityViolationException dive) {
-            throw new OrganizationException("Organization With Name : " + organizationResource.getName() + "Exists", HttpStatus.CONFLICT);
+            throw new X1Exception("Organization With Name : " + organizationResource.getName() + "Exists", HttpStatus.CONFLICT);
         }
         if(organization != null) {
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
@@ -59,7 +59,7 @@ public class OrganizationController implements Organization{
         try {
             organization = organizationService.addOrganizationUnit(organizationUnit, new AggregateId(organizationUid));
         } catch (DataIntegrityViolationException dive) {
-            throw new OrganizationException("Organization Unit With Name : " + organizationUnitResource.getName() + "Exists", HttpStatus.CONFLICT);
+            throw new X1Exception("Organization Unit With Name : " + organizationUnitResource.getName() + "Exists", HttpStatus.CONFLICT);
         }
         DefaultOrganizationResource organizationResource = null;
         if(organization != null) {
@@ -76,7 +76,7 @@ public class OrganizationController implements Organization{
         try {
             organization = organizationService.updateOrganizationUnit(organizationUnit, new AggregateId(organizationUid));
         } catch (DataIntegrityViolationException dive) {
-            throw new OrganizationException("Organization Unit With Name : " + organizationUnitResource.getName() + "Exists", HttpStatus.CONFLICT);
+            throw new X1Exception("Organization Unit With Name : " + organizationUnitResource.getName() + "Exists", HttpStatus.CONFLICT);
         }
         DefaultOrganizationResource organizationResource = null;
         if(organization != null) {
