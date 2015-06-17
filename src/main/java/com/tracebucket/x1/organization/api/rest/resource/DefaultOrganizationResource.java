@@ -13,8 +13,8 @@ import java.util.Set;
  */
 public class DefaultOrganizationResource extends BaseResource {
 
-    @NotNull(message = "Organization code cannot be empty")
-    @Size(min = 3, max = 8)
+    //@NotNull(message = "Organization code cannot be empty")
+    //@Size(min = 3, max = 8)
     private String code;
     private String name;
     private String description;
