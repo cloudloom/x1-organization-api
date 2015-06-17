@@ -42,210 +42,252 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     }
 
     @Override
-    public DefaultOrganization findOne(AggregateId aggregateId) {
-        organizationRepository.flush();
-        return organizationRepository.findOne(aggregateId);
+    public DefaultOrganization findOne(String tenantId, AggregateId aggregateId) {
+        if(tenantId.equals(aggregateId.getAggregateId())) {
+            organizationRepository.flush();
+            return organizationRepository.findOne(aggregateId);
+        }
+        return null;
     }
 
     @Override
-    public boolean delete(AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organizationRepository.delete(organization);
-            return organizationRepository.findOne(organizationAggregateId) == null ? true : false;
+    public boolean delete(String tenantId, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organizationRepository.delete(organization.getAggregateId());
+                return organizationRepository.findOne(organizationAggregateId) == null ? true : false;
+            }
+            return false;
         }
         return false;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addBaseCurrency(DefaultCurrency baseCurrency, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.addBaseCurrency(baseCurrency);
-            return organization;
+    public DefaultOrganization addBaseCurrency(String tenantId, DefaultCurrency baseCurrency, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.addBaseCurrency(baseCurrency);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addTimezone(DefaultTimezone timezone, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.addTimezone(timezone);
-            return organization;
+    public DefaultOrganization addTimezone(String tenantId, DefaultTimezone timezone, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.addTimezone(timezone);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addOrganizationUnit(DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.addOrganizationUnit(organizationUnit);
-            return organization;
+    public DefaultOrganization addOrganizationUnit(String tenantId, DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.addOrganizationUnit(organizationUnit);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization updateOrganizationUnit(DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.updateOrganizationUnit(organizationUnit, mapper);
-            return organization;
+    public DefaultOrganization updateOrganizationUnit(String tenantId, DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.updateOrganizationUnit(organizationUnit, mapper);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, EntityId parentOrganizationUnitEntityId, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        final DefaultOrganizationUnit parentOrganizationUnit = organization.getOrganizationUnits()
-                .stream()
-                .filter(t -> t.getEntityId().equals(parentOrganizationUnitEntityId))
-                .findFirst()
-                .orElse(null);
-        if(organization != null) {
-            organization.addOrganizationUnitBelow(organizationUnit, parentOrganizationUnit);
-            return  organization;
+    public DefaultOrganization addOrganizationUnitBelow(String tenantId, DefaultOrganizationUnit organizationUnit, EntityId parentOrganizationUnitEntityId, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            final DefaultOrganizationUnit parentOrganizationUnit = organization.getOrganizationUnits()
+                    .stream()
+                    .filter(t -> t.getEntityId().equals(parentOrganizationUnitEntityId))
+                    .findFirst()
+                    .orElse(null);
+            if (organization != null) {
+                organization.addOrganizationUnitBelow(organizationUnit, parentOrganizationUnit);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addContactPerson(DefaultPerson contactPerson, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.addContactPerson(contactPerson);
-            return organization;
+    public DefaultOrganization addContactPerson(String tenantId, DefaultPerson contactPerson, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.addContactPerson(contactPerson);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization setDefaultContactPerson(DefaultPerson defaultContactPerson, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.setDefaultContactPerson(defaultContactPerson);
-            return organization;
+    public DefaultOrganization setDefaultContactPerson(String tenantId, DefaultPerson defaultContactPerson, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.setDefaultContactPerson(defaultContactPerson);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addContactNumber(DefaultPhone phone, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.addContactNumber(phone);
-            return organization;
+    public DefaultOrganization addContactNumber(String tenantId, DefaultPhone phone, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.addContactNumber(phone);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization setDefaultContactNumber(DefaultPhone defaultContactNumber, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.setDefaultContactNumber(defaultContactNumber);
-            return organization;
+    public DefaultOrganization setDefaultContactNumber(String tenantId, DefaultPhone defaultContactNumber, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.setDefaultContactNumber(defaultContactNumber);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addEmail(DefaultEmail email, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.addEmail(email);
-            return organization;
+    public DefaultOrganization addEmail(String tenantId, DefaultEmail email, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.addEmail(email);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization setDefaultEmail(DefaultEmail defaultEmail, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.setDefaultEmail(defaultEmail);
-            return organization;
+    public DefaultOrganization setDefaultEmail(String tenantId, DefaultEmail defaultEmail, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.setDefaultEmail(defaultEmail);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization setHeadOffice(DefaultAddress headOfficeAddress, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.setHeadOffice(headOfficeAddress);
-            return organization;
+    public DefaultOrganization setHeadOffice(String tenantId, DefaultAddress headOfficeAddress, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.setHeadOffice(headOfficeAddress);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization moveHeadOfficeTo(DefaultAddress newHeadOfficeAddress, AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            organization.moveHeadOfficeTo(newHeadOfficeAddress);
-            return organization;
+    public DefaultOrganization moveHeadOfficeTo(String tenantId, DefaultAddress newHeadOfficeAddress, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.moveHeadOfficeTo(newHeadOfficeAddress);
+                return organization;
+            }
         }
         return null;
     }
 
     @Override
-    public DefaultAddress getHeadOfficeAddress(AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            return organization.getHeadOfficeAddress();
+    public DefaultAddress getHeadOfficeAddress(String tenantId, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                return organization.getHeadOfficeAddress();
+            }
         }
         return null;
     }
 
     @Override
-    public Set<DefaultCurrency> getBaseCurrencies(AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            return organization.getBaseCurrencies();
+    public Set<DefaultCurrency> getBaseCurrencies(String tenantId, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                return organization.getBaseCurrencies();
+            }
         }
         return null;
     }
 
     @Override
-    public Set<DefaultOrganizationUnit> getOrganizationUnits(AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            return organization.getOrganizationUnits();
+    public Set<DefaultOrganizationUnit> getOrganizationUnits(String tenantId, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                return organization.getOrganizationUnits();
+            }
         }
         return null;
     }
 
     @Override
-    public Set<DefaultPhone> getContactNumbers(AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            return organization.getContactNumbers();
+    public Set<DefaultPhone> getContactNumbers(String tenantId, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                return organization.getContactNumbers();
+            }
         }
         return null;
     }
 
     @Override
-    public Set<DefaultEmail> getEmails(AggregateId organizationAggregateId) {
-        DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-        if(organization != null) {
-            return organization.getEmails();
+    public Set<DefaultEmail> getEmails(String tenantId, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                return organization.getEmails();
+            }
         }
         return null;
     }

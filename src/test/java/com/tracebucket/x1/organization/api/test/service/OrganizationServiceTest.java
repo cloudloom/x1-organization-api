@@ -49,7 +49,7 @@ public class OrganizationServiceTest {
     @Test
     public void testAddOrganizationUnit() throws Exception {
         createOrganization();
-        organization = organizationService.addOrganizationUnit(DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
+        organization = organizationService.addOrganizationUnit(organization.getAggregateId().getAggregateId(), DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getOrganizationUnits());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());
@@ -58,7 +58,7 @@ public class OrganizationServiceTest {
     @Test
     public void testAddOrganizationUnitBelow() throws Exception {
         createOrganization();
-        organization = organizationService.addOrganizationUnit(DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
+        organization = organizationService.addOrganizationUnit(organization.getAggregateId().getAggregateId(), DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getOrganizationUnits());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());
@@ -67,7 +67,7 @@ public class OrganizationServiceTest {
         for(DefaultOrganizationUnit organizationUnit : organization.getOrganizationUnits()) {
             parentOrganizationUnit = organizationUnit;
         }
-        organization = organizationService.addOrganizationUnitBelow(childOrganizationUnit, parentOrganizationUnit.getEntityId(), organization.getAggregateId());
+        organization = organizationService.addOrganizationUnitBelow(organization.getAggregateId().getAggregateId(), childOrganizationUnit, parentOrganizationUnit.getEntityId(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getOrganizationUnits());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());
@@ -76,7 +76,7 @@ public class OrganizationServiceTest {
     @Test
     public void addBaseCurrency()throws Exception {
         createOrganization();
-        organization = organizationService.addBaseCurrency(DefaultCurrencyFixture.standardBaseCurrency(), organization.getAggregateId());
+        organization = organizationService.addBaseCurrency(organization.getAggregateId().getAggregateId(), DefaultCurrencyFixture.standardBaseCurrency(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getBaseCurrencies());
         Assert.assertEquals(1, organization.getBaseCurrencies().size());
@@ -85,7 +85,7 @@ public class OrganizationServiceTest {
     @Test
     public void addTimezone()throws Exception {
         createOrganization();
-        organization = organizationService.addTimezone(DefaultTimezoneFixture.standardTimezone(), organization.getAggregateId());
+        organization = organizationService.addTimezone(organization.getAggregateId().getAggregateId(), DefaultTimezoneFixture.standardTimezone(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getTimezones());
         Assert.assertEquals(1, organization.getTimezones().size());
@@ -94,7 +94,7 @@ public class OrganizationServiceTest {
     @Test
     public void addContactPerson()throws Exception {
         createOrganization();
-        organization = organizationService.addContactPerson(DefaultPersonFixture.standardPerson(), organization.getAggregateId());
+        organization = organizationService.addContactPerson(organization.getAggregateId().getAggregateId(), DefaultPersonFixture.standardPerson(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getContactPersons());
         Assert.assertEquals(1, organization.getContactPersons().size());
@@ -103,7 +103,7 @@ public class OrganizationServiceTest {
     @Test
     public void setDefaultContactPerson()throws Exception {
         createOrganization();
-        organization = organizationService.setDefaultContactPerson(DefaultPersonFixture.standardPerson(), organization.getAggregateId());
+        organization = organizationService.setDefaultContactPerson(organization.getAggregateId().getAggregateId(), DefaultPersonFixture.standardPerson(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getContactPersons());
         Assert.assertEquals(1, organization.getContactPersons().size());
@@ -113,7 +113,7 @@ public class OrganizationServiceTest {
     @Test
     public void addContactNumber()throws Exception {
         createOrganization();
-        organization = organizationService.addContactNumber(DefaultPhoneFixture.standardPhone(), organization.getAggregateId());
+        organization = organizationService.addContactNumber(organization.getAggregateId().getAggregateId(), DefaultPhoneFixture.standardPhone(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getContactNumbers());
         Assert.assertEquals(1, organization.getContactNumbers().size());
@@ -122,7 +122,7 @@ public class OrganizationServiceTest {
     @Test
     public void setDefaultContactNumber()throws Exception {
         createOrganization();
-        organization = organizationService.setDefaultContactNumber(DefaultPhoneFixture.standardPhone(), organization.getAggregateId());
+        organization = organizationService.setDefaultContactNumber(organization.getAggregateId().getAggregateId(), DefaultPhoneFixture.standardPhone(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getContactNumbers());
         Assert.assertEquals(1, organization.getContactNumbers().size());
@@ -132,7 +132,7 @@ public class OrganizationServiceTest {
     @Test
     public void addEmail()throws Exception {
         createOrganization();
-        organization = organizationService.addEmail(DefaultEmailFixture.standardEmail(), organization.getAggregateId());
+        organization = organizationService.addEmail(organization.getAggregateId().getAggregateId(), DefaultEmailFixture.standardEmail(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getEmails());
         Assert.assertEquals(1, organization.getEmails().size());
@@ -141,7 +141,7 @@ public class OrganizationServiceTest {
     @Test
     public void setDefaultEmail()throws Exception {
         createOrganization();
-        organization = organizationService.setDefaultEmail(DefaultEmailFixture.standardEmail(), organization.getAggregateId());
+        organization = organizationService.setDefaultEmail(organization.getAggregateId().getAggregateId(), DefaultEmailFixture.standardEmail(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getEmails());
         Assert.assertEquals(1, organization.getEmails().size());
@@ -151,7 +151,7 @@ public class OrganizationServiceTest {
     @Test
     public void setHeadOffice()throws Exception {
         createOrganization();
-        organization = organizationService.setHeadOffice(DefaultAddressFixture.standardAddress(), organization.getAggregateId());
+        organization = organizationService.setHeadOffice(organization.getAggregateId().getAggregateId(), DefaultAddressFixture.standardAddress(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getHeadOfficeAddress());
     }
@@ -159,7 +159,7 @@ public class OrganizationServiceTest {
     @Test
     public void moveHeadOfficeTo()throws Exception {
         createOrganization();
-        organization = organizationService.moveHeadOfficeTo(DefaultAddressFixture.standardAddress(), organization.getAggregateId());
+        organization = organizationService.moveHeadOfficeTo(organization.getAggregateId().getAggregateId(), DefaultAddressFixture.standardAddress(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getHeadOfficeAddress());
     }
@@ -167,7 +167,7 @@ public class OrganizationServiceTest {
     @Test
     public void getHeadOfficeAddress()throws Exception {
         createOrganization();
-        organization = organizationService.setHeadOffice(DefaultAddressFixture.standardAddress(), organization.getAggregateId());
+        organization = organizationService.setHeadOffice(organization.getAggregateId().getAggregateId(), DefaultAddressFixture.standardAddress(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getHeadOfficeAddress());
     }
@@ -175,34 +175,34 @@ public class OrganizationServiceTest {
     @Test
     public void getBaseCurrencies()throws Exception {
         createOrganization();
-        organization = organizationService.addBaseCurrency(DefaultCurrencyFixture.standardBaseCurrency(), organization.getAggregateId());
+        organization = organizationService.addBaseCurrency(organization.getAggregateId().getAggregateId(), DefaultCurrencyFixture.standardBaseCurrency(), organization.getAggregateId());
         Assert.assertNotNull(organization);
-        Assert.assertNotNull(organizationService.getBaseCurrencies(organization.getAggregateId()));
-        Assert.assertEquals(1, organizationService.getBaseCurrencies(organization.getAggregateId()).size());
+        Assert.assertNotNull(organizationService.getBaseCurrencies(organization.getAggregateId().getAggregateId(), organization.getAggregateId()));
+        Assert.assertEquals(1, organizationService.getBaseCurrencies(organization.getAggregateId().getAggregateId(), organization.getAggregateId()).size());
     }
 
     @Test
     public void getContactNumbers()throws Exception {
         createOrganization();
-        organization = organizationService.addContactNumber(DefaultPhoneFixture.standardPhone(), organization.getAggregateId());
+        organization = organizationService.addContactNumber(organization.getAggregateId().getAggregateId(), DefaultPhoneFixture.standardPhone(), organization.getAggregateId());
         Assert.assertNotNull(organization);
-        Assert.assertNotNull(organizationService.getContactNumbers(organization.getAggregateId()));
-        Assert.assertEquals(1, organizationService.getContactNumbers(organization.getAggregateId()).size());
+        Assert.assertNotNull(organizationService.getContactNumbers(organization.getAggregateId().getAggregateId(), organization.getAggregateId()));
+        Assert.assertEquals(1, organizationService.getContactNumbers(organization.getAggregateId().getAggregateId(), organization.getAggregateId()).size());
     }
 
     @Test
     public void getEmails()throws Exception {
         createOrganization();
-        organization = organizationService.addEmail(DefaultEmailFixture.standardEmail(), organization.getAggregateId());
+        organization = organizationService.addEmail(organization.getAggregateId().getAggregateId(), DefaultEmailFixture.standardEmail(), organization.getAggregateId());
         Assert.assertNotNull(organization);
-        Assert.assertNotNull(organizationService.getEmails(organization.getAggregateId()));
-        Assert.assertEquals(1, organizationService.getEmails(organization.getAggregateId()).size());
+        Assert.assertNotNull(organizationService.getEmails(organization.getAggregateId().getAggregateId(), organization.getAggregateId()));
+        Assert.assertEquals(1, organizationService.getEmails(organization.getAggregateId().getAggregateId(), organization.getAggregateId()).size());
     }
 
     @Test
     public void testGetOrganizationUnits() throws Exception {
         createOrganization();
-        organization = organizationService.addOrganizationUnit(DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
+        organization = organizationService.addOrganizationUnit(organization.getAggregateId().getAggregateId(), DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getOrganizationUnits());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());
@@ -211,15 +211,15 @@ public class OrganizationServiceTest {
     @Test
     public void testFindById() throws Exception {
         createOrganization();
-        organization = organizationService.findOne(organization.getAggregateId());
+        organization = organizationService.findOne(organization.getAggregateId().getAggregateId(), organization.getAggregateId());
         Assert.assertNotNull(organization);
     }
 
     @After
     public void tearDown(){
         if(organization != null && organization.getAggregateId() != null) {
-            organizationService.delete(organization.getAggregateId());
-            organization = organizationService.findOne(organization.getAggregateId());
+            organizationService.delete(organization.getAggregateId().getAggregateId(), organization.getAggregateId());
+            organization = organizationService.findOne(organization.getAggregateId().getAggregateId(), organization.getAggregateId());
             Assert.assertNull(organization);
         }
     }

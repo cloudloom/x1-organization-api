@@ -14,26 +14,26 @@ import java.util.Set;
  */
 public interface DefaultOrganizationService {
 	public DefaultOrganization save(DefaultOrganization organization);
-	public DefaultOrganization findOne(AggregateId aggregateId);
-	public boolean delete(AggregateId organizationAggregateId);
-	public DefaultOrganization addBaseCurrency(DefaultCurrency baseCurrency, AggregateId organizationAggregateId);
-	public DefaultOrganization addTimezone(DefaultTimezone timezone, AggregateId organizationAggregateId);
-	public DefaultOrganization addOrganizationUnit(DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
-    public DefaultOrganization updateOrganizationUnit(DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
-    public DefaultOrganization addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit,
+	public DefaultOrganization findOne(String tenantId, AggregateId aggregateId);
+	public boolean delete(String tenantId, AggregateId organizationAggregateId);
+	public DefaultOrganization addBaseCurrency(String tenantId, DefaultCurrency baseCurrency, AggregateId organizationAggregateId);
+	public DefaultOrganization addTimezone(String tenantId, DefaultTimezone timezone, AggregateId organizationAggregateId);
+	public DefaultOrganization addOrganizationUnit(String tenantId, DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
+    public DefaultOrganization updateOrganizationUnit(String tenantId, DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
+    public DefaultOrganization addOrganizationUnitBelow(String tenantId, DefaultOrganizationUnit organizationUnit,
 			EntityId parentOrganizationUnitEntityId, AggregateId organizationAggregateId);
-	public DefaultOrganization addContactPerson(DefaultPerson person, AggregateId organizationAggregateId);
-	public DefaultOrganization setDefaultContactPerson(DefaultPerson person, AggregateId organizationAggregateId);
-	public DefaultOrganization addContactNumber(DefaultPhone phone, AggregateId organizationAggregateId);
-	public DefaultOrganization setDefaultContactNumber(DefaultPhone phone, AggregateId organizationAggregateId);
-	public DefaultOrganization addEmail(DefaultEmail email, AggregateId organizationAggregateId);
-	public DefaultOrganization setDefaultEmail(DefaultEmail email, AggregateId organizationAggregateId);
-	public DefaultOrganization setHeadOffice(DefaultAddress address, AggregateId organizationAggregateId);
-	public DefaultOrganization moveHeadOfficeTo(DefaultAddress address, AggregateId organizationAggregateId);
-	public DefaultAddress getHeadOfficeAddress(AggregateId organizationAggregateId);
-	public Set<DefaultCurrency> getBaseCurrencies(AggregateId organizationAggregateId);
-	public Set<DefaultOrganizationUnit> getOrganizationUnits(AggregateId organizationAggregateId);
-	public Set<DefaultPhone> getContactNumbers(AggregateId organizationAggregateId);
-	public Set<DefaultEmail> getEmails(AggregateId organizationAggregateId);
+	public DefaultOrganization addContactPerson(String tenantId, DefaultPerson person, AggregateId organizationAggregateId);
+	public DefaultOrganization setDefaultContactPerson(String tenantId, DefaultPerson person, AggregateId organizationAggregateId);
+	public DefaultOrganization addContactNumber(String tenantId, DefaultPhone phone, AggregateId organizationAggregateId);
+	public DefaultOrganization setDefaultContactNumber(String tenantId, DefaultPhone phone, AggregateId organizationAggregateId);
+	public DefaultOrganization addEmail(String tenantId, DefaultEmail email, AggregateId organizationAggregateId);
+	public DefaultOrganization setDefaultEmail(String tenantId, DefaultEmail email, AggregateId organizationAggregateId);
+	public DefaultOrganization setHeadOffice(String tenantId, DefaultAddress address, AggregateId organizationAggregateId);
+	public DefaultOrganization moveHeadOfficeTo(String tenantId, DefaultAddress address, AggregateId organizationAggregateId);
+	public DefaultAddress getHeadOfficeAddress(String tenantId, AggregateId organizationAggregateId);
+	public Set<DefaultCurrency> getBaseCurrencies(String tenantId, AggregateId organizationAggregateId);
+	public Set<DefaultOrganizationUnit> getOrganizationUnits(String tenantId, AggregateId organizationAggregateId);
+	public Set<DefaultPhone> getContactNumbers(String tenantId, AggregateId organizationAggregateId);
+	public Set<DefaultEmail> getEmails(String tenantId, AggregateId organizationAggregateId);
     public List<DefaultOrganization> findAll();
 }

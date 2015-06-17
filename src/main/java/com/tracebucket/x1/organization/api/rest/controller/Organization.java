@@ -3,6 +3,7 @@ package com.tracebucket.x1.organization.api.rest.controller;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import org.springframework.http.ResponseEntity;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 /**
@@ -10,25 +11,25 @@ import java.util.Set;
  */
 public interface Organization {
     public ResponseEntity<DefaultOrganizationResource> createOrganization(DefaultOrganizationResource organization);
-    public ResponseEntity<DefaultOrganizationResource> getOrganization(String aggregateId);
-    public ResponseEntity<Boolean> deleteOrganization(String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> addBaseCurrency(DefaultCurrencyResource baseCurrency, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> addTimezone(DefaultTimezoneResource timezone, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> addOrganizationUnit(String aggregateId, DefaultOrganizationUnitResource organizationUnit);
-    public ResponseEntity<DefaultOrganizationResource> addOrganizationUnitBelow(DefaultOrganizationUnitResource organizationUnit,
+    public ResponseEntity<DefaultOrganizationResource> getOrganization(HttpServletRequest request, String aggregateId);
+    public ResponseEntity<Boolean> deleteOrganization(HttpServletRequest request, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> addBaseCurrency(HttpServletRequest request, DefaultCurrencyResource baseCurrency, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> addTimezone(HttpServletRequest request, DefaultTimezoneResource timezone, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> addOrganizationUnit(HttpServletRequest request, String aggregateId, DefaultOrganizationUnitResource organizationUnit);
+    public ResponseEntity<DefaultOrganizationResource> addOrganizationUnitBelow(HttpServletRequest request, DefaultOrganizationUnitResource organizationUnit,
                                                         String parentOrganizationUnitEntityId, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> addContactPerson(DefaultPersonResource person, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> setDefaultContactPerson(DefaultPersonResource person, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> addContactNumber(DefaultPhoneResource phone, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> setDefaultContactNumber(DefaultPhoneResource phone, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> addEmail(DefaultEmailResource email, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> setDefaultEmail(DefaultEmailResource email, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> setHeadOffice(DefaultAddressResource address, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> moveHeadOfficeTo(DefaultAddressResource address, String aggregateId);
-    public ResponseEntity<DefaultAddressResource> getHeadOfficeAddress(String aggregateId);
-    public ResponseEntity<Set<DefaultCurrencyResource>> getBaseCurrencies(String aggregateId);
-    public ResponseEntity<Set<DefaultOrganizationUnitResource>> getOrganizationUnits(String aggregateId);
-    public ResponseEntity<Set<DefaultPhoneResource>> getContactNumbers(String aggregateId);
-    public ResponseEntity<Set<DefaultEmailResource>> getEmails(String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> addContactPerson(HttpServletRequest request, DefaultPersonResource person, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> setDefaultContactPerson(HttpServletRequest request, DefaultPersonResource person, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> addContactNumber(HttpServletRequest request, DefaultPhoneResource phone, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> setDefaultContactNumber(HttpServletRequest request, DefaultPhoneResource phone, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> addEmail(HttpServletRequest request, DefaultEmailResource email, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> setDefaultEmail(HttpServletRequest request, DefaultEmailResource email, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> setHeadOffice(HttpServletRequest request, DefaultAddressResource address, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> moveHeadOfficeTo(HttpServletRequest request, DefaultAddressResource address, String aggregateId);
+    public ResponseEntity<DefaultAddressResource> getHeadOfficeAddress(HttpServletRequest request, String aggregateId);
+    public ResponseEntity<Set<DefaultCurrencyResource>> getBaseCurrencies(HttpServletRequest request, String aggregateId);
+    public ResponseEntity<Set<DefaultOrganizationUnitResource>> getOrganizationUnits(HttpServletRequest request, String aggregateId);
+    public ResponseEntity<Set<DefaultPhoneResource>> getContactNumbers(HttpServletRequest request, String aggregateId);
+    public ResponseEntity<Set<DefaultEmailResource>> getEmails(HttpServletRequest request, String aggregateId);
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations();
 }
