@@ -38,10 +38,10 @@ public class DefaultOrganizationFixture {
 
         DefaultOrganization organization = DefaultOrganizationBuilder.anOrganizationBuilder()
                 //.withName("ABC Bank")
-                .withName(UUID.randomUUID().toString())
+                .withName(null)//UUID.randomUUID().toString())
                 .withDescription(UUID.randomUUID().toString())
                 .withImage(UUID.randomUUID().toString())
-                .withCode(UUID.randomUUID().toString().substring(0, 7))
+                .withCode("2")//UUID.randomUUID().toString().substring(0, 8)+"@")
                 .withWebsite(UUID.randomUUID().toString())
                 .withOrganizationUnits(organizationUnits)
                 .withAddresses(addresses)

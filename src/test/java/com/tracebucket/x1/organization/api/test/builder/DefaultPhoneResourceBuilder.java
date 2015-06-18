@@ -7,8 +7,8 @@ import com.tracebucket.x1.organization.api.rest.resource.DefaultPhoneResource;
  * Created by sadath on 16-Apr-15.
  */
 public class DefaultPhoneResourceBuilder {
-    private Long number;
-    private Integer extension;
+    private String number;
+    private String extension;
     private PhoneType phoneType;
     private boolean defaultPhone;
 
@@ -18,12 +18,12 @@ public class DefaultPhoneResourceBuilder {
         return new DefaultPhoneResourceBuilder();
     }
 
-    public DefaultPhoneResourceBuilder withNumber(Long number){
+    public DefaultPhoneResourceBuilder withNumber(String number){
         this.number = number;
         return this;
     }
 
-    public DefaultPhoneResourceBuilder withExtension(Integer extension){
+    public DefaultPhoneResourceBuilder withExtension(String extension){
         this.extension = extension;
         return this;
     }
