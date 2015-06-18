@@ -2,6 +2,7 @@ package com.tracebucket.x1.organization.api.domain;
 
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import org.dozer.Mapper;
 
 import java.io.Serializable;
@@ -48,7 +49,11 @@ public interface Organization extends Serializable{
 
 	void moveHeadOfficeTo(DefaultAddress newHeadOfficeAddress);
 
-	String getCode();
+    void addPosition(DefaultPosition position);
+
+    void updatePosition(DefaultPosition position, Mapper mapper);
+
+    String getCode();
 
 	String getName();
 
@@ -78,6 +83,8 @@ public interface Organization extends Serializable{
 
 	Set<DefaultCurrency> getCurrencies();
 
+    Set<DefaultPosition> getPositions();
+
     void setCode(String code);
 
     void setName(String name);
@@ -101,4 +108,6 @@ public interface Organization extends Serializable{
     void setPhones(Set<DefaultPhone> phones);
 
     void setEmails(Set<DefaultEmail> emails);
+
+    void restructureOrganizationUnits(boolean rootOrganizationUnit, String parentOrganizationUnitUid, String childOrganizationUnitUid);
 }

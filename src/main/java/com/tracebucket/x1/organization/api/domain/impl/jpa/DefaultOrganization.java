@@ -11,7 +11,9 @@ import org.dozer.Mapper;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 /**
@@ -71,6 +73,10 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_CONTACT_EMAIL", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
     private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ORGANIZATION__ID")
+    private Set<DefaultPosition> positions = new HashSet<DefaultPosition>(0);
 
     public DefaultOrganization() {
     }
@@ -135,7 +141,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Override
     @DomainMethod(event = "OrganizationUnitBelowAdded")
     public void addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, DefaultOrganizationUnit parentOrganizationUnit) {
-        OrganizationUnit parentOrganizationUnitFetched = organizationUnits.stream()
+        OrganizationUnit parentOrganizationUnitFetched = organizationUnits.parallelStream()
                 .filter(t -> t.getId().equals(parentOrganizationUnit.getId()))
                 .findFirst()
                 .orElse(null);
@@ -223,6 +229,28 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
             newHeadOfficeAddress.setAddressType(AddressType.HEAD_OFFICE);
             newHeadOfficeAddress.setDefaultAddress(true);
             this.addresses.add(newHeadOfficeAddress);
+        }
+    }
+
+    @Override
+    @DomainMethod(event = "AddPosition")
+    public void addPosition(DefaultPosition position) {
+        if(position != null) {
+            this.positions.add(position);
+        }
+    }
+
+    @Override
+    @DomainMethod(event = "UpdatePosition")
+    public void updatePosition(DefaultPosition position, Mapper mapper) {
+        if(position != null) {
+            DefaultPosition positionFetched = this.positions.stream()
+                    .filter(t -> t.getEntityId().getId().equals(position.getEntityId().getId()))
+                    .findFirst()
+                    .orElse(null);
+            if(positionFetched != null) {
+                mapper.map(position, positionFetched);
+            }
         }
     }
 
@@ -316,6 +344,11 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
+    public Set<DefaultPosition> getPositions() {
+        return this.positions;
+    }
+
+    @Override
     public void setCode(String code) {
         this.code = code;
     }
@@ -373,5 +406,11 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Override
     public void setEmails(Set<DefaultEmail> emails) {
         this.emails = emails;
+    }
+
+    @Override
+    @DomainMethod(event = "RestructureOrganizationUnits")
+    public void restructureOrganizationUnits(boolean rootOrganizationUnit, String parentOrganizationUnitUid, String childOrganizationUnitUid) {
+
     }
 }

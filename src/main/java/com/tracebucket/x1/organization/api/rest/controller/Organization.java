@@ -32,4 +32,11 @@ public interface Organization {
     public ResponseEntity<Set<DefaultPhoneResource>> getContactNumbers(HttpServletRequest request, String aggregateId);
     public ResponseEntity<Set<DefaultEmailResource>> getEmails(HttpServletRequest request, String aggregateId);
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations();
+    public ResponseEntity<Set<DefaultPositionResource>> getPositions(HttpServletRequest request, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> addPosition(HttpServletRequest request, DefaultPositionResource position, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> updatePosition(HttpServletRequest request, DefaultPositionResource position, String aggregateId);
+
+
+    public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnits(HttpServletRequest request, DefaultOrganizationResource organizationResource);
+
 }

@@ -6,6 +6,7 @@ import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import com.tracebucket.x1.organization.api.repository.jpa.DefaultOrganizationRepository;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
 import org.dozer.Mapper;
@@ -295,6 +296,76 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     @Override
     public List<DefaultOrganization> findAll() {
         return organizationRepository.findAll();
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization addPosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.addPosition(position);
+                return organization;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization updatePosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.updatePosition(position, mapper);
+                return organization;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Set<DefaultPosition> getPositions(String tenantId, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                return organization.getPositions();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization restructureOrganizationUnits(String tenantId, AggregateId organizationAggregateId, Set<DefaultOrganizationUnit> restructureOrganizationUnits) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                if(restructureOrganizationUnits != null && restructureOrganizationUnits.size() > 0) {
+                    restructureOrganizationUnits.parallelStream().forEach(organizationUnit -> {
+                        Set<DefaultOrganizationUnit> children = organizationUnit.getChildren();
+                        if(children != null && children.size() > 0) {
+                            children.parallelStream().forEach(child -> {
+                                organization.restructureOrganizationUnits(true, organizationUnit.getEntityId().getId(), child.getEntityId().getId());
+                                restructure(organization, child);
+                            });
+                        }
+                    });
+                }
+                return organization;
+            }
+        }
+        return null;
+    }
+
+    private void restructure(DefaultOrganization organization, DefaultOrganizationUnit childOrganizationUnit) {
+        Set<DefaultOrganizationUnit> children = childOrganizationUnit.getChildren();
+        if(children != null && children.size() > 0) {
+            children.parallelStream().forEach(child -> {
+                organization.restructureOrganizationUnits(false, childOrganizationUnit.getEntityId().getId(), child.getEntityId().getId());
+                restructure(organization, child);
+            });
+        }
     }
 
 }

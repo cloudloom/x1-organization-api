@@ -7,6 +7,7 @@ import com.tracebucket.tron.rest.exception.X1Exception;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
 import org.slf4j.Logger;
@@ -114,7 +115,6 @@ public class OrganizationController implements Organization{
         }
     }
 
-
     @RequestMapping(value = "/organizations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations() {
         List<DefaultOrganization> organizations = organizationService.findAll();
@@ -122,6 +122,69 @@ public class OrganizationController implements Organization{
             return new ResponseEntity<Set<DefaultOrganizationResource>>(assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResources(organizations, DefaultOrganizationResource.class), HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/{organizationUID}/positions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<DefaultPositionResource>> getPositions(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId) {
+        String tenantId = request.getHeader("tenant_id");
+        if(tenantId != null) {
+            Set<DefaultPosition> positions = organizationService.getPositions(tenantId, new AggregateId(aggregateId));
+            if (positions != null && positions.size() > 0) {
+                Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
+                return new ResponseEntity<Set<DefaultPositionResource>>(positionResources, HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/{organizationUID}/position", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> addPosition(HttpServletRequest request, @RequestBody DefaultPositionResource positionResource, @PathVariable("organizationUID") String aggregateId) {
+        String tenantId = request.getHeader("tenant_id");
+        if(tenantId != null) {
+            DefaultPosition position = assemblerResolver.resolveEntityAssembler(DefaultPosition.class, DefaultPositionResource.class).toEntity(positionResource, DefaultPosition.class);
+            DefaultOrganization organization = null;
+            try {
+                organization = organizationService.addPosition(tenantId, new AggregateId(aggregateId), position);
+            } catch (DataIntegrityViolationException dive) {
+                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            DefaultOrganizationResource organizationResource = null;
+            if (organization != null) {
+                organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/{organizationUID}/position", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> updatePosition(HttpServletRequest request, @RequestBody DefaultPositionResource positionResource, @PathVariable("organizationUID") String aggregateId) {
+        String tenantId = request.getHeader("tenant_id");
+        if(tenantId != null) {
+            DefaultPosition position = assemblerResolver.resolveEntityAssembler(DefaultPosition.class, DefaultPositionResource.class).toEntity(positionResource, DefaultPosition.class);
+            DefaultOrganization organization = null;
+            try {
+                organization = organizationService.updatePosition(tenantId, new AggregateId(aggregateId), position);
+            } catch (DataIntegrityViolationException dive) {
+                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            DefaultOrganizationResource organizationResource = null;
+            if (organization != null) {
+                organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/organization/{organizationUid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -395,6 +458,28 @@ public class OrganizationController implements Organization{
             if (emails != null && emails.size() > 0) {
                 Set<DefaultEmailResource> emailResources = assemblerResolver.resolveResourceAssembler(DefaultEmailResource.class, DefaultEmail.class).toResources(emails, DefaultEmailResource.class);
                 return new ResponseEntity<Set<DefaultEmailResource>>(emailResources, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/organizationUnits/restructure", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnits(HttpServletRequest request, @RequestBody DefaultOrganizationResource organizationResource) {
+        String tenantId = request.getHeader("tenant_id");
+        if(tenantId != null) {
+            DefaultOrganization organization = null;
+            try {
+                organization = assemblerResolver.resolveEntityAssembler(DefaultOrganization.class, DefaultOrganizationResource.class).toEntity(organizationResource, DefaultOrganization.class);
+                organization = organizationService.restructureOrganizationUnits(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
+                if(organization != null) {
+                    organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                    return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.CREATED);
+                }
+            } catch (DataIntegrityViolationException dive) {
+                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);

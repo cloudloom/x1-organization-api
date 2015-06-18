@@ -5,6 +5,7 @@ import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 
 import java.util.List;
 import java.util.Set;
@@ -36,4 +37,8 @@ public interface DefaultOrganizationService {
 	public Set<DefaultPhone> getContactNumbers(String tenantId, AggregateId organizationAggregateId);
 	public Set<DefaultEmail> getEmails(String tenantId, AggregateId organizationAggregateId);
     public List<DefaultOrganization> findAll();
+    public DefaultOrganization addPosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position);
+    public DefaultOrganization updatePosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position);
+    public Set<DefaultPosition> getPositions(String tenantId, AggregateId organizationAggregateId);
+    public DefaultOrganization restructureOrganizationUnits(String tenantId, AggregateId organizationAggregateId, Set<DefaultOrganizationUnit> restructureOrganizationUnits);
 }
