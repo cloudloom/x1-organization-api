@@ -3,14 +3,32 @@ package com.tracebucket.x1.organization.api.rest.resource;
 import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.dictionary.api.domain.CurrencyType;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * Created by sadath on 16-Apr-15.
  */
 public class DefaultCurrencyResource extends BaseResource {
+
+    @NotNull
+    @Size(min = 1, max = 250)
+    //alhpabets only
     private String name;
+
+    @Size(min = 1, max = 200)
+    //alphabets only
     private String iso4217Code;
+
+    @Size(min = 1, max = 200)
+    //alphabets only
     private String subUnit110;
+
+    @Size(min = 1, max = 250)
+    //no restrictions
     private String image;
+
+
     private CurrencyType currencyType;
 
     public String getName() {

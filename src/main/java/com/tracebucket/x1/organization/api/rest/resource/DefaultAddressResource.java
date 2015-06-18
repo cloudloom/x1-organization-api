@@ -3,6 +3,7 @@ package com.tracebucket.x1.organization.api.rest.resource;
 import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.dictionary.api.domain.AddressType;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -34,11 +35,14 @@ public class DefaultAddressResource extends BaseResource {
     private String state;
     private String country;
 
+    @NotNull
     @Size(min = 1, max = 20)
     @Pattern(regexp = "^[a-zA-Z \\- \\/]*$")
     private String zip;
 
+    @NotNull
     private AddressType addressType;
+
     private boolean defaultAddress;
 
     public String getName() {

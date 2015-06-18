@@ -3,11 +3,20 @@ package com.tracebucket.x1.organization.api.rest.resource;
 
 import com.tracebucket.tron.assembler.BaseResource;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * Created by sadath on 31-Mar-15.
  */
 public class DefaultDepartmentResource extends BaseResource {
+    @NotNull
+    @Size(min = 1, max = 200)
+    //alhpabets only
     private String name;
+
+    @Size(min = 1, max = 255)
+    //alhpabets only
     private String description;
 
     public String getName() {

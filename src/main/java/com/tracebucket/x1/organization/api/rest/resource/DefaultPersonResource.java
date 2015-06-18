@@ -5,20 +5,50 @@ import com.tracebucket.x1.dictionary.api.domain.EmailType;
 import com.tracebucket.x1.dictionary.api.domain.Gender;
 import com.tracebucket.x1.dictionary.api.domain.PersonType;
 import com.tracebucket.x1.dictionary.api.domain.PhoneType;
+import org.hibernate.validator.constraints.Email;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 /**
  * Created by sadath on 16-Apr-15.
  */
 public class DefaultPersonResource extends BaseResource {
+
+    @NotNull
+    @Size(min = 1, max = 250)
+    //alhpabets only
     private String firstName;
+
+    @NotNull
+    @Size(min = 1, max = 250)
+    //alhpabets only
     private String lastName;
+
+    @Size(min = 1, max = 250)
+    //alhpabets only
+    private String middleName;
+
     private Date birthDay;
+
+    @NotNull
     private Gender gender;
+
+    @Size(min = 1, max = 250)
+    //no restritions check for png jpg
     private String image;
+
+    @NotNull
+    @Email
     private Map<String, EmailType> emails = new HashMap<String, EmailType>(0);
+
+    @NotNull
+    @Size(min = 1, max = 50)
+    //alhpabets only
     private Map<String, PhoneType> phones = new HashMap<String, PhoneType>(0);
+
+    @NotNull
     private Set<PersonType> personTypes = new HashSet<PersonType>();
     private boolean defaultContactPerson;
 

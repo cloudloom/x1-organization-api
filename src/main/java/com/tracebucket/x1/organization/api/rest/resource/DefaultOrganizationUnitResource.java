@@ -31,20 +31,12 @@ public class DefaultOrganizationUnitResource extends BaseResource {
 
     private Set<OrganizationFunction> organizationFunctions = new HashSet<OrganizationFunction>(0);
 
-    @NotNull
-    @Size(min = 10, max = 450)
     private Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
 
-    @NotNull
-    @Size(min = 3, max = 250)
     private Set<DefaultPersonResource> contactPersons = new HashSet<DefaultPersonResource>(0);
 
-    @NotNull
-    @Size(min = 1, max = 100)
     private Set<DefaultPhoneResource> phones = new HashSet<DefaultPhoneResource>(0);
 
-    @NotNull
-    @Size(min = 4, max = 250)
     private Set<DefaultEmailResource> emails = new HashSet<DefaultEmailResource>(0);
 
     private Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>(0);

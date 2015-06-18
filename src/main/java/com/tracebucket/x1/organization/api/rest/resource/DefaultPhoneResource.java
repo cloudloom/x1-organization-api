@@ -3,28 +3,39 @@ package com.tracebucket.x1.organization.api.rest.resource;
 import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.dictionary.api.domain.PhoneType;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * Created by sadath on 16-Apr-15.
  */
 public class DefaultPhoneResource extends BaseResource {
-    private Long number;
-    private Integer extension;
+
+    @Size(min = 1, max = 50)
+    //numbers () only + -
+    private String number;
+
+    @Size(min = 1, max = 20)
+    //numbers () -
+    private String extension;
+
+    @NotNull
     private PhoneType phoneType;
     private boolean defaultPhone;
 
-    public Long getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Long number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
-    public Integer getExtension() {
+    public String getExtension() {
         return extension;
     }
 
-    public void setExtension(Integer extension) {
+    public void setExtension(String extension) {
         this.extension = extension;
     }
 
