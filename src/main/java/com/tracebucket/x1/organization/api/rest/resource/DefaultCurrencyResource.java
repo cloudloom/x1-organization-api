@@ -4,6 +4,7 @@ import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.dictionary.api.domain.CurrencyType;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -13,19 +14,19 @@ public class DefaultCurrencyResource extends BaseResource {
 
     @NotNull
     @Size(min = 1, max = 250)
-    //alhpabets only
+    @Pattern(regexp = "^[A-Za-z]*$")
     private String name;
 
     @Size(min = 1, max = 200)
-    //alphabets only
+    @Pattern(regexp = "^[A-Za-z]*$")
     private String iso4217Code;
 
     @Size(min = 1, max = 200)
-    //alphabets only
+    @Pattern(regexp = "^[A-Za-z]*$")
     private String subUnit110;
 
     @Size(min = 1, max = 250)
-    //no restrictions
+    @Pattern(regexp = "([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)")
     private String image;
 
 

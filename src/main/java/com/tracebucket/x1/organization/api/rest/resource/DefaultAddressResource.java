@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 public class DefaultAddressResource extends BaseResource {
 
     @Size(min = 1, max = 250)
-    @Pattern(regexp = "^[a-zA-Z \\- \\/ \\@]*$")
+    @Pattern(regexp = "^[a-zA-Z\\-/@&]*$")
     private String name;
 
     @Size(min = 1, max = 250)
@@ -37,10 +37,9 @@ public class DefaultAddressResource extends BaseResource {
 
     @NotNull
     @Size(min = 1, max = 20)
-    @Pattern(regexp = "^[a-zA-Z \\- \\/]*$")
+    @Pattern(regexp = "^[a-zA-Z0-9\\-/]*$")
     private String zip;
 
-    @NotNull
     private AddressType addressType;
 
     private boolean defaultAddress;

@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
  */
 public class DefaultEmailResource extends BaseResource {
     @Size(min = 1, max = 250)
-    @Email
+    @Email(regexp = "^[\\\\w!#$%&’*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$")
     private String email;
 
     private EmailType emailType;

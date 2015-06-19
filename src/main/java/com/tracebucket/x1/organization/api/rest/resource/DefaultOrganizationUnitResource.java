@@ -18,10 +18,10 @@ public class DefaultOrganizationUnitResource extends BaseResource {
 
     @NotNull
     @Size(min = 1, max = 250)
-    @Pattern(regexp = "^[a-zA-Z \\- \\/ \\@]*$")
+    @Pattern(regexp = "^[a-zA-Z \\-/@&]*$")
     private String name;
 
-    @Size(min = 0, max = 500)
+    @Size(min = 0, max = 255)
     private String description;
 
     private DefaultOrganizationResource organization;

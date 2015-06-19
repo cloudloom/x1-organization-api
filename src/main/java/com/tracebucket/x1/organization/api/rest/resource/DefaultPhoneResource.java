@@ -4,6 +4,7 @@ import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.dictionary.api.domain.PhoneType;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -12,14 +13,13 @@ import javax.validation.constraints.Size;
 public class DefaultPhoneResource extends BaseResource {
 
     @Size(min = 1, max = 50)
-    //numbers () only + -
+    @Pattern(regexp = "^[0-9 \\-()+]*$")//numbers () only + -
     private String number;
 
     @Size(min = 1, max = 20)
-    //numbers () -
+    @Pattern(regexp = "^[0-9 \\-()]*$")//numbers () -
     private String extension;
 
-    @NotNull
     private PhoneType phoneType;
     private boolean defaultPhone;
 

@@ -22,16 +22,18 @@ public class DefaultOrganizationResource extends BaseResource {
 
     @NotNull
     @Size(min = 1, max = 250)
-    @Pattern(regexp = "^[a-zA-Z \\- \\/ \\@\\&]*$")//alphanumeric @ - &
+    @Pattern(regexp = "^[a-zA-Z0-9\\-@&]*$")//alphanumeric @ - &
     private String name;
 
-    @Size(min = 0, max = 500)
+    @Size(min = 0, max = 255)
     private String description;
 
     @Size(min = 2, max = 250)
     @URL
     private String website;
 
+    @Size(min = 1, max = 250)
+    @Pattern(regexp = "([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)")
     protected String image;
 
     private Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);

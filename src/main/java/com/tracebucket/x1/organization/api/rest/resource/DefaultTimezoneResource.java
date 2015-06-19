@@ -4,6 +4,7 @@ import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.dictionary.api.domain.TimezoneType;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -13,17 +14,18 @@ public class DefaultTimezoneResource extends BaseResource {
 
     @NotNull
     @Size(min = 1, max = 250)
-    //alphanumeric + - () :
+    @Pattern(regexp = "^[A-Za-z0-9\\-+()]*$")//alphanumeric + - () :
     private String name;
 
     @Size(min = 1, max = 5)
-    //alphanumeric + - () :
+    @Pattern(regexp = "^[A-Za-z0-9\\-+()]*$")//alphanumeric + - () :
     private String abbreviation;
 
-    //alphanumeric +/-
+    @Pattern(regexp = "^[A-Za-z0-9\\-+/]*$")
     private Integer utcOffset;
 
-
+    @Size(min = 1, max = 250)
+    @Pattern(regexp = "([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)")
     private String image;
 
     private TimezoneType timezoneType;
