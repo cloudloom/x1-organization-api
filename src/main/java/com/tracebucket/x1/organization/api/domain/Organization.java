@@ -112,5 +112,8 @@ public interface Organization extends Serializable{
 
     void setEmails(Set<DefaultEmail> emails);
 
-    void restructureOrganizationUnits(boolean rootOrganizationUnit, String parentOrganizationUnitUid, String childOrganizationUnitUid);
+    void restructureOrganizationUnits(String rootOrganizationUnit, String parentOrganizationUnitUid, String childOrganizationUnitUid);
+
+    void restructureOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits);
+
 }

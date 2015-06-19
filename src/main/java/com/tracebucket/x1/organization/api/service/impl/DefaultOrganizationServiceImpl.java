@@ -346,8 +346,8 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                         Set<DefaultOrganizationUnit> children = organizationUnit.getChildren();
                         if(children != null && children.size() > 0) {
                             children.parallelStream().forEach(child -> {
-                                organization.restructureOrganizationUnits(true, organizationUnit.getEntityId().getId(), child.getEntityId().getId());
-                                restructure(organization, child);
+                                organization.restructureOrganizationUnits(null, organizationUnit.getEntityId().getId(), child.getEntityId().getId());
+                                restructure(organization, organizationUnit, child);
                             });
                         }
                     });
@@ -357,6 +357,19 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         }
         return null;
     }
+
+    @Override
+    public DefaultOrganization restructureOrganizationUnits2(String tenantId, AggregateId organizationAggregateId, Set<DefaultOrganizationUnit> organizationUnits) {
+        if (tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.restructureOrganizationUnits(organizationUnits);
+                return organization;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public DefaultPosition getPosition(String tenantId, AggregateId organizationAggregateId, EntityId positionEntityId) {
@@ -369,12 +382,12 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         return null;
     }
 
-    private void restructure(DefaultOrganization organization, DefaultOrganizationUnit childOrganizationUnit) {
+    private void restructure(DefaultOrganization organization, DefaultOrganizationUnit parentOrganizationUnit, DefaultOrganizationUnit childOrganizationUnit) {
         Set<DefaultOrganizationUnit> children = childOrganizationUnit.getChildren();
         if(children != null && children.size() > 0) {
             children.parallelStream().forEach(child -> {
-                organization.restructureOrganizationUnits(false, childOrganizationUnit.getEntityId().getId(), child.getEntityId().getId());
-                restructure(organization, child);
+                organization.restructureOrganizationUnits(parentOrganizationUnit.getEntityId().getId(), childOrganizationUnit.getEntityId().getId(), child.getEntityId().getId());
+                restructure(organization, parentOrganizationUnit, child);
             });
         }
     }
