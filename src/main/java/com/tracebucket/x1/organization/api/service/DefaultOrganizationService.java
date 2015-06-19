@@ -41,4 +41,5 @@ public interface DefaultOrganizationService {
     public DefaultOrganization updatePosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position);
     public Set<DefaultPosition> getPositions(String tenantId, AggregateId organizationAggregateId);
     public DefaultOrganization restructureOrganizationUnits(String tenantId, AggregateId organizationAggregateId, Set<DefaultOrganizationUnit> restructureOrganizationUnits);
+    public DefaultPosition getPosition(String tenantId, AggregateId organizationAggregateId, EntityId positionEntityId);
 }

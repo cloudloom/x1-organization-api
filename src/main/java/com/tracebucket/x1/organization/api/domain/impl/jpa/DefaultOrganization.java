@@ -2,6 +2,7 @@ package com.tracebucket.x1.organization.api.domain.impl.jpa;
 
 import com.tracebucket.tron.ddd.annotation.DomainMethod;
 import com.tracebucket.tron.ddd.domain.BaseAggregateRoot;
+import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.AddressType;
 import com.tracebucket.x1.dictionary.api.domain.CurrencyType;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
@@ -346,6 +347,16 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Override
     public Set<DefaultPosition> getPositions() {
         return this.positions;
+    }
+
+    @Override
+    public DefaultPosition getPosition(EntityId positionEntityId) {
+        DefaultPosition position =
+                positions.parallelStream()
+                        .filter(t -> t.getEntityId().getId().equals(positionEntityId.getId()))
+                        .findFirst()
+                        .orElse(null);
+        return position;
     }
 
     @Override

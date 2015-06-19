@@ -165,6 +165,23 @@ public class OrganizationController implements Organization{
     }
 
     @Override
+    @RequestMapping(value = "/organization/{organizationUID}/position/{positionUID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultPositionResource> getPosition(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId, @PathVariable("entityUID") String entityId) {
+        String tenantId = request.getHeader("tenant_id");
+        if(tenantId != null) {
+            DefaultPosition position = organizationService.getPosition(tenantId, new AggregateId(aggregateId), new EntityId(entityId));
+            if (position != null) {
+                DefaultPositionResource positionResource = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResource(position, DefaultPositionResource.class);
+                return new ResponseEntity<DefaultPositionResource>(positionResource, HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Override
     @RequestMapping(value = "/organization/{organizationUID}/position", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> updatePosition(HttpServletRequest request, @RequestBody DefaultPositionResource positionResource, @PathVariable("organizationUID") String aggregateId) {
         String tenantId = request.getHeader("tenant_id");

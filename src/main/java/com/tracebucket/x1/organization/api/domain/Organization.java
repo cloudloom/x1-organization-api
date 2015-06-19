@@ -1,5 +1,6 @@
 package com.tracebucket.x1.organization.api.domain;
 
+import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
@@ -84,6 +85,8 @@ public interface Organization extends Serializable{
 	Set<DefaultCurrency> getCurrencies();
 
     Set<DefaultPosition> getPositions();
+
+    DefaultPosition getPosition(EntityId positionEntityId);
 
     void setCode(String code);
 

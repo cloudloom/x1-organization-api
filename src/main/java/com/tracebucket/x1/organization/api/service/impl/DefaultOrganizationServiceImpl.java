@@ -358,6 +358,17 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         return null;
     }
 
+    @Override
+    public DefaultPosition getPosition(String tenantId, AggregateId organizationAggregateId, EntityId positionEntityId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                return organization.getPosition(positionEntityId);
+            }
+        }
+        return null;
+    }
+
     private void restructure(DefaultOrganization organization, DefaultOrganizationUnit childOrganizationUnit) {
         Set<DefaultOrganizationUnit> children = childOrganizationUnit.getChildren();
         if(children != null && children.size() > 0) {

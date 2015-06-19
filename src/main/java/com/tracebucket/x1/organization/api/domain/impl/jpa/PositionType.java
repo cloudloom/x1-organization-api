@@ -1,5 +1,7 @@
 package com.tracebucket.x1.organization.api.domain.impl.jpa;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -7,6 +9,7 @@ import javax.persistence.Embeddable;
  * @author ffazil
  * @since 17/05/15
  */
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum PositionType {
     TOP_LEVEL_EXECUTIVES("Top Level Executives", "TOP LEVEL EXECUTIVES"),
     MID_LEVEL_EXECUTIVES("Mid Level Executives", "MID LEVEL EXECUTIVES"),
