@@ -12,7 +12,10 @@ import org.dozer.Mapper;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -419,7 +422,38 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
 
     @Override
     @DomainMethod(event = "RestructureOrganizationUnits")
-    public void restructureOrganizationUnits(boolean rootOrganizationUnit, String parentOrganizationUnitUid, String childOrganizationUnitUid) {
+    public void restructureOrganizationUnits(String rootOrganizationUnit, String parentOrganizationUnitUid, String childOrganizationUnitUid) {
+        DefaultOrganizationUnit root = null, parent = null, child = null;
+        List<DefaultOrganizationUnit> fetchedOrganizationUnits = organizationUnits.parallelStream()
+                    .filter(t -> t.getEntityId().getId().equals(parentOrganizationUnitUid)
+                            || t.getEntityId().getId().equals(childOrganizationUnitUid)
+                            || rootOrganizationUnit != null && t.getEntityId().getId().equals(rootOrganizationUnit))
+                    .collect(Collectors.toList());
+        if(fetchedOrganizationUnits != null && fetchedOrganizationUnits.size() > 0) {
+            for(DefaultOrganizationUnit organizationUnit : fetchedOrganizationUnits) {
+                if(rootOrganizationUnit != null && organizationUnit.getEntityId().getId().equals(rootOrganizationUnit)) {
+                    root = organizationUnit;
+                } else if(organizationUnit.getEntityId().getId().equals(parentOrganizationUnitUid)) {
+                    parent = organizationUnit;
+                } else if(organizationUnit.getEntityId().getId().equals(childOrganizationUnitUid)) {
+                    child = organizationUnit;
+                }
+            }
+        }
+        if(parent != null && child != null) {
+            child.setParent(parent);
+            if(root != null) {
+                parent.setParent(root);
+            } else {
+                parent.setParent(null);
+            }
+        }
+    }
 
+    @Override
+    @DomainMethod(event = "RestructureOrganizationUnits")
+    public void restructureOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits) {
+        this.getOrganizationUnits().clear();
+        this.getOrganizationUnits().addAll(organizationUnits);
     }
 }

@@ -180,8 +180,8 @@ public class OrganizationController implements Organization{
     }
 
     @Override
-    @RequestMapping(value = "/organization/{organizationUID}/position", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> updatePosition(HttpServletRequest request, @RequestBody DefaultPositionResource positionResource, @PathVariable("organizationUID") String aggregateId) {
+    @RequestMapping(value = "/organization/{organizationUID}/position/{positionUID}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> updatePosition(HttpServletRequest request, @RequestBody DefaultPositionResource positionResource, @PathVariable("organizationUID") String aggregateId, @PathVariable("positionUID") String entityId) {
         String tenantId = request.getHeader("tenant_id");
         if(tenantId != null) {
             DefaultPosition position = assemblerResolver.resolveEntityAssembler(DefaultPosition.class, DefaultPositionResource.class).toEntity(positionResource, DefaultPosition.class);
@@ -489,6 +489,7 @@ public class OrganizationController implements Organization{
             try {
                 organization = assemblerResolver.resolveEntityAssembler(DefaultOrganization.class, DefaultOrganizationResource.class).toEntity(organizationResource, DefaultOrganization.class);
                 organization = organizationService.restructureOrganizationUnits(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
+                //organization = organizationService.restructureOrganizationUnits2(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
                 if(organization != null) {
                     organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
                     return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.CREATED);
