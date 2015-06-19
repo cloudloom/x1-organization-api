@@ -166,7 +166,7 @@ public class OrganizationController implements Organization{
 
     @Override
     @RequestMapping(value = "/organization/{organizationUID}/position/{positionUID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultPositionResource> getPosition(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId, @PathVariable("entityUID") String entityId) {
+    public ResponseEntity<DefaultPositionResource> getPosition(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId, @PathVariable("positionUID") String entityId) {
         String tenantId = request.getHeader("tenant_id");
         if(tenantId != null) {
             DefaultPosition position = organizationService.getPosition(tenantId, new AggregateId(aggregateId), new EntityId(entityId));
