@@ -3,8 +3,6 @@ package com.tracebucket.x1.organization.api.rest.resource;
 
 import com.tracebucket.tron.assembler.BaseResource;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 

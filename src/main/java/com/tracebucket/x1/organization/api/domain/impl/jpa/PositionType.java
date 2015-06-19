@@ -2,9 +2,6 @@ package com.tracebucket.x1.organization.api.domain.impl.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
 /**
  * @author ffazil
  * @since 17/05/15
