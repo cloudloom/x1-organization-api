@@ -17,7 +17,7 @@ public class DefaultPosition extends BaseEntity implements Position{
     @Basic(fetch = FetchType.EAGER)
     private String name;
 
-    @Column(name = "POSITION_TYPE", nullable = false, columnDefinition = "ENUM('TOP LEVEL EXECUTIVES', 'MID LEVEL EXECUTIVES', 'MANAGERIAL', 'FRONT OFFICE', 'Back Office', 'FIELD STAFF', 'SUPPORT STAFF') default 'SUPPORT STAFF'")
+    @Column(name = "POSITION_TYPE", nullable = false, columnDefinition = "ENUM('TOP_LEVEL_EXECUTIVES', 'MID_LEVEL_EXECUTIVES', 'MANAGERIAL', 'FRONT_OFFICE', 'BACK_OFFICE', 'FIELD_STAFF', 'SUPPORT_STAFF') default 'SUPPORT_STAFF'")
     @Enumerated(EnumType.STRING)
     private PositionType positionType;
 
