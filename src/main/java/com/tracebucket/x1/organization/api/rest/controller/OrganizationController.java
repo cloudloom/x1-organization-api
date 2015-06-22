@@ -142,10 +142,10 @@ public class OrganizationController implements Organization{
 
     @Override
     @RequestMapping(value = "/organization/{organizationUID}/position", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> addPosition(HttpServletRequest request, @RequestBody DefaultPositionResource positionResource, @PathVariable("organizationUID") String aggregateId) {
+    public ResponseEntity<DefaultOrganizationResource> addPosition(HttpServletRequest request, @RequestBody List<DefaultPositionResource> positionResource, @PathVariable("organizationUID") String aggregateId) {
         String tenantId = request.getHeader("tenant_id");
         if(tenantId != null) {
-            DefaultPosition position = assemblerResolver.resolveEntityAssembler(DefaultPosition.class, DefaultPositionResource.class).toEntity(positionResource, DefaultPosition.class);
+            Set<DefaultPosition> position = assemblerResolver.resolveEntityAssembler(DefaultPosition.class, DefaultPositionResource.class).toEntities(positionResource, DefaultPosition.class);
             DefaultOrganization organization = null;
             try {
                 organization = organizationService.addPosition(tenantId, new AggregateId(aggregateId), position);

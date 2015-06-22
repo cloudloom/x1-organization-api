@@ -50,7 +50,7 @@ public interface Organization extends Serializable{
 
 	void moveHeadOfficeTo(DefaultAddress newHeadOfficeAddress);
 
-    void addPosition(DefaultPosition position);
+    void addPosition(Set<DefaultPosition> position);
 
     void updatePosition(DefaultPosition position, Mapper mapper);
 

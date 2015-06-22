@@ -303,7 +303,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addPosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position) {
+    public DefaultOrganization addPosition(String tenantId, AggregateId organizationAggregateId, Set<DefaultPosition> position) {
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
             if (organization != null) {
