@@ -3,9 +3,7 @@ package com.tracebucket.x1.organization.api.rest.resource;
 import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.dictionary.api.domain.TimezoneType;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 /**
  * Created by sadath on 16-Apr-15.
@@ -21,7 +19,8 @@ public class DefaultTimezoneResource extends BaseResource {
     @Pattern(regexp = "^[A-Za-z0-9\\-+()]*$")//alphanumeric + - () :
     private String abbreviation;
 
-    @Pattern(regexp = "^[A-Za-z0-9\\-+/]*$")
+    @Min(-12)
+    @Max(14)
     private Integer utcOffset;
 
     @Size(min = 1, max = 250)

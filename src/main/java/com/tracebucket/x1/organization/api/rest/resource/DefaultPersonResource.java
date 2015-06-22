@@ -7,6 +7,7 @@ import com.tracebucket.x1.dictionary.api.domain.PersonType;
 import com.tracebucket.x1.dictionary.api.domain.PhoneType;
 import org.hibernate.validator.constraints.Email;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;

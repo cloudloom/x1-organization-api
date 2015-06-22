@@ -3,7 +3,9 @@ package com.tracebucket.x1.organization.api.rest.resource;
 import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.dictionary.api.domain.EmailType;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -11,7 +13,7 @@ import javax.validation.constraints.Size;
  */
 public class DefaultEmailResource extends BaseResource {
     @Size(min = 1, max = 250)
-    @Email(regexp = "^[\\\\w!#$%&’*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$")
+    @Email
     private String email;
 
     private EmailType emailType;
