@@ -4,9 +4,11 @@ import com.tracebucket.tron.ddd.annotation.PersistChanges;
 import com.tracebucket.tron.ddd.domain.AggregateId;
 import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
+import com.tracebucket.x1.organization.api.domain.Position;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
 import com.tracebucket.x1.organization.api.repository.jpa.DefaultOrganizationRepository;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
 import org.dozer.Mapper;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -380,6 +383,11 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
             }
         }
         return null;
+    }
+
+    @Override
+    public PositionType[] getPositionTypes(String tenantId) {
+        return PositionType.values();
     }
 
     private void restructure(DefaultOrganization organization, DefaultOrganizationUnit parentOrganizationUnit, DefaultOrganizationUnit childOrganizationUnit) {

@@ -8,6 +8,7 @@ import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
 import org.slf4j.Logger;
@@ -171,6 +172,22 @@ public class OrganizationController implements Organization{
             if (position != null) {
                 DefaultPositionResource positionResource = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResource(position, DefaultPositionResource.class);
                 return new ResponseEntity<DefaultPositionResource>(positionResource, HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/position/types", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PositionType[]> getPositionTypes(HttpServletRequest request) {
+        String tenantId = request.getHeader("tenant_id");
+        if(tenantId != null) {
+            PositionType positionTypes[] = organizationService.getPositionTypes(tenantId);
+            if (positionTypes != null) {
+                return new ResponseEntity<PositionType[]>(positionTypes, HttpStatus.OK);
             } else {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
