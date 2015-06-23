@@ -71,8 +71,9 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<DefaultOrganizationUnit> children = new HashSet<DefaultOrganizationUnit>(0);
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "ORGANIZATION_UNIT__ID")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "ORGANIZATION_UNIT_POSITION", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "POSITION__ID", referencedColumnName = "ID"))
     private Set<DefaultPosition> positions = new HashSet<DefaultPosition>(0);
 
  /*   @OneToMany(mappedBy="organizationUnit", fetch = FetchType.EAGER)
