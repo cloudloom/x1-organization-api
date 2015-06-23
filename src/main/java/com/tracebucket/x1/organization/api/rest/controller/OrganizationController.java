@@ -198,7 +198,7 @@ public class OrganizationController implements Organization{
     }
 
     @Override
-    @RequestMapping(value = "/organization/{organizationUID}/organizationUnit/{organizationUnitUID}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/organization/{organizationUID}/organizationUnit/{organizationUnitUID}/position", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addPositionToOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUID") AggregateId organizationAggregateId, @PathVariable("organizationUnitUID") EntityId organizationUnitEntityId, @RequestBody List<String> positions) {
         String tenantId = request.getHeader("tenant_id");
         if(tenantId != null) {
@@ -214,7 +214,7 @@ public class OrganizationController implements Organization{
     }
 
     @Override
-    @RequestMapping(value = "/organization/{organizationUID}/organizationUnits/{organizationUnitUID}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/organization/{organizationUID}/organizationUnits/{organizationUnitUID}/position", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> updatePositionsOfOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUID") AggregateId organizationAggregateId, @PathVariable("organizationUnitUID") EntityId organizationUnitEntityId, @RequestBody List<String> positions) {
         String tenantId = request.getHeader("tenant_id");
         if(tenantId != null) {
@@ -230,7 +230,7 @@ public class OrganizationController implements Organization{
     }
 
     @Override
-    @RequestMapping(value = "/organization/{organizationUID}/organizationUnit/{organizationUnitUID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/organization/{organizationUID}/organizationUnit/{organizationUnitUID}/positions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultPositionResource>> getPositionsOfOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUID") AggregateId organizationAggregateId, @PathVariable("organizationUnitUID") EntityId organizationUnitEntityId) {
         String tenantId = request.getHeader("tenant_id");
         if(tenantId != null) {
