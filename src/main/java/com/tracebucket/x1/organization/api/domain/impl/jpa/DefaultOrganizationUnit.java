@@ -71,6 +71,10 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<DefaultOrganizationUnit> children = new HashSet<DefaultOrganizationUnit>(0);
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ORGANIZATION_UNIT__ID")
+    private Set<DefaultPosition> positions = new HashSet<DefaultPosition>(0);
+
  /*   @OneToMany(mappedBy="organizationUnit", fetch = FetchType.EAGER)
     private Set<SaleChannel> saleChannels = new HashSet<SaleChannel>(0);*/
 
@@ -132,12 +136,6 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     public DefaultOrganizationUnit department(DefaultDepartment department) {
         this.departments.add(department);
         return this;
-    }
-
-    @Override
-    public Boolean hasSaleChannels() {
-       //TODO
-        return null;
     }
 
     @Override
@@ -249,5 +247,13 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
 
     public void setChildren(Set<DefaultOrganizationUnit> children) {
         this.children = children;
+    }
+
+    public Set<DefaultPosition> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(Set<DefaultPosition> positions) {
+        this.positions = positions;
     }
 }

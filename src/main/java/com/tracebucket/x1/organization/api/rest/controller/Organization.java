@@ -1,5 +1,9 @@
 package com.tracebucket.x1.organization.api.rest.controller;
 
+import com.tracebucket.tron.ddd.domain.AggregateId;
+import com.tracebucket.tron.ddd.domain.EntityId;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import org.springframework.http.ResponseEntity;
@@ -40,4 +44,8 @@ public interface Organization {
     public ResponseEntity<DefaultOrganizationResource> updatePosition(HttpServletRequest request, DefaultPositionResource position, String aggregateId, String entityId);
     public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnits(HttpServletRequest request, DefaultOrganizationResource organizationResource);
     public ResponseEntity<PositionType[]> getPositionTypes(HttpServletRequest request);
+    public ResponseEntity<DefaultOrganizationResource> addPositionToOrganizationUnit(HttpServletRequest request, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, List<String> positions);
+    public ResponseEntity<DefaultOrganizationResource> updatePositionsOfOrganizationUnit(HttpServletRequest request, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, List<String> positions);
+    public ResponseEntity<Set<DefaultPositionResource>> getPositionsOfOrganizationUnit(HttpServletRequest request, AggregateId organizationAggregateId, EntityId organizationUnitEntityId);
+
 }

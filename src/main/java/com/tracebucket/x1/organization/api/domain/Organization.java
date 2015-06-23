@@ -54,6 +54,12 @@ public interface Organization extends Serializable{
 
     void updatePosition(DefaultPosition position, Mapper mapper);
 
+    void addPositionToOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultPosition> position);
+
+    void updatePositionsOfOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultPosition> position);
+
+    Set<DefaultPosition>  getPositionsOfOrganizationUnit(EntityId organizationUnitEntityId);
+
     String getCode();
 
 	String getName();

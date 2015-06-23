@@ -316,6 +316,28 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization addPositionToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> positions) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                Set<DefaultPosition> positions1 = organization.getPositions();
+                if(positions1 != null) {
+                    Set<DefaultPosition> position = new HashSet<DefaultPosition>();
+                    positions1.stream().forEach(p -> {
+                        if(positions.contains(p.getEntityId().getId())) {
+                            position.add(p);
+                        }
+                    });
+                    organization.addPositionToOrganizationUnit(organizationUnitEntityId, position);
+                    return organization;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
     public DefaultOrganization updatePosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position) {
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
@@ -328,11 +350,44 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     }
 
     @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization updatePositionsOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> positions) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                Set<DefaultPosition> positions1 = organization.getPositions();
+                if(positions1 != null) {
+                    Set<DefaultPosition> position = new HashSet<DefaultPosition>();
+                    positions1.stream().forEach(p -> {
+                        if(positions.contains(p.getEntityId().getId())) {
+                            position.add(p);
+                        }
+                    });
+                    organization.updatePositionsOfOrganizationUnit(organizationUnitEntityId, position);
+                    return organization;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public Set<DefaultPosition> getPositions(String tenantId, AggregateId organizationAggregateId) {
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
             if (organization != null) {
                 return organization.getPositions();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Set<DefaultPosition> getPositionsOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                return organization.getPositionsOfOrganizationUnit(organizationUnitEntityId);
             }
         }
         return null;

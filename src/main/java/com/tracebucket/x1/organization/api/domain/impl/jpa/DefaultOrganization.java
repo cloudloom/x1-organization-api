@@ -257,6 +257,66 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
+    @DomainMethod(event = "AddPositionToOrganizationUnit")
+    public void addPositionToOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultPosition> position) {
+        Set<DefaultOrganizationUnit> organizationUnits = this.organizationUnits;
+        if(organizationUnits != null) {
+            DefaultOrganizationUnit fetchedOrganizationUnit = organizationUnits.stream()
+                    .filter(organizationUnit -> organizationUnit.getEntityId().getId().equals(organizationUnitEntityId.getId()))
+                    .findFirst()
+                    .orElse(null);
+            if(fetchedOrganizationUnit != null) {
+                fetchedOrganizationUnit.getPositions().addAll(position);
+            }
+        }
+    }
+
+    @Override
+    @DomainMethod(event = "UpdatePositionsOfOrganizationUnit")
+    public void updatePositionsOfOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultPosition> position) {
+        Set<DefaultOrganizationUnit> organizationUnits = this.organizationUnits;
+        if(organizationUnits != null) {
+            DefaultOrganizationUnit fetchedOrganizationUnit = organizationUnits.stream()
+                    .filter(organizationUnit -> organizationUnit.getEntityId().getId().equals(organizationUnitEntityId.getId()))
+                    .findFirst()
+                    .orElse(null);
+            if(fetchedOrganizationUnit != null) {
+                Set<DefaultPosition> positions1 = fetchedOrganizationUnit.getPositions();
+                if(positions1 != null) {
+                    positions1.stream().forEach(p -> {
+                        if(position != null && !position.contains(p)) {
+                            positions1.remove(p);
+                        }
+                    });
+                }
+                if(position != null) {
+                    position.stream().forEach(p -> {
+                        if(!positions1.contains(p)) {
+                            positions1.add(p);
+                        }
+                    });
+                }
+            }
+
+        }
+    }
+
+    @Override
+    public Set<DefaultPosition> getPositionsOfOrganizationUnit(EntityId organizationUnitEntityId) {
+        Set<DefaultOrganizationUnit> organizationUnits = this.organizationUnits;
+        if(organizationUnits != null) {
+            DefaultOrganizationUnit fetchedOrganizationUnit = organizationUnits.stream()
+                    .filter(organizationUnit -> organizationUnit.getEntityId().getId().equals(organizationUnitEntityId.getId()))
+                    .findFirst()
+                    .orElse(null);
+            if(fetchedOrganizationUnit != null) {
+                return fetchedOrganizationUnit.getPositions();
+            }
+        }
+        return null;
+    }
+
+    @Override
     public String getCode() {
         return code;
     }

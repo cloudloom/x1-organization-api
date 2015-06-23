@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -188,6 +189,55 @@ public class OrganizationController implements Organization{
             PositionType positionTypes[] = organizationService.getPositionTypes(tenantId);
             if (positionTypes != null) {
                 return new ResponseEntity<PositionType[]>(positionTypes, HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/{organizationUID}/organizationUnit/{organizationUnitUID}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> addPositionToOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUID") AggregateId organizationAggregateId, @PathVariable("organizationUnitUID") EntityId organizationUnitEntityId, @RequestBody List<String> positions) {
+        String tenantId = request.getHeader("tenant_id");
+        if(tenantId != null) {
+            DefaultOrganization organization = organizationService.addPositionToOrganizationUnit(tenantId, organizationAggregateId, organizationUnitEntityId, new HashSet<>(positions));
+            if (organization != null) {
+                DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/{organizationUID}/organizationUnits/{organizationUnitUID}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> updatePositionsOfOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUID") AggregateId organizationAggregateId, @PathVariable("organizationUnitUID") EntityId organizationUnitEntityId, @RequestBody List<String> positions) {
+        String tenantId = request.getHeader("tenant_id");
+        if(tenantId != null) {
+            DefaultOrganization organization = organizationService.updatePositionsOfOrganizationUnit(tenantId, organizationAggregateId, organizationUnitEntityId, new HashSet<>(positions));
+            if (organization != null) {
+                DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/{organizationUID}/organizationUnit/{organizationUnitUID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<DefaultPositionResource>> getPositionsOfOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUID") AggregateId organizationAggregateId, @PathVariable("organizationUnitUID") EntityId organizationUnitEntityId) {
+        String tenantId = request.getHeader("tenant_id");
+        if(tenantId != null) {
+            Set<DefaultPosition> positions = organizationService.getPositionsOfOrganizationUnit(tenantId, organizationAggregateId, organizationUnitEntityId);
+            if (positions != null && positions.size() > 0) {
+                Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
+                return new ResponseEntity<Set<DefaultPositionResource>>(positionResources, HttpStatus.OK);
             } else {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
@@ -505,8 +555,8 @@ public class OrganizationController implements Organization{
             DefaultOrganization organization = null;
             try {
                 organization = assemblerResolver.resolveEntityAssembler(DefaultOrganization.class, DefaultOrganizationResource.class).toEntity(organizationResource, DefaultOrganization.class);
-                organization = organizationService.restructureOrganizationUnits(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
-                //organization = organizationService.restructureOrganizationUnits2(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
+                //organization = organizationService.restructureOrganizationUnits(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
+                organization = organizationService.restructureOrganizationUnits2(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
                 if(organization != null) {
                     organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
                     return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.CREATED);
