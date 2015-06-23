@@ -18,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Vishwajit on 15-04-2015.
@@ -443,6 +441,24 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     @Override
     public PositionType[] getPositionTypes(String tenantId) {
         return PositionType.values();
+    }
+
+    @Override
+    public Map<String, Set<DefaultPosition>> getOrganizationUnitPositions(String tenantId, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            Map<String, Set<DefaultPosition>> organizationUnitPositions = new HashMap<String, Set<DefaultPosition>>();
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+                if(organizationUnits != null) {
+                    organizationUnits.stream().forEach(organizationUnit -> {
+                        organizationUnitPositions.put(organizationUnit.getEntityId().getId(), organizationUnit.getPositions());
+                    });
+                }
+                return organizationUnitPositions;
+            }
+        }
+        return null;
     }
 
     private void restructure(DefaultOrganization organization, DefaultOrganizationUnit parentOrganizationUnit, DefaultOrganizationUnit childOrganizationUnit) {

@@ -9,6 +9,7 @@ import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -48,4 +49,5 @@ public interface DefaultOrganizationService {
     public DefaultOrganization restructureOrganizationUnits2(String tenantId, AggregateId organizationAggregateId, Set<DefaultOrganizationUnit> organizationUnits);
     public DefaultPosition getPosition(String tenantId, AggregateId organizationAggregateId, EntityId positionEntityId);
     public PositionType[] getPositionTypes(String tenantId);
+    public Map<String, Set<DefaultPosition>> getOrganizationUnitPositions(String tenantId, AggregateId organizationAggregateId);
 }

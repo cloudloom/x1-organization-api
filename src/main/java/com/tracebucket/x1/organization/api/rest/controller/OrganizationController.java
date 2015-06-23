@@ -21,9 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by sadath on 10-Feb-15.
@@ -133,6 +131,26 @@ public class OrganizationController implements Organization{
             if (positions != null && positions.size() > 0) {
                 Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
                 return new ResponseEntity<Set<DefaultPositionResource>>(positionResources, HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/{organizationUID}/organizationUnits/positions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Set<DefaultPositionResource>>> getOrganizationUnitPositions(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId) {
+        String tenantId = request.getHeader("tenant_id");
+        if(tenantId != null) {
+            Map<String, Set<DefaultPositionResource>> positionResources = new HashMap<>();
+            Map<String, Set<DefaultPosition>> positions = organizationService.getOrganizationUnitPositions(tenantId, new AggregateId(aggregateId));
+            if (positions != null && positions.size() > 0) {
+                positions.entrySet().stream().forEach(p -> {
+                    positionResources.put(p.getKey(), assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(p.getValue(), DefaultPositionResource.class));
+                });
+                return new ResponseEntity<Map<String, Set<DefaultPositionResource>>>(positionResources, HttpStatus.OK);
             } else {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }

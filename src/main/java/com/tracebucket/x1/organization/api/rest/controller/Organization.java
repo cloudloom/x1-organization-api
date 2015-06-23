@@ -7,9 +7,11 @@ import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -47,5 +49,5 @@ public interface Organization {
     public ResponseEntity<DefaultOrganizationResource> addPositionToOrganizationUnit(HttpServletRequest request, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, List<String> positions);
     public ResponseEntity<DefaultOrganizationResource> updatePositionsOfOrganizationUnit(HttpServletRequest request, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, List<String> positions);
     public ResponseEntity<Set<DefaultPositionResource>> getPositionsOfOrganizationUnit(HttpServletRequest request, AggregateId organizationAggregateId, EntityId organizationUnitEntityId);
-
+    public ResponseEntity<Map<String, Set<DefaultPositionResource>>> getOrganizationUnitPositions(HttpServletRequest request, String aggregateId);
 }
