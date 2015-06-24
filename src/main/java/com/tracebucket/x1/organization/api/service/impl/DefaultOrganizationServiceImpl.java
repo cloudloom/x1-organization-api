@@ -4,6 +4,7 @@ import com.tracebucket.tron.ddd.annotation.PersistChanges;
 import com.tracebucket.tron.ddd.domain.AggregateId;
 import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
+import com.tracebucket.x1.organization.api.domain.OrganizationFunction;
 import com.tracebucket.x1.organization.api.domain.Position;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Vishwajit on 15-04-2015.
@@ -398,7 +400,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
             if (organization != null) {
                 if(restructureOrganizationUnits != null && restructureOrganizationUnits.size() > 0) {
-                    restructureOrganizationUnits.parallelStream().forEach(organizationUnit -> {
+                    restructureOrganizationUnits.stream().forEach(organizationUnit -> {
                         Set<DefaultOrganizationUnit> children = organizationUnit.getChildren();
                         if(children != null && children.size() > 0) {
                             children.parallelStream().forEach(child -> {
@@ -412,6 +414,18 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
             }
         }
         return null;
+    }
+
+    private void restructure(DefaultOrganization organization, DefaultOrganizationUnit parentOrganizationUnit, DefaultOrganizationUnit childOrganizationUnit) {
+        Set<DefaultOrganizationUnit> children = childOrganizationUnit.getChildren();
+        if(children != null && children.size() > 0) {
+            children.parallelStream().forEach(child -> {
+                organization.restructureOrganizationUnits(parentOrganizationUnit.getEntityId().getId(), childOrganizationUnit.getEntityId().getId(), child.getEntityId().getId());
+                restructure(organization, parentOrganizationUnit, child);
+            });
+        } else {
+            return;
+        }
     }
 
     @Override
@@ -461,14 +475,37 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         return null;
     }
 
-    private void restructure(DefaultOrganization organization, DefaultOrganizationUnit parentOrganizationUnit, DefaultOrganizationUnit childOrganizationUnit) {
-        Set<DefaultOrganizationUnit> children = childOrganizationUnit.getChildren();
-        if(children != null && children.size() > 0) {
-            children.parallelStream().forEach(child -> {
-                organization.restructureOrganizationUnits(parentOrganizationUnit.getEntityId().getId(), childOrganizationUnit.getEntityId().getId(), child.getEntityId().getId());
-                restructure(organization, parentOrganizationUnit, child);
-            });
+    @Override
+    public Set<DefaultOrganizationUnit> searchOrganizationUnits(String tenantId, AggregateId organizationAggregateId, String searchTerm) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if(organization != null) {
+                Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+                if(organizationUnits != null) {
+                    Set<DefaultOrganizationUnit> result = organizationUnits.stream().filter(ou ->
+                        (ou.getName() != null && ou.getName().toLowerCase().matches(searchTerm)) ||
+                        (ou.getDescription() != null && ou.getDescription().toLowerCase().matches(searchTerm)) ||
+                        //ou.getOrganizationFunctions().contains(OrganizationFunction.valueOf(searchTerm)) ||
+                        ou.getAddresses().stream().filter(addresses -> addresses.getCity().toLowerCase().matches(searchTerm) ||
+                            addresses.getCountry().toLowerCase().matches(searchTerm) ||
+                            addresses.getRegion().toLowerCase().matches(searchTerm) ||
+                            addresses.getState().toLowerCase().matches(searchTerm) ||
+                            addresses.getDistrict().toLowerCase().matches(searchTerm) ||
+                            addresses.getStreet().toLowerCase().matches(searchTerm) ||
+                            addresses.getZip().toLowerCase().matches(searchTerm)
+                        ).count() > 0 ||
+                        ou.getPhones().stream()
+                                .filter(phones -> phones.getNumber().toString().toLowerCase().matches(searchTerm))
+                                .count() > 0 ||
+                        ou.getEmails().stream()
+                                .filter(emails -> emails.getEmail().toLowerCase().matches(searchTerm))
+                                .count() > 0
+                    ).collect(Collectors.toSet());
+                    return result;
+                }
+            }
         }
+        return null;
     }
 
 }

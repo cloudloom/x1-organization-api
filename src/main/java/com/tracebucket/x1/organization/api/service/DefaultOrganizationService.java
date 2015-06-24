@@ -50,4 +50,5 @@ public interface DefaultOrganizationService {
     public DefaultPosition getPosition(String tenantId, AggregateId organizationAggregateId, EntityId positionEntityId);
     public PositionType[] getPositionTypes(String tenantId);
     public Map<String, Set<DefaultPosition>> getOrganizationUnitPositions(String tenantId, AggregateId organizationAggregateId);
+    public Set<DefaultOrganizationUnit> searchOrganizationUnits(String tenantId, AggregateId organizationAggregateId, String searchTerm);
 }

@@ -3,6 +3,7 @@ package com.tracebucket.x1.organization.api.rest.controller;
 import com.tracebucket.tron.ddd.domain.AggregateId;
 import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
 import com.tracebucket.x1.organization.api.rest.resource.*;
@@ -50,4 +51,5 @@ public interface Organization {
     public ResponseEntity<DefaultOrganizationResource> updatePositionsOfOrganizationUnit(HttpServletRequest request, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, List<String> positions);
     public ResponseEntity<Set<DefaultPositionResource>> getPositionsOfOrganizationUnit(HttpServletRequest request, AggregateId organizationAggregateId, EntityId organizationUnitEntityId);
     public ResponseEntity<Map<String, Set<DefaultPositionResource>>> getOrganizationUnitPositions(HttpServletRequest request, String aggregateId);
+    public ResponseEntity<Set<DefaultOrganizationUnitResource>> searchOrganizationUnits(HttpServletRequest request, String organizationAggregateId, String searchTerm);
 }

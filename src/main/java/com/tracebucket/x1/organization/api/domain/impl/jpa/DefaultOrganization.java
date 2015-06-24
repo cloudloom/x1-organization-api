@@ -507,6 +507,8 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
             } else {
                 parent.setParent(null);
             }
+        } else if(parent != null) {
+            parent.setParent(null);
         }
     }
 
