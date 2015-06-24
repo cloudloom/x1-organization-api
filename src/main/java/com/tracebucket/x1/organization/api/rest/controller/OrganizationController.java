@@ -117,6 +117,20 @@ public class OrganizationController implements Organization{
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations() {
         List<DefaultOrganization> organizations = organizationService.findAll();
         if(organizations != null && organizations.size() > 0) {
+            Iterator<DefaultOrganization> iterator = organizations.iterator();
+            while(iterator.hasNext()) {
+                DefaultOrganization organization = iterator.next();
+                    Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+                    if (organizationUnits != null) {
+                        Iterator<DefaultOrganizationUnit> iterator1 = organizationUnits.iterator();
+                        while(iterator1.hasNext()) {
+                            DefaultOrganizationUnit organizationUnit = iterator1.next();
+                                if (organizationUnit.getParent() != null) {
+                                    iterator1.remove();
+                                }
+                        }
+                    }
+            }
             return new ResponseEntity<Set<DefaultOrganizationResource>>(assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResources(organizations, DefaultOrganizationResource.class), HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -573,8 +587,8 @@ public class OrganizationController implements Organization{
             DefaultOrganization organization = null;
             try {
                 organization = assemblerResolver.resolveEntityAssembler(DefaultOrganization.class, DefaultOrganizationResource.class).toEntity(organizationResource, DefaultOrganization.class);
-                //organization = organizationService.restructureOrganizationUnits(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
-                organization = organizationService.restructureOrganizationUnits2(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
+                organization = organizationService.restructureOrganizationUnits(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
+                //organization = organizationService.restructureOrganizationUnits2(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
                 if(organization != null) {
                     organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
                     return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.CREATED);
