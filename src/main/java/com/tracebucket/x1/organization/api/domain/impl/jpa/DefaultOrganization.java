@@ -486,7 +486,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
         DefaultOrganizationUnit root = null, parent = null, child = null;
         List<DefaultOrganizationUnit> fetchedOrganizationUnits = organizationUnits.parallelStream()
                     .filter(t -> t.getEntityId().getId().equals(parentOrganizationUnitUid)
-                            || t.getEntityId().getId().equals(childOrganizationUnitUid)
+                            || childOrganizationUnitUid != null && t.getEntityId().getId().equals(childOrganizationUnitUid)
                             || rootOrganizationUnit != null && t.getEntityId().getId().equals(rootOrganizationUnit))
                     .collect(Collectors.toList());
         if(fetchedOrganizationUnits != null && fetchedOrganizationUnits.size() > 0) {
@@ -495,7 +495,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
                     root = organizationUnit;
                 } else if(organizationUnit.getEntityId().getId().equals(parentOrganizationUnitUid)) {
                     parent = organizationUnit;
-                } else if(organizationUnit.getEntityId().getId().equals(childOrganizationUnitUid)) {
+                } else if(childOrganizationUnitUid != null && organizationUnit.getEntityId().getId().equals(childOrganizationUnitUid)) {
                     child = organizationUnit;
                 }
             }
@@ -507,8 +507,17 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
             } else {
                 parent.setParent(null);
             }
-        } else if(parent != null) {
-            parent.setParent(null);
+        } else if(parent != null && child == null) {
+           // parent.setParent(null);
+            if(root != null) {
+                parent.setParent(root);
+            } else {
+                parent.setParent(null);
+            }
+            Set<DefaultOrganizationUnit> childOrgs = parent.getChildren();
+            if(childOrgs != null) {
+                childOrgs.stream().forEach(childOrg -> childOrg.setParent(null));
+            }
         }
     }
 

@@ -407,6 +407,8 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                                 organization.restructureOrganizationUnits(null, organizationUnit.getEntityId().getId(), child.getEntityId().getId());
                                 restructure(organization, organizationUnit, child);
                             });
+                        } else {
+                            organization.restructureOrganizationUnits(null, organizationUnit.getEntityId().getId(), null);
                         }
                     });
                 }
@@ -421,10 +423,10 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         if(children != null && children.size() > 0) {
             children.parallelStream().forEach(child -> {
                 organization.restructureOrganizationUnits(parentOrganizationUnit.getEntityId().getId(), childOrganizationUnit.getEntityId().getId(), child.getEntityId().getId());
-                restructure(organization, parentOrganizationUnit, child);
+                restructure(organization, childOrganizationUnit, child);
             });
         } else {
-            return;
+            organization.restructureOrganizationUnits(parentOrganizationUnit.getEntityId().getId(), childOrganizationUnit.getEntityId().getId(), null);
         }
     }
 
