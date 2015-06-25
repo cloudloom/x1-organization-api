@@ -1,101 +1,243 @@
 <!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on https://github.com/jonrohan -->
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>X1-organization-api by tracebucket</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-dark.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" href="stylesheets/github-dark.css">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>X1 Organization API</h1>
-        <p>X1 Organization API and Default Implementation.</p>
-        <p class="view"><a href="https://github.com/tracebucket/x1-organization-api">View the Project on GitHub <small>tracebucket/x1-organization-api</small></a></p>
-        <ul>
-          <li><a href="https://github.com/tracebucket/x1-organization-api/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/tracebucket/x1-organization-api/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/tracebucket/x1-organization-api">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <p><a href="https://bintray.com/tracebucket/X1/x1-organization-api/_latestVersion"> <img src="https://api.bintray.com/packages/tracebucket/X1/x1-organization-api/images/download.svg" alt="Download"> </a></p>
+  <title>X1-organization-api</title>
+  <meta name="description" content="X1 Organization API and Default Implementation.">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">X1-organization-api</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">X1 Organization API and Default Implementation.</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/tracebucket/x1-organization-api/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/tracebucket/x1-organization-api/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/tracebucket/x1-organization-api" class="code">View X1-organization-api on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h1>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h1>
+
+<p>Spring's project pages are based on <a href="http://jekyllrb.com">Jekyll</a> and <a href="http://pages.github.com/">GitHub Pages</a>. This means that each project's website is stored within the project repo, in a special branch called "gh-pages". In order to keep everything looking similar across the many individual Spring projects, common elements of the Jekyll site layout, css, etc are stored in <a href="http://github.com/spring-projects/gh-pages">a shared gh-pages repository</a>. If you're seeing this README in the gh-pages branch of an actual Spring project, that's because this file, along with all the other common files get merged periodically into each project.</p>
+
+<p>This approach may sound a little funky (and it is), but it's way better than the misery of Git submodules. In fact, it's actually pretty easy. If you're just getting started, then follow the directions immediately below. If you're needing a refresher on how to keep things up to date, then head to the section at the bottom on "keeping up to date".</p>
 
 <h1>
-<a id="x1-organization-api" class="anchor" href="#x1-organization-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>x1-organization-api</h1>
+<a id="how-to-start-a-new-gh-pages-project-page" class="anchor" href="#how-to-start-a-new-gh-pages-project-page" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to start a new <code>gh-pages</code> project page</h1>
 
-<p>This project provides support to model an Organizational structure. It provides</p>
+<p>From within your Spring project's git checkout directory:</p>
 
-<ul>
-<li>Organization</li>
-<li>Organization units</li>
-<li>Currency and timezone</li>
-<li>Business lines, departments and functions</li>
-<li>Address, contact persons, email and phone numbers</li>
-</ul>
+<h3>
+<a id="create-and-checkout-the-gh-pages-branch" class="anchor" href="#create-and-checkout-the-gh-pages-branch" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create and checkout the gh-pages branch</h3>
+
+<pre><code>git checkout --orphan gh-pages
+</code></pre>
+
+<h3>
+<a id="remove-all-files" class="anchor" href="#remove-all-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>Remove all files</h3>
+
+<pre><code>git rm -rf `git ls-files` &amp;&amp; rm -rf *
+</code></pre>
+
+<h3>
+<a id="add-the-gh-pages-upstream-remote" class="anchor" href="#add-the-gh-pages-upstream-remote" aria-hidden="true"><span class="octicon octicon-link"></span></a>Add the gh-pages-upstream remote</h3>
+
+<pre><code>git remote add gh-pages-upstream https://github.com/spring-projects/gh-pages.git
+</code></pre>
+
+<h3>
+<a id="pull-in-the-common-site-infrastructure" class="anchor" href="#pull-in-the-common-site-infrastructure" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pull in the common site infrastructure</h3>
+
+<pre><code>git pull gh-pages-upstream gh-pages
+</code></pre>
 
 <h2>
-<a id="pre-requisites" class="anchor" href="#pre-requisites" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pre requisites</h2>
+<a id="edit-_configyml" class="anchor" href="#edit-_configyml" aria-hidden="true"><span class="octicon octicon-link"></span></a>Edit <code>_config.yml</code>
+</h2>
 
-<ul>
-<li>JDK 1.8 or later. </li>
-<li>MySQL 5.1.x or later. </li>
-<li>The default credentials for MySQL is assumed as <code>root/marines</code> . Also create a database in MySQL called <code>x1-organization-api</code>. </li>
-</ul>
+<p>You'll need to tweak a few settings in <code>_config.yml</code>, sitting in the root directory. Edit this file and follow the instructions within. It should be self explanatory; you'll see that there are lots of instances of "spring-framework" as a project name. You should replace these with your own project's information as appropriate.</p>
 
-<p>Download or clone from git and then use maven(3.*) Java(1.8 or better)</p>
+<h2>
+<a id="create-the-project-home-page" class="anchor" href="#create-the-project-home-page" aria-hidden="true"><span class="octicon octicon-link"></span></a>Create the project home page</h2>
 
-<pre><code>$ git clone git@github.com:tracebucket/x1-organization-api.git
-$ mvn spring-boot:run 
+<h3>
+<a id="what-kind-of-project-are-you" class="anchor" href="#what-kind-of-project-are-you" aria-hidden="true"><span class="octicon octicon-link"></span></a>What kind of project are you?</h3>
+
+<p>At this point, you just need to give your project a home page. There are pre-fab samples included in the <code>_sample-pages</code> directory:</p>
+
+<pre><code>$ ls -1 _sample-pages
+documentation.md
+project_group.html
+project.html
+vaniall.md
 </code></pre>
 
-<p>Add as a dependency like</p>
+<p>At this point you need to make a decision: is your project a "grouping project", like Spring Data, acting as a parent for one or more child projects? If so, you should choose <code>project_group.html</code> in the following step. Otherwise, if you're dealing with an individual, concrete Spring project, e.g. Spring Data JPA, or Spring Security OAuth, you should choose <code>project.html</code>. The <code>documentation.md</code> can be used when you want to expose README.md files on your site.</p>
 
-<pre><code>&lt;dependency&gt;
-        &lt;groupId&gt;com.tracebucket.x1.organization&lt;/groupId&gt;
-        &lt;artifactId&gt;x1-organization-api&lt;/artifactId&gt;
-        &lt;version&gt;0.6&lt;/version&gt;
-&lt;/dependency&gt;
+<h3>
+<a id="copy-the-sample-page-to-indexhtml" class="anchor" href="#copy-the-sample-page-to-indexhtml" aria-hidden="true"><span class="octicon octicon-link"></span></a>Copy the sample page to <code>index.html</code>
+</h3>
 
-    &lt;repository&gt;
-        &lt;snapshots&gt;
-            &lt;enabled&gt;false&lt;/enabled&gt;
-        &lt;/snapshots&gt;
-        &lt;id&gt;bintray-tracebucket-X1&lt;/id&gt;
-        &lt;name&gt;bintray&lt;/name&gt;
-        &lt;url&gt;http://dl.bintray.com/tracebucket/X1&lt;/url&gt;
-    &lt;/repository&gt;
+<p>Based on your choice above, copy the correct sample page to <code>index.html</code>, e.g.:</p>
+
+<pre><code>$ cp _sample-pages/project.html index.html
 </code></pre>
 
-<p>add @EnableOrganization(multiple X1 components can be enabled in the same config file) in a config class like below</p>
+<p>or</p>
 
-<pre><code> @Configuration
- @EnableOrganization
- public class X1Configuration{
- }
+<pre><code>$ cp _sample-pages/project_group.html index.html
 </code></pre>
 
-<p>and the necessary beans for Organization will be enabled. </p>
+<h2>
+<a id="edit-the-content-of-your-home-page" class="anchor" href="#edit-the-content-of-your-home-page" aria-hidden="true"><span class="octicon octicon-link"></span></a>Edit the content of your home page</h2>
 
-<ul>
-<li>Jpa configuration</li>
-<li>Service configuration</li>
-<li>Controller and Assembler configuration</li>
-</ul>
-      </section>
+<h3>
+<a id="edit-the-yaml-front-matter" class="anchor" href="#edit-the-yaml-front-matter" aria-hidden="true"><span class="octicon octicon-link"></span></a>Edit the YAML front matter</h3>
+
+<p>Open up <code>index.html</code> in your favorite text editor. Within, you'll find "YAML front matter" at the top of the file, i.e. everything between the triple dashes that look like <code>---</code>. This section contains some basic metadata, and—if you've copied the <code>project.html</code> sample—also contains a custom section of information for your project "badges". These are icons that will render in the sidebar of your project page.</p>
+
+<p>Edit the URLs and other values in the YAML front matter as appropriate. This should be self-explanatory.</p>
+
+<blockquote>
+<p><strong>Tip</strong>: If a particular "badge" (e.g. Sonar) does not apply to your project, just delete that entry from the YAML.</p>
+</blockquote>
+
+<h3>
+<a id="understand-the-use-of-captures-and-includes" class="anchor" href="#understand-the-use-of-captures-and-includes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Understand the use of "captures" and "includes"</h3>
+
+<p>Next, you'll see a series of <code>{% capture variable_name %}</code> blocks that look like this:</p>
+
+<pre><code>{% capture billboard_description %}
+...
+{% endcapture %}
+</code></pre>
+
+<p>At the end of the file you'll see a <code>{% include %}</code> directive that looks like this:</p>
+
+<pre><code>{% include project_page.html %}
+</code></pre>
+
+<p>That <code>include</code> directive is the most important part. It brings in <code>project_page.html</code>, which will actually be responsible for rendering the page content.</p>
+
+<p>The net effect is that you have one simple place to edit actual page content, and the actual rendering and placement of that content is handled for you by the include.</p>
+
+<p>Ideally, you shouldn't have to touch any other files besides <code>_config.yml</code> and <code>index.html</code>, but of course if you need to you always can.</p>
+
+<h3>
+<a id="replace-the-filler-text-with-copy-specific-to-your-project" class="anchor" href="#replace-the-filler-text-with-copy-specific-to-your-project" aria-hidden="true"><span class="octicon octicon-link"></span></a>Replace the filler text with copy specific to your project</h3>
+
+<p>Of course the next step is simply to change the prose within each <code>{% capture %}</code> block to read as you want it to. It's just Markdown, so do as you please with that in mind. Note that you'll want to move on to the next step to view the site locally before you get too far into the editing process; this will allow you view your changes live as you make them.</p>
+
+<h2>
+<a id="view-the-site-locally" class="anchor" href="#view-the-site-locally" aria-hidden="true"><span class="octicon octicon-link"></span></a>View the site locally</h2>
+
+<p>Assuming you're already within your project's clone directory, and you've already checked out the <code>gh-pages</code> branch, follow these simple directions to view your site locally:</p>
+
+<h3>
+<a id="install-jekyll-if-you-have-not-already" class="anchor" href="#install-jekyll-if-you-have-not-already" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install jekyll if you have not already</h3>
+
+<blockquote>
+<p><strong>Note:</strong> Jekyll 1.1.2 is a known good version, and it is specifically referred to in <code>Gemfile.lock</code> so you have to use <code>bundle</code> (not <code>gem install ...</code>) to install it:</p>
+</blockquote>
+
+<pre><code>gem install bundler
+bundle
+</code></pre>
+
+<h3>
+<a id="run-jekyll" class="anchor" href="#run-jekyll" aria-hidden="true"><span class="octicon octicon-link"></span></a>Run jekyll</h3>
+
+<p>Use the <code>--watch</code> flag to pick up changes to files as you make them, allowing you a nice edit-and-refresh workflow.</p>
+
+<pre><code>jekyll serve --watch
+</code></pre>
+
+<blockquote>
+<p><strong>Important:</strong> Because the <code>baseurl</code> is set explicitly within your project's <code>_config.yml</code> file, you'll need to fully-qualify the URL to view your project. For example, if your project is named "spring-xyz", your URL when running Jekyll locally will be <a href="http://localhost:4000/spring-xyz/">http://localhost:4000/spring-xyz/</a>. Don't forget the trailing slash! You'll get a 404 without it.</p>
+</blockquote>
+
+<h2>
+<a id="commit-your-changes" class="anchor" href="#commit-your-changes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Commit your changes</h2>
+
+<p>Once you're satisified with your edits, commit your changes and push the <code>gh-pages</code> pages up to your project's <code>origin</code> remote.</p>
+
+<pre><code>git commit -m "Initialize project page"
+git push --set-upstream origin gh-pages
+git push
+</code></pre>
+
+<h2>
+<a id="view-your-site-live-on-the-web" class="anchor" href="#view-your-site-live-on-the-web" aria-hidden="true"><span class="octicon octicon-link"></span></a>View your site live on the web</h2>
+
+<p>That's it! After not more than a few minutes, you should be able to see your site at <a href="http://spring-projects.github.io/%7Byour-spring-project%7D">http://spring-projects.github.io/{your-spring-project}</a></p>
+
+<h1>
+<a id="how-to-keep-common-gh-pages-content-up-to-date" class="anchor" href="#how-to-keep-common-gh-pages-content-up-to-date" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to keep common gh-pages content up to date</h1>
+
+<p>Once you've set up your project's gh-pages infrastructure above, you'll get notified whenever
+changes are made to the shared gh-pages project. Actually, <em>your project</em> will get notified,
+because a webhook configured on the gh-pages project will fire that ultimately creates a new
+issue in your project's GH Issues.</p>
+
+<blockquote>
+<p>Yeah, it would have been nice to do proper pull requests instead of issues, but this arrangement
+with gh-pages branches and upstreams isn't based on forking. That means pull requests are no can do.
+This also means that if your project doesn't have issues turned on, you won't get notified! So you
+might consider doing that if you haven't already.</p>
+</blockquote>
+
+<p>In any case, whether or not you get notified via the issue coming in from the webhook, sync'ing
+up to the latest from the shared gh-pages project is easy enough:</p>
+
+<blockquote>
+<p>This assumes you've got the <code>gh-pages-upstream</code> remote set up, per the instructions in sections
+above.</p>
+</blockquote>
+
+<pre><code>git checkout gh-pages
+git pull --no-ff gh-pages-upstream gh-pages
+</code></pre>
+        </article>
+      </div>
     </div>
     <footer>
-      <p>Project maintained by <a href="https://github.com/tracebucket">tracebucket</a></p>
+      <div class="owner">
+      <p><a href="https://github.com/tracebucket" class="avatar"><img src="https://avatars1.githubusercontent.com/u/8844074?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/tracebucket">tracebucket</a> maintains <a href="https://github.com/tracebucket/x1-organization-api">X1-organization-api</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
     </footer>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
-  </body>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/tracebucket/x1-organization-api/tarball/master" class="tar">tar</a><a href="https://github.com/tracebucket/x1-organization-api/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
 </html>
