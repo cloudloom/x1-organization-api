@@ -485,24 +485,40 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                 Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
                 if(organizationUnits != null) {
                     Set<DefaultOrganizationUnit> result = organizationUnits.stream().filter(ou ->
-                        (ou.getName() != null && ou.getName().toLowerCase().matches(searchTerm)) ||
-                        (ou.getDescription() != null && ou.getDescription().toLowerCase().matches(searchTerm)) ||
-                        //ou.getOrganizationFunctions().contains(OrganizationFunction.valueOf(searchTerm)) ||
-                        ou.getAddresses().stream().filter(addresses -> addresses.getCity().toLowerCase().matches(searchTerm) ||
-                            addresses.getCountry().toLowerCase().matches(searchTerm) ||
-                            addresses.getRegion().toLowerCase().matches(searchTerm) ||
-                            addresses.getState().toLowerCase().matches(searchTerm) ||
-                            addresses.getDistrict().toLowerCase().matches(searchTerm) ||
-                            addresses.getStreet().toLowerCase().matches(searchTerm) ||
-                            addresses.getZip().toLowerCase().matches(searchTerm)
-                        ).count() > 0 ||
-                        ou.getPhones().stream()
-                                .filter(phones -> phones.getNumber().toString().toLowerCase().matches(searchTerm))
-                                .count() > 0 ||
-                        ou.getEmails().stream()
-                                .filter(emails -> emails.getEmail().toLowerCase().matches(searchTerm))
-                                .count() > 0
+                                    (ou.getName() != null && ou.getName().toLowerCase().matches(searchTerm)) ||
+                                            (ou.getDescription() != null && ou.getDescription().toLowerCase().matches(searchTerm)) ||
+                                            //ou.getOrganizationFunctions().contains(OrganizationFunction.valueOf(searchTerm)) ||
+                                            ou.getAddresses().stream().filter(addresses -> addresses.getCity().toLowerCase().matches(searchTerm) ||
+                                                            addresses.getCountry().toLowerCase().matches(searchTerm) ||
+                                                            addresses.getRegion().toLowerCase().matches(searchTerm) ||
+                                                            addresses.getState().toLowerCase().matches(searchTerm) ||
+                                                            addresses.getDistrict().toLowerCase().matches(searchTerm) ||
+                                                            addresses.getStreet().toLowerCase().matches(searchTerm) ||
+                                                            addresses.getZip().toLowerCase().matches(searchTerm)
+                                            ).count() > 0 ||
+                                            ou.getPhones().stream()
+                                                    .filter(phones -> phones.getNumber().toString().toLowerCase().matches(searchTerm))
+                                                    .count() > 0 ||
+                                            ou.getEmails().stream()
+                                                    .filter(emails -> emails.getEmail().toLowerCase().matches(searchTerm))
+                                                    .count() > 0
                     ).collect(Collectors.toSet());
+                    return result;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Set<DefaultPosition> searchPositions(String tenantId, AggregateId organizationAggregateId, String searchTerm) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if(organization != null) {
+                Set<DefaultPosition> positions = organization.getPositions();
+                if(positions != null) {
+                    Set<DefaultPosition> result = positions.stream().filter(position -> position.getName().toLowerCase().matches(searchTerm) ||
+                            position.getCode().toLowerCase().matches(searchTerm)).collect(Collectors.toSet());
                     return result;
                 }
             }

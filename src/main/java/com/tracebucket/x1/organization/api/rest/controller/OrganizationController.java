@@ -192,6 +192,24 @@ public class OrganizationController implements Organization{
     }
 
     @Override
+    @RequestMapping(value = "/organization/{organizationUID}/positions/search/{searchTerm}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<DefaultPositionResource>> searchPositions(HttpServletRequest request, @PathVariable("organizationUID") String organizationAggregateId, @PathVariable("searchTerm") String searchTerm) {
+        String tenantId = request.getHeader("tenant_id");
+        if(tenantId != null) {
+            searchTerm = "(.*)" + searchTerm.toLowerCase() + "(.*)";
+            Set<DefaultPosition> positions = organizationService.searchPositions(tenantId, new AggregateId(organizationAggregateId), searchTerm);
+            if (positions != null && positions.size() > 0) {
+                Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
+                return new ResponseEntity<Set<DefaultPositionResource>>(positionResources, HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Override
     @RequestMapping(value = "/organization/{organizationUID}/position", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addPosition(HttpServletRequest request, @RequestBody List<DefaultPositionResource> positionResource, @PathVariable("organizationUID") String aggregateId) {
         String tenantId = request.getHeader("tenant_id");
