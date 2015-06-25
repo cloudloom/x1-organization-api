@@ -126,15 +126,26 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @DomainMethod(event = "OrganizationUnitUpdated")
     public void updateOrganizationUnit(DefaultOrganizationUnit organizationUnit, Mapper mapper) {
         if(organizationUnit != null) {
-            OrganizationUnit organizationUnitFetched = organizationUnits.stream()
+            DefaultOrganizationUnit organizationUnitFetched = organizationUnits.stream()
                     .filter(t -> t.getId().equals(organizationUnit.getId()))
                     .findFirst()
                     .orElse(null);
             if(organizationUnitFetched != null) {
                 organizationUnitFetched.getAddresses().clear();
+                if(organizationUnit.getAddresses() != null) {
+                    organizationUnitFetched.getAddresses().addAll(organizationUnit.getAddresses());
+                }
                 organizationUnitFetched.getPhones().clear();
+                if(organizationUnit.getPhones() != null) {
+                    organizationUnitFetched.getPhones().addAll(organizationUnit.getPhones());
+                }
                 organizationUnitFetched.getEmails().clear();
-                mapper.map(organizationUnit, organizationUnitFetched);
+                if(organizationUnit.getEmails() != null) {
+                    organizationUnitFetched.getEmails().addAll(organizationUnit.getEmails());
+                }
+                organizationUnitFetched.setName(organizationUnit.getName());
+                organizationUnitFetched.setDescription(organizationUnit.getDescription());
+                //mapper.map(organizationUnit, organizationUnitFetched);
                 organizationUnitFetched.setOrganization(this);
             }
         }
