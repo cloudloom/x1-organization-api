@@ -35,4 +35,26 @@ public class DefaultPositionResource extends BaseResource{
     public void setCode(String code) {
         this.code = code;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DefaultPositionResource that = (DefaultPositionResource) o;
+
+        if (!code.equals(that.code)) return false;
+        if (!name.equals(that.name)) return false;
+        if (positionType != that.positionType) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + positionType.hashCode();
+        result = 31 * result + code.hashCode();
+        return result;
+    }
 }

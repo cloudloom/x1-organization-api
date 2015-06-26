@@ -532,32 +532,34 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
 
     @Override
     @DomainMethod(event = "RestructureOrganizationUnitsPositions")
-    public void restructureOrganizationUnitsPositions(HashMap<String, HashMap<String, ArrayList<String>>> positionStructure) {
-        if(positionStructure != null) {
+    public void restructureOrganizationUnitsPositions(ArrayList<HashMap<String, HashMap<String, ArrayList<String>>>> positionsInput) {
+        if(positionsInput != null) {
             Set<DefaultOrganizationUnit> organizationUnits = this.getOrganizationUnits();
-            positionStructure.entrySet().stream().forEach(entry -> {
-                DefaultOrganizationUnit organizationUnit = organizationUnits.stream().filter(ou -> ou.getEntityId().equals(entry.getKey())).findFirst().orElse(null);
-                if(organizationUnit != null) {
-                    Set<DefaultPosition> positions = organizationUnit.getPositions();
-                    entry.getValue().entrySet().stream().forEach(entry2 -> {
-                        boolean noneMatch = positions.stream().anyMatch(position -> position.getEntityId().getId().equals(entry2.getKey()));
-                        if(noneMatch) {
-                            DefaultPosition defaultPosition = this.getPositions().stream().filter(pos ->pos.getEntityId().getId().equals(entry2.getKey())).findFirst().orElse(null);
-                            if(defaultPosition != null) {
-                                positions.add(defaultPosition);
+            for(HashMap<String, HashMap<String, ArrayList<String>>> positionStructure : positionsInput) {
+                positionStructure.entrySet().stream().forEach(entry -> {
+                    DefaultOrganizationUnit organizationUnit = organizationUnits.stream().filter(ou -> ou.getEntityId().equals(entry.getKey())).findFirst().orElse(null);
+                    if (organizationUnit != null) {
+                        Set<DefaultPosition> positions = organizationUnit.getPositions();
+                        entry.getValue().entrySet().stream().forEach(entry2 -> {
+                            boolean noneMatch = positions.stream().anyMatch(position -> position.getEntityId().getId().equals(entry2.getKey()));
+                            if (noneMatch) {
+                                DefaultPosition defaultPosition = this.getPositions().stream().filter(pos -> pos.getEntityId().getId().equals(entry2.getKey())).findFirst().orElse(null);
+                                if (defaultPosition != null) {
+                                    positions.add(defaultPosition);
+                                }
+                            }
+                        });
+                        Iterator<DefaultPosition> iterator = positions.iterator();
+                        while (iterator.hasNext()) {
+                            DefaultPosition pos1 = iterator.next();
+                            boolean noneMatch = entry.getValue().entrySet().stream().anyMatch(entry3 -> entry3.getKey().equals(pos1.getEntityId().getId()));
+                            if (noneMatch) {
+                                iterator.remove();
                             }
                         }
-                    });
-                    Iterator<DefaultPosition> iterator = positions.iterator();
-                    while(iterator.hasNext()) {
-                        DefaultPosition pos1 = iterator.next();
-                        boolean noneMatch = entry.getValue().entrySet().stream().anyMatch(entry3 -> entry3.getKey().equals(pos1.getEntityId().getId()));
-                        if (noneMatch) {
-                            iterator.remove();
-                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 

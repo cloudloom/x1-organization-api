@@ -640,7 +640,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/positions/restructure", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnitsPositions(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid, @RequestBody HashMap<String, HashMap<String, ArrayList<String>>> positionStructure) {
+    public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnitsPositions(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid, @RequestBody ArrayList<HashMap<String, HashMap<String, ArrayList<String>>>> positionStructure) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             DefaultOrganization organization = null;

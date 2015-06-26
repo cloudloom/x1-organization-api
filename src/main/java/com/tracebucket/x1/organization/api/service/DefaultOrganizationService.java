@@ -51,6 +51,6 @@ public interface DefaultOrganizationService {
     public Map<String, Set<DefaultPosition>> getOrganizationUnitPositions(String tenantId, AggregateId organizationAggregateId);
     public Set<DefaultOrganizationUnit> searchOrganizationUnits(String tenantId, AggregateId organizationAggregateId, String searchTerm);
     public Set<DefaultPosition> searchPositions(String tenantId, AggregateId organizationAggregateId, String searchTerm);
-    public DefaultOrganization restructureOrganizationUnitsPositions(String tenantId, AggregateId organizationAggregateId, HashMap<String, HashMap<String, ArrayList<String>>> positionStructure);
+    public DefaultOrganization restructureOrganizationUnitsPositions(String tenantId, AggregateId organizationAggregateId, ArrayList<HashMap<String, HashMap<String, ArrayList<String>>>> positionStructure);
 
 }
