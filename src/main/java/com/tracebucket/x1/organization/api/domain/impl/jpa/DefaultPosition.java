@@ -60,11 +60,10 @@ public class DefaultPosition extends BaseEntity implements Position{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DefaultPosition position = (DefaultPosition) o;
+        DefaultPosition that = (DefaultPosition) o;
 
-        if (!code.equals(position.code)) return false;
-        if (!name.equals(position.name)) return false;
-        if (positionType != position.positionType) return false;
+        if (!code.equals(that.code)) return false;
+        if (!name.equals(that.name)) return false;
 
         return true;
     }
@@ -72,7 +71,6 @@ public class DefaultPosition extends BaseEntity implements Position{
     @Override
     public int hashCode() {
         int result = name.hashCode();
-        result = 31 * result + positionType.hashCode();
         result = 31 * result + code.hashCode();
         return result;
     }

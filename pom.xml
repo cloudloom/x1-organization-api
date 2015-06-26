@@ -4,7 +4,7 @@
 
     <groupId>com.tracebucket.x1.organization</groupId>
     <artifactId>x1-organization-api</artifactId>
-    <version>1.5.2</version>
+    <version>1.5.3</version>
     <packaging>jar</packaging>
     <name>x1-organization-api</name>
     <description>X1 Organization API and Default implementation</description>

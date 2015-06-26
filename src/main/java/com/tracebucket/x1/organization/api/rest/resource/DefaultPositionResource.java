@@ -45,7 +45,6 @@ public class DefaultPositionResource extends BaseResource{
 
         if (!code.equals(that.code)) return false;
         if (!name.equals(that.name)) return false;
-        if (positionType != that.positionType) return false;
 
         return true;
     }
@@ -53,7 +52,6 @@ public class DefaultPositionResource extends BaseResource{
     @Override
     public int hashCode() {
         int result = name.hashCode();
-        result = 31 * result + positionType.hashCode();
         result = 31 * result + code.hashCode();
         return result;
     }
