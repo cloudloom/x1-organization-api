@@ -640,12 +640,12 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/positions/restructure", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnitsPositions(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid, @RequestBody ArrayList<HashMap<String, HashMap<String, ArrayList<String>>>> positionStructure) {
+    public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnitsPositions(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid, @RequestBody DefaultPositionRestructureResource positionStructure) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             DefaultOrganization organization = null;
             try {
-                organization = organizationService.restructureOrganizationUnitsPositions(tenantId, new AggregateId(organizationUid), positionStructure);
+                organization = organizationService.restructureOrganizationUnitsPositions(tenantId, new AggregateId(organizationUid), positionStructure.getPositionStructure());
                 if (organization != null) {
                     DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
                     return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.ACCEPTED);
