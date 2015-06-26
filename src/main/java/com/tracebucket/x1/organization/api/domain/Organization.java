@@ -7,6 +7,8 @@ import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import org.dozer.Mapper;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 /**
@@ -119,6 +121,8 @@ public interface Organization extends Serializable{
     void setEmails(Set<DefaultEmail> emails);
 
     void restructureOrganizationUnits(String rootOrganizationUnit, String parentOrganizationUnitUid, String childOrganizationUnitUid);
+
+    void restructureOrganizationUnitsPositions(HashMap<String, HashMap<String, ArrayList<String>>> positionStructure);
 
     void restructureOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits);
 

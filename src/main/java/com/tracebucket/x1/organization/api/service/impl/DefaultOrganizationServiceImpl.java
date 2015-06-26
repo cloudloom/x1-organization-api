@@ -515,12 +515,50 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
             if(organization != null) {
+/*                Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+                if(organizationUnits != null) {
+                    Set<DefaultPosition> positions = new HashSet<>();
+                    organizationUnits.stream().forEach(organizationUnit -> {
+                        if(organizationUnit.getName().toLowerCase().matches(searchTerm)) {
+                            positions.addAll(organizationUnit.getPositions());
+                        }
+                        Set<DefaultAddress> addresses = organizationUnit.getAddresses();
+                        if(addresses != null) {
+                            if(addresses.stream().filter(address -> address.getCity().toLowerCase().matches(searchTerm) *//*||
+                                            address.getCountry().toLowerCase().matches(searchTerm) ||
+                                            address.getRegion().toLowerCase().matches(searchTerm) ||
+                                            address.getState().toLowerCase().matches(searchTerm) ||
+                                            address.getDistrict().toLowerCase().matches(searchTerm) ||
+                                            address.getStreet().toLowerCase().matches(searchTerm) ||
+                                            address.getZip().toLowerCase().matches(searchTerm)*//*
+                            ).count() > 0) {
+                                positions.addAll(organizationUnit.getPositions());
+                            }
+                        }
+                    });
+                    if(positions.size() > 0) {
+                        return positions;
+                    }
+                }*/
                 Set<DefaultPosition> positions = organization.getPositions();
                 if(positions != null) {
                     Set<DefaultPosition> result = positions.stream().filter(position -> position.getName().toLowerCase().matches(searchTerm) ||
                             position.getCode().toLowerCase().matches(searchTerm)).collect(Collectors.toSet());
                     return result;
                 }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization restructureOrganizationUnitsPositions(String tenantId, AggregateId organizationAggregateId, HashMap<String, HashMap<String, ArrayList<String>>> positionStructure) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.restructureOrganizationUnitsPositions(positionStructure);
+                return organization;
             }
         }
         return null;

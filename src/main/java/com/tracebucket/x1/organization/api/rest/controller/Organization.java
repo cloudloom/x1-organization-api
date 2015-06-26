@@ -11,9 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by sadath on 20-Apr-15.
@@ -53,5 +51,5 @@ public interface Organization {
     public ResponseEntity<Map<String, Set<DefaultPositionResource>>> getOrganizationUnitPositions(HttpServletRequest request, String aggregateId);
     public ResponseEntity<Set<DefaultOrganizationUnitResource>> searchOrganizationUnits(HttpServletRequest request, String organizationAggregateId, String searchTerm);
     public ResponseEntity<Set<DefaultPositionResource>> searchPositions(HttpServletRequest request, String organizationAggregateId, String searchTerm);
-
+    public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnitsPositions(HttpServletRequest request, String organizationUid, HashMap<String, HashMap<String, ArrayList<String>>> positionStructure);
 }

@@ -7,10 +7,9 @@ import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
+import com.tracebucket.x1.organization.api.rest.resource.DefaultOrganizationResource;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by ffl on 09-04-2015.
@@ -52,5 +51,6 @@ public interface DefaultOrganizationService {
     public Map<String, Set<DefaultPosition>> getOrganizationUnitPositions(String tenantId, AggregateId organizationAggregateId);
     public Set<DefaultOrganizationUnit> searchOrganizationUnits(String tenantId, AggregateId organizationAggregateId, String searchTerm);
     public Set<DefaultPosition> searchPositions(String tenantId, AggregateId organizationAggregateId, String searchTerm);
+    public DefaultOrganization restructureOrganizationUnitsPositions(String tenantId, AggregateId organizationAggregateId, HashMap<String, HashMap<String, ArrayList<String>>> positionStructure);
 
 }
