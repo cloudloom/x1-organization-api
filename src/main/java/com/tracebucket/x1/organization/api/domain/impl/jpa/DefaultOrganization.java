@@ -292,18 +292,22 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
             if(fetchedOrganizationUnit != null) {
                 Set<DefaultPosition> positions1 = fetchedOrganizationUnit.getPositions();
                 if(positions1 != null) {
-                    positions1.stream().forEach(p -> {
-                        if(position != null && !position.contains(p)) {
-                            positions1.remove(p);
-                        }
-                    });
+                    Iterator<DefaultPosition> iterator = positions1.iterator();
+                    while(iterator.hasNext()) {
+                        DefaultPosition p =iterator.next();
+                            if (position != null && !position.contains(p)) {
+                                positions1.remove(p);
+                            }
+                    }
                 }
                 if(position != null) {
-                    position.stream().forEach(p -> {
+                    Iterator<DefaultPosition> iterator = position.iterator();
+                    while(iterator.hasNext()){
+                        DefaultPosition p = iterator.next();
                         if(!positions1.contains(p)) {
                             positions1.add(p);
                         }
-                    });
+                    };
                 }
             }
 
@@ -537,12 +541,12 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
             Set<DefaultOrganizationUnit> organizationUnits = this.getOrganizationUnits();
             for(HashMap<String, HashMap<String, ArrayList<String>>> positionStructure : positionsInput) {
                 positionStructure.entrySet().stream().forEach(entry -> {
-                    DefaultOrganizationUnit organizationUnit = organizationUnits.stream().filter(ou -> ou.getEntityId().equals(entry.getKey())).findFirst().orElse(null);
+                    DefaultOrganizationUnit organizationUnit = organizationUnits.stream().filter(ou -> ou.getEntityId().getId().equals(entry.getKey())).findFirst().orElse(null);
                     if (organizationUnit != null) {
                         Set<DefaultPosition> positions = organizationUnit.getPositions();
                         entry.getValue().entrySet().stream().forEach(entry2 -> {
                             boolean noneMatch = positions.stream().anyMatch(position -> position.getEntityId().getId().equals(entry2.getKey()));
-                            if (noneMatch) {
+                            if (!noneMatch) {
                                 DefaultPosition defaultPosition = this.getPositions().stream().filter(pos -> pos.getEntityId().getId().equals(entry2.getKey())).findFirst().orElse(null);
                                 if (defaultPosition != null) {
                                     positions.add(defaultPosition);
@@ -553,8 +557,9 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
                         while (iterator.hasNext()) {
                             DefaultPosition pos1 = iterator.next();
                             boolean noneMatch = entry.getValue().entrySet().stream().anyMatch(entry3 -> entry3.getKey().equals(pos1.getEntityId().getId()));
-                            if (noneMatch) {
+                            if (!noneMatch) {
                                 iterator.remove();
+                                break;
                             }
                         }
                     }
