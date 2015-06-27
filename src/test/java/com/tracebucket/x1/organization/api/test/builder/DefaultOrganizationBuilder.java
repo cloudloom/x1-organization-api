@@ -1,5 +1,6 @@
 package com.tracebucket.x1.organization.api.test.builder;
 
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 
@@ -15,12 +16,12 @@ public class DefaultOrganizationBuilder {
     private String description;
     private String website;
     protected String image;
-/*    private Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
+    private Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
     private Set<DefaultCurrency> currencies = new HashSet<DefaultCurrency>(0);
     private Set<DefaultTimezone> timezones = new HashSet<DefaultTimezone>(0);
     private Set<DefaultPerson> contactPersons = new HashSet<DefaultPerson>(0);
     private Set<DefaultPhone> phones = new HashSet<DefaultPhone>(0);
-    private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);*/
+    private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
     private Set<DefaultOrganizationUnit> organizationUnits = new HashSet<DefaultOrganizationUnit>(0);
 
     private DefaultOrganizationBuilder(){ }
@@ -54,7 +55,7 @@ public class DefaultOrganizationBuilder {
         return this;
     }
 
-/*    public DefaultOrganizationBuilder withAddresses(Set<DefaultAddress> addresses){
+    public DefaultOrganizationBuilder withAddresses(Set<DefaultAddress> addresses){
         this.addresses = addresses;
         return this;
     }
@@ -82,7 +83,7 @@ public class DefaultOrganizationBuilder {
     public DefaultOrganizationBuilder withEmails(Set<DefaultEmail> emails){
         this.emails = emails;
         return this;
-    }*/
+    }
 
     public DefaultOrganizationBuilder withOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits){
         this.organizationUnits = organizationUnits;
@@ -96,13 +97,13 @@ public class DefaultOrganizationBuilder {
         organization.setCode(code);
         organization.setDescription(description);
         organization.setWebsite(website);
-/*        organization.setAddresses(addresses);
+        organization.setAddresses(addresses);
         organization.setContactPersons(contactPersons);
         organization.setCurrencies(currencies);
         organization.setTimezones(timezones);
         organization.setPhones(phones);
         organization.setEmails(emails);
-        organization.setOrganizationUnits(organizationUnits);*/
+        organization.setOrganizationUnits(organizationUnits);
         return organization;
     }
 }

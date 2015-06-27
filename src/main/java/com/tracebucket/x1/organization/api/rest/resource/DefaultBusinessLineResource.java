@@ -3,11 +3,21 @@ package com.tracebucket.x1.organization.api.rest.resource;
 
 import com.tracebucket.tron.assembler.BaseResource;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 /**
  * Created by sadath on 31-Mar-15.
  */
 public class DefaultBusinessLineResource extends BaseResource {
+
+    @NotNull
+    @Size(min = 1, max = 250)
+    @Pattern(regexp = "^[A-Za-z]*$")
     private String name;
+
+    @Size(min = 1, max = 255)
     private String description;
 
     public String getDescription() {

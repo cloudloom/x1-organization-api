@@ -12,8 +12,8 @@ import java.util.Date;
 public class DefaultPhoneResourceFixture {
     public static DefaultPhoneResource standardPhone() {
         DefaultPhoneResource email = DefaultPhoneResourceBuilder.aPhoneBuilder()
-                .withExtension(new Long(new Date().getTime()).intValue())
-                .withNumber(new Date().getTime())
+                .withExtension("9786")
+                .withNumber("80345213")
                 .withPhoneType(PhoneType.HOME)
                 .build();
         return email;

@@ -1,5 +1,6 @@
 package com.tracebucket.x1.organization.api.test.fixture;
 
+import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.test.builder.DefaultOrganizationBuilder;
@@ -13,7 +14,7 @@ import java.util.UUID;
  */
 public class DefaultOrganizationFixture {
     public static DefaultOrganization standardOrganization() {
-/*        Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
+        Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
         addresses.add(DefaultAddressFixture.standardAddress());
         addresses.add(DefaultAddressFixture.headOffice());
 
@@ -30,26 +31,26 @@ public class DefaultOrganizationFixture {
         phones.add(DefaultPhoneFixture.standardPhone());
 
         Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
-        emails.add(DefaultEmailFixture.standardEmail());*/
+        emails.add(DefaultEmailFixture.standardEmail());
 
         Set<DefaultOrganizationUnit> organizationUnits = new HashSet<DefaultOrganizationUnit>(0);
         organizationUnits.add(DefaultOrganizationUnitFixture.standardOrganizationUnit());
 
         DefaultOrganization organization = DefaultOrganizationBuilder.anOrganizationBuilder()
                 //.withName("ABC Bank")
-                .withName(UUID.randomUUID().toString())
+                .withName(null)//UUID.randomUUID().toString())
                 .withDescription(UUID.randomUUID().toString())
                 .withImage(UUID.randomUUID().toString())
-                .withCode(UUID.randomUUID().toString())
+                .withCode("2")//UUID.randomUUID().toString().substring(0, 8)+"@")
                 .withWebsite(UUID.randomUUID().toString())
                 .withOrganizationUnits(organizationUnits)
-/*                .withAddresses(addresses)
+                .withAddresses(addresses)
                 .withCurrencies(currencies)
                 .withContactPersons(contactPersons)
                 .withEmails(emails)
                 .withPhones(phones)
                 .withTimezones(timezones)
-                .withOrganizationUnits(organizationUnits)*/
+                .withOrganizationUnits(organizationUnits)
                 .build();
         return organization;
     }

@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.organization.api.domain.OrganizationFunction;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,18 +15,34 @@ import java.util.Set;
  * Created by sadath on 31-Mar-15.
  */
 public class DefaultOrganizationUnitResource extends BaseResource {
+
+    @NotNull
+    @Size(min = 1, max = 250)
+    @Pattern(regexp = "^[a-zA-Z \\-/@&]*$")
     private String name;
+
+    @Size(min = 0, max = 255)
     private String description;
+
     private DefaultOrganizationResource organization;
+
     @JsonBackReference
     private DefaultOrganizationUnitResource parent;
+
     private Set<OrganizationFunction> organizationFunctions = new HashSet<OrganizationFunction>(0);
+
     private Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
+
     private Set<DefaultPersonResource> contactPersons = new HashSet<DefaultPersonResource>(0);
+
     private Set<DefaultPhoneResource> phones = new HashSet<DefaultPhoneResource>(0);
+
     private Set<DefaultEmailResource> emails = new HashSet<DefaultEmailResource>(0);
+
     private Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>(0);
+
     private Set<DefaultBusinessLineResource> businessLines = new HashSet<DefaultBusinessLineResource>(0);
+
     @JsonManagedReference
     private Set<DefaultOrganizationUnitResource> children = new HashSet<DefaultOrganizationUnitResource>(0);
 

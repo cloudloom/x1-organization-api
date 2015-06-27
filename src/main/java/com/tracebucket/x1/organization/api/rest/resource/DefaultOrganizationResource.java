@@ -2,7 +2,12 @@ package com.tracebucket.x1.organization.api.rest.resource;
 
 
 import com.tracebucket.tron.assembler.BaseResource;
+import org.hibernate.validator.constraints.URL;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,19 +16,47 @@ import java.util.Set;
  */
 public class DefaultOrganizationResource extends BaseResource {
 
-    //@NotNull(message = "Organization code cannot be empty")
-    //@Size(min = 3, max = 8)
+    @NotNull
+    @Size(min = 3, max = 8)
+    @Pattern(regexp = "^[A-Za-z0-9]*$")
     private String code;
+
+    @NotNull
+    @Size(min = 1, max = 250)
+    @Pattern(regexp = "^[a-zA-Z0-9\\-@&]*$")//alphanumeric @ - &
     private String name;
+
+    @Size(min = 0, max = 255)
     private String description;
+
+    @Size(min = 2, max = 250)
+    @URL
     private String website;
+
+    @Size(min = 1, max = 250)
+    @Pattern(regexp = "([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)")
     protected String image;
+
+    @Valid
     private Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
+
+    @Valid
     private Set<DefaultCurrencyResource> currencies = new HashSet<DefaultCurrencyResource>(0);
+
+    @Valid
     private Set<DefaultTimezoneResource> timezones = new HashSet<DefaultTimezoneResource>(0);
+
+    @Valid    // @Pattern(regexp = "^[a-zA-Z\\-\\/]*$")
     private Set<DefaultPersonResource> contactPersons = new HashSet<DefaultPersonResource>(0);
+
+    @Valid        //@Pattern(regexp = "^[0-9\\-\\+]*$")
     private Set<DefaultPhoneResource> phones = new HashSet<DefaultPhoneResource>(0);
+
+
+    @Valid
     private Set<DefaultEmailResource> emails = new HashSet<DefaultEmailResource>(0);
+
+    @Valid
     private Set<DefaultOrganizationUnitResource> organizationUnits = new HashSet<DefaultOrganizationUnitResource>(0);
 
     public String getCode() {
