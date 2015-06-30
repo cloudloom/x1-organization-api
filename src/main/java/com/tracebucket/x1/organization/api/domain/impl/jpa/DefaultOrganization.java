@@ -152,7 +152,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Override
     @DomainMethod(event = "OrganizationUnitBelowAdded")
     public void addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, DefaultOrganizationUnit parentOrganizationUnit) {
-        OrganizationUnit parentOrganizationUnitFetched = organizationUnits.parallelStream()
+        OrganizationUnit parentOrganizationUnitFetched = organizationUnits.stream()
                 .filter(t -> t.getId().equals(parentOrganizationUnit.getId()))
                 .findFirst()
                 .orElse(null);
@@ -357,7 +357,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Override
     public DefaultAddress getHeadOfficeAddress() {
         DefaultAddress headOfficeAddress =
-                addresses.parallelStream()
+                addresses.stream()
                         .filter(t -> t.getAddressType() == AddressType.HEAD_OFFICE)
                         .filter(t -> t.isDefaultAddress())
                         .findFirst()
@@ -426,7 +426,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Override
     public DefaultPosition getPosition(EntityId positionEntityId) {
         DefaultPosition position =
-                positions.parallelStream()
+                positions.stream()
                         .filter(t -> t.getEntityId().getId().equals(positionEntityId.getId()))
                         .findFirst()
                         .orElse(null);
@@ -497,7 +497,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @DomainMethod(event = "RestructureOrganizationUnits")
     public void restructureOrganizationUnits(String rootOrganizationUnit, String parentOrganizationUnitUid, String childOrganizationUnitUid) {
         DefaultOrganizationUnit root = null, parent = null, child = null;
-        List<DefaultOrganizationUnit> fetchedOrganizationUnits = organizationUnits.parallelStream()
+        List<DefaultOrganizationUnit> fetchedOrganizationUnits = organizationUnits.stream()
                     .filter(t -> t.getEntityId().getId().equals(parentOrganizationUnitUid)
                             || childOrganizationUnitUid != null && t.getEntityId().getId().equals(childOrganizationUnitUid)
                             || rootOrganizationUnit != null && t.getEntityId().getId().equals(rootOrganizationUnit))

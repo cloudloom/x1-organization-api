@@ -403,7 +403,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                     restructureOrganizationUnits.stream().forEach(organizationUnit -> {
                         Set<DefaultOrganizationUnit> children = organizationUnit.getChildren();
                         if(children != null && children.size() > 0) {
-                            children.parallelStream().forEach(child -> {
+                            children.stream().forEach(child -> {
                                 organization.restructureOrganizationUnits(null, organizationUnit.getEntityId().getId(), child.getEntityId().getId());
                                 restructure(organization, organizationUnit, child);
                             });
@@ -421,7 +421,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     private void restructure(DefaultOrganization organization, DefaultOrganizationUnit parentOrganizationUnit, DefaultOrganizationUnit childOrganizationUnit) {
         Set<DefaultOrganizationUnit> children = childOrganizationUnit.getChildren();
         if(children != null && children.size() > 0) {
-            children.parallelStream().forEach(child -> {
+            children.stream().forEach(child -> {
                 organization.restructureOrganizationUnits(parentOrganizationUnit.getEntityId().getId(), childOrganizationUnit.getEntityId().getId(), child.getEntityId().getId());
                 restructure(organization, childOrganizationUnit, child);
             });
