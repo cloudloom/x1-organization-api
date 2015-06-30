@@ -46,6 +46,8 @@ public class DefaultOrganizationUnitResource extends BaseResource {
     @JsonManagedReference
     private Set<DefaultOrganizationUnitResource> children = new HashSet<DefaultOrganizationUnitResource>(0);
 
+    private Set<DefaultPositionResource> positions = new HashSet<DefaultPositionResource>(0);
+
     public String getName() {
         return name;
     }
@@ -140,5 +142,13 @@ public class DefaultOrganizationUnitResource extends BaseResource {
 
     public void setChildren(Set<DefaultOrganizationUnitResource> children) {
         this.children = children;
+    }
+
+    public Set<DefaultPositionResource> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(Set<DefaultPositionResource> positions) {
+        this.positions = positions;
     }
 }

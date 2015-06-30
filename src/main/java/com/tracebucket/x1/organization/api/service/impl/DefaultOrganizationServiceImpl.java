@@ -411,11 +411,26 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                             organization.restructureOrganizationUnits(null, organizationUnit.getEntityId().getId(), null);
                         }
                     });
+                    restructureOrganizationUnits.stream().forEach(organizationUnit -> {
+                        updateOrganizationUnitPositions(organization, organizationUnit);
+                        Set<DefaultOrganizationUnit> children = organizationUnit.getChildren();
+                        children.stream().forEach(child -> {
+                            updateOrganizationUnitPositions(organization, child);
+                        });
+                    });
                 }
                 return organization;
             }
         }
         return null;
+    }
+
+    private void updateOrganizationUnitPositions(DefaultOrganization organization, DefaultOrganizationUnit organizationUnit) {
+        organization.updateOrganizationUnitPositions(organizationUnit);
+        Set<DefaultOrganizationUnit> children = organizationUnit.getChildren();
+        children.stream().forEach(child -> {
+            updateOrganizationUnitPositions(organization, child);
+        });
     }
 
     private void restructure(DefaultOrganization organization, DefaultOrganizationUnit parentOrganizationUnit, DefaultOrganizationUnit childOrganizationUnit) {

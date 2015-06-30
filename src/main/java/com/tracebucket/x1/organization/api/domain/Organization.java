@@ -120,6 +120,8 @@ public interface Organization extends Serializable{
 
     void setEmails(Set<DefaultEmail> emails);
 
+    void updateOrganizationUnitPositions(DefaultOrganizationUnit organizationUnit);
+
     void restructureOrganizationUnits(String rootOrganizationUnit, String parentOrganizationUnitUid, String childOrganizationUnitUid);
 
     void restructureOrganizationUnitsPositions(ArrayList<HashMap<String, HashMap<String, ArrayList<String>>>> positionsInput);

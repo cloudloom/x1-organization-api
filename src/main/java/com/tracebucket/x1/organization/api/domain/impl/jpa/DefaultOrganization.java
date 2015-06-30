@@ -494,6 +494,36 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
+    @DomainMethod(event = "UpdateOrganizationUnitPositions")
+    public void updateOrganizationUnitPositions(DefaultOrganizationUnit organizationUnit) {
+        DefaultOrganizationUnit fetchedOrganizationUnit = this.organizationUnits.stream().filter(orgUnit -> orgUnit.getEntityId().getId().equals(organizationUnit.getEntityId().getId()))
+                .findFirst()
+                .orElse(null);
+        if(fetchedOrganizationUnit != null) {
+            Set<DefaultPosition> positions = fetchedOrganizationUnit.getPositions();
+            Set<DefaultPosition> newPositions = organizationUnit.getPositions();
+            newPositions.stream().forEach(entry2 -> {
+                boolean noneMatch = positions.stream().anyMatch(position -> position.getEntityId().getId().equals(entry2.getEntityId().getId()));
+                if (!noneMatch) {
+                    DefaultPosition defaultPosition = this.getPositions().stream().filter(pos -> pos.getEntityId().getId().equals(entry2.getEntityId().getId())).findFirst().orElse(null);
+                    if (defaultPosition != null) {
+                        positions.add(defaultPosition);
+                    }
+                }
+            });
+            Iterator<DefaultPosition> iterator = positions.iterator();
+            while (iterator.hasNext()) {
+                DefaultPosition pos1 = iterator.next();
+                boolean noneMatch = newPositions.stream().anyMatch(entry3 -> entry3.getEntityId().getId().equals(pos1.getEntityId().getId()));
+                if (!noneMatch) {
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
     @DomainMethod(event = "RestructureOrganizationUnits")
     public void restructureOrganizationUnits(String rootOrganizationUnit, String parentOrganizationUnitUid, String childOrganizationUnitUid) {
         DefaultOrganizationUnit root = null, parent = null, child = null;

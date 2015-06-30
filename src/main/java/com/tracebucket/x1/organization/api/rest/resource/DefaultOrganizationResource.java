@@ -52,12 +52,13 @@ public class DefaultOrganizationResource extends BaseResource {
     @Valid        //@Pattern(regexp = "^[0-9\\-\\+]*$")
     private Set<DefaultPhoneResource> phones = new HashSet<DefaultPhoneResource>(0);
 
-
     @Valid
     private Set<DefaultEmailResource> emails = new HashSet<DefaultEmailResource>(0);
 
     @Valid
     private Set<DefaultOrganizationUnitResource> organizationUnits = new HashSet<DefaultOrganizationUnitResource>(0);
+
+    private Set<DefaultPositionResource> positions = new HashSet<DefaultPositionResource>(0);
 
     public String getCode() {
         return code;
@@ -153,5 +154,13 @@ public class DefaultOrganizationResource extends BaseResource {
 
     public void setOrganizationUnits(Set<DefaultOrganizationUnitResource> organizationUnits) {
         this.organizationUnits = organizationUnits;
+    }
+
+    public Set<DefaultPositionResource> getPositions() {
+        return positions;
+    }
+
+    public void setPositions(Set<DefaultPositionResource> positions) {
+        this.positions = positions;
     }
 }
