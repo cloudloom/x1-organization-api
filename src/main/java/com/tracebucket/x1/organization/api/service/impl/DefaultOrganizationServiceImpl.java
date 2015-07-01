@@ -4,8 +4,6 @@ import com.tracebucket.tron.ddd.annotation.PersistChanges;
 import com.tracebucket.tron.ddd.domain.AggregateId;
 import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
-import com.tracebucket.x1.organization.api.domain.OrganizationFunction;
-import com.tracebucket.x1.organization.api.domain.Position;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
@@ -444,19 +442,6 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
             organization.restructureOrganizationUnits(parentOrganizationUnit.getEntityId().getId(), childOrganizationUnit.getEntityId().getId(), null);
         }
     }
-
-    @Override
-    public DefaultOrganization restructureOrganizationUnits2(String tenantId, AggregateId organizationAggregateId, Set<DefaultOrganizationUnit> organizationUnits) {
-        if (tenantId.equals(organizationAggregateId.getAggregateId())) {
-            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
-            if (organization != null) {
-                organization.restructureOrganizationUnits(organizationUnits);
-                return organization;
-            }
-        }
-        return null;
-    }
-
 
     @Override
     public DefaultPosition getPosition(String tenantId, AggregateId organizationAggregateId, EntityId positionEntityId) {

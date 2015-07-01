@@ -3,9 +3,7 @@ package com.tracebucket.x1.organization.api.rest.resource;
 import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.dictionary.api.domain.EmailType;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
