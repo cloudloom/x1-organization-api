@@ -3,7 +3,6 @@ package com.tracebucket.x1.organization.api.rest.resource;
 import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.dictionary.api.domain.PhoneType;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 

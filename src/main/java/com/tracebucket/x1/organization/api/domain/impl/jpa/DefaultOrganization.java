@@ -12,7 +12,6 @@ import org.dozer.Mapper;
 
 import javax.persistence.*;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
