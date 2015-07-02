@@ -132,7 +132,8 @@ public class OrganizationController implements Organization {
                     }
                 }
             }
-            return new ResponseEntity<Set<DefaultOrganizationResource>>(assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResources(organizations, DefaultOrganizationResource.class), HttpStatus.OK);
+            Set<DefaultOrganizationResource> resources = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResources(organizations, DefaultOrganizationResource.class);
+            return new ResponseEntity<Set<DefaultOrganizationResource>>(resources, HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
