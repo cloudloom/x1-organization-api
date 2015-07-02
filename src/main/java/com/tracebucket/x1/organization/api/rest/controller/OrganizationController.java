@@ -128,6 +128,8 @@ public class OrganizationController implements Organization {
                         DefaultOrganizationUnit organizationUnit = iterator1.next();
                         if (organizationUnit.getParent() != null) {
                             iterator1.remove();
+                        } else if(organizationUnit.getParent() == null && organizationUnit.isPassive()) {
+                            iterator1.remove();
                         }
                     }
                 }
