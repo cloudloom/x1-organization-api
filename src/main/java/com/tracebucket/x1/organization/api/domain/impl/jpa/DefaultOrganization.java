@@ -603,4 +603,10 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
         this.getOrganizationUnits().clear();
         this.getOrganizationUnits().addAll(organizationUnits);
     }
+
+    @Override
+    @DomainMethod(event = "DeleteOrganizationUnits")
+    public void deleteOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits) {
+        organizationUnits.stream().forEach(orgUnit -> {orgUnit.setPassive(true);orgUnit.setParent(null);});
+    }
 }

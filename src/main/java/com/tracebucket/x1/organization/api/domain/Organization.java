@@ -128,4 +128,6 @@ public interface Organization extends Serializable{
 
     void restructureOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits);
 
+    void deleteOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits);
+
 }

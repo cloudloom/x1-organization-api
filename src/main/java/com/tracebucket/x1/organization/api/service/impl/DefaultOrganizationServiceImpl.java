@@ -391,6 +391,24 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         return null;
     }
 
+    private void anyMatch(Boolean found, Boolean hasChildren, DefaultOrganizationUnit search, DefaultOrganizationUnit organizationUnitResource) {
+        if(search != null && organizationUnitResource != null) {
+            if(!search.getEntityId().getId().equals(organizationUnitResource.getEntityId().getId())) {
+                Set<DefaultOrganizationUnit> children = organizationUnitResource.getChildren();
+                if(children != null && children.size() > 0) {
+                    hasChildren = true;
+                }
+                if(children != null) {
+                    for(DefaultOrganizationUnit child : children) {
+                        anyMatch(found, hasChildren, search, child);
+                    }
+                }
+            } else if(search.getEntityId().getId().equals(organizationUnitResource.getEntityId().getId())) {
+                found = true;
+            }
+        }
+    }
+
     @Override
     @PersistChanges(repository = "organizationRepository")
     public DefaultOrganization restructureOrganizationUnits(String tenantId, AggregateId organizationAggregateId, Set<DefaultOrganizationUnit> restructureOrganizationUnits) {
@@ -398,6 +416,39 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
             if (organization != null) {
                 if(restructureOrganizationUnits != null && restructureOrganizationUnits.size() > 0) {
+                    Set<DefaultOrganizationUnit> deleteOrganizationUnits = new HashSet<>();
+                    Boolean found = false;
+                    Boolean hasChildren = false;
+                    if(organization.getOrganizationUnits() != null) {
+                        for (DefaultOrganizationUnit orgUnit : organization.getOrganizationUnits()) {
+                            found = false;
+                            if (restructureOrganizationUnits != null) {
+                                for (DefaultOrganizationUnit organizationUnit1 : restructureOrganizationUnits) {
+                                    if (!organizationUnit1.getEntityId().getId().equals(orgUnit.getEntityId().getId())) {
+                                        Set<DefaultOrganizationUnit> children = organizationUnit1.getChildren();
+                                        if(children != null && children.size() > 0) {
+                                            hasChildren = true;
+                                            break;
+                                        }
+                                        if(children != null) {
+                                            for (DefaultOrganizationUnit child : children) {
+                                                anyMatch(found, hasChildren, orgUnit, child);
+                                            }
+                                        }
+                                    } else if(organizationUnit1.getEntityId().getId().equals(orgUnit.getEntityId().getId())) {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if(!found && !hasChildren) {
+                                deleteOrganizationUnits.add(orgUnit);
+                            }
+                        }
+                    }
+                    if(deleteOrganizationUnits.size() > 0) {
+                        organization.deleteOrganizationUnits(deleteOrganizationUnits);
+                    }
                     restructureOrganizationUnits.stream().forEach(organizationUnit -> {
                         Set<DefaultOrganizationUnit> children = organizationUnit.getChildren();
                         if(children != null && children.size() > 0) {
@@ -416,6 +467,8 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                             updateOrganizationUnitPositions(organization, child);
                         });
                     });
+                } else {
+                    organization.deleteOrganizationUnits(organization.getOrganizationUnits());
                 }
                 return organization;
             }
