@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.validation.executable.ValidateOnExecution;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,10 +47,10 @@ public class DefaultOrganizationResource extends BaseResource {
     @Valid
     private Set<DefaultTimezoneResource> timezones = new HashSet<DefaultTimezoneResource>(0);
 
-    @Valid    // @Pattern(regexp = "^[a-zA-Z\\-\\/]*$")
+    @Valid
     private Set<DefaultPersonResource> contactPersons = new HashSet<DefaultPersonResource>(0);
 
-    @Valid        //@Pattern(regexp = "^[0-9\\-\\+]*$")
+    @Valid
     private Set<DefaultPhoneResource> phones = new HashSet<DefaultPhoneResource>(0);
 
     @Valid
