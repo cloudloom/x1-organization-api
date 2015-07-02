@@ -61,6 +61,18 @@ public class OrganizationController implements Organization {
             DefaultOrganization organization = null;
             try {
                 organization = organizationService.addOrganizationUnit(tenantId, organizationUnit, new AggregateId(organizationUid));
+                Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+                if (organizationUnits != null) {
+                    Iterator<DefaultOrganizationUnit> iterator1 = organizationUnits.iterator();
+                    while (iterator1.hasNext()) {
+                        DefaultOrganizationUnit organizationUnit1 = iterator1.next();
+                        if (organizationUnit1.getParent() != null) {
+                            iterator1.remove();
+                        } else if(organizationUnit1.getParent() == null && organizationUnit1.isPassive()) {
+                            iterator1.remove();
+                        }
+                    }
+                }
             } catch (DataIntegrityViolationException dive) {
                 throw new X1Exception("Organization Unit With Name : " + organizationUnitResource.getName() + "Exists", HttpStatus.CONFLICT);
             }
@@ -83,6 +95,18 @@ public class OrganizationController implements Organization {
             DefaultOrganization organization = null;
             try {
                 organization = organizationService.updateOrganizationUnit(tenantId, organizationUnit, new AggregateId(organizationUid));
+                Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+                if (organizationUnits != null) {
+                    Iterator<DefaultOrganizationUnit> iterator1 = organizationUnits.iterator();
+                    while (iterator1.hasNext()) {
+                        DefaultOrganizationUnit organizationUnit1 = iterator1.next();
+                        if (organizationUnit1.getParent() != null) {
+                            iterator1.remove();
+                        } else if(organizationUnit1.getParent() == null && organizationUnit1.isPassive()) {
+                            iterator1.remove();
+                        }
+                    }
+                }
             } catch (DataIntegrityViolationException dive) {
                 throw new X1Exception("Organization Unit With Name : " + organizationUnitResource.getName() + "Exists", HttpStatus.CONFLICT);
             }
