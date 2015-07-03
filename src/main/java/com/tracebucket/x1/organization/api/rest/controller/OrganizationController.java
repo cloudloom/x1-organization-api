@@ -186,11 +186,15 @@ public class OrganizationController implements Organization {
     public ResponseEntity<DefaultOrganizationUnitPositions> getOrganizationUnitPositions(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
-            Map<String, Set<DefaultPositionResource>> positionResources = new HashMap<>();
+            HashMap<String, List<String>> positionResources = new HashMap<>();
             Map<String, Set<DefaultPosition>> positions = organizationService.getOrganizationUnitPositions(tenantId, new AggregateId(aggregateId));
             if (positions != null && positions.size() > 0) {
                 positions.entrySet().stream().forEach(p -> {
-                    positionResources.put(p.getKey(), assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(p.getValue(), DefaultPositionResource.class));
+                    List<String> positionsUid = new ArrayList<String>();
+                    p.getValue().forEach(position -> {
+                        positionsUid.add(position.getEntityId().getId());
+                    });
+                    positionResources.put(p.getKey(), positionsUid);
                 });
                 DefaultOrganizationUnitPositions organizationUnitPositions = new DefaultOrganizationUnitPositions();
                 organizationUnitPositions.setOrgUnitPositions(positionResources);

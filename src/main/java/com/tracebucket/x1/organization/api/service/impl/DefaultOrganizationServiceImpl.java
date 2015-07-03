@@ -521,7 +521,9 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                 Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
                 if(organizationUnits != null) {
                     organizationUnits.stream().forEach(organizationUnit -> {
-                        organizationUnitPositions.put(organizationUnit.getEntityId().getId(), organizationUnit.getPositions());
+                        if(!organizationUnit.isPassive()) {
+                            organizationUnitPositions.put(organizationUnit.getEntityId().getId(), organizationUnit.getPositions());
+                        }
                     });
                 }
                 return organizationUnitPositions;

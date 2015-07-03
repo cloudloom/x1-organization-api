@@ -1,19 +1,18 @@
 package com.tracebucket.x1.organization.api.rest.resource;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by sadath on 03-Jul-2015.
  */
 public class DefaultOrganizationUnitPositions {
-    private Map<String, Set<DefaultPositionResource>> orgUnitPositions;
+    private HashMap<String, List<String>> orgUnitPositions;
 
-    public Map<String, Set<DefaultPositionResource>> getOrgUnitPositions() {
+    public HashMap<String, List<String>> getOrgUnitPositions() {
         return orgUnitPositions;
     }
 
-    public void setOrgUnitPositions(Map<String, Set<DefaultPositionResource>> orgUnitPositions) {
+    public void setOrgUnitPositions(HashMap<String, List<String>> orgUnitPositions) {
         this.orgUnitPositions = orgUnitPositions;
     }
 }
