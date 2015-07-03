@@ -183,7 +183,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUID}/organizationUnits/positions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Set<DefaultPositionResource>>> getOrganizationUnitPositions(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId) {
+    public ResponseEntity<DefaultOrganizationUnitPositions> getOrganizationUnitPositions(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             Map<String, Set<DefaultPositionResource>> positionResources = new HashMap<>();
@@ -192,7 +192,9 @@ public class OrganizationController implements Organization {
                 positions.entrySet().stream().forEach(p -> {
                     positionResources.put(p.getKey(), assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(p.getValue(), DefaultPositionResource.class));
                 });
-                return new ResponseEntity<Map<String, Set<DefaultPositionResource>>>(positionResources, HttpStatus.OK);
+                DefaultOrganizationUnitPositions organizationUnitPositions = new DefaultOrganizationUnitPositions();
+                organizationUnitPositions.setOrgUnitPositions(positionResources);
+                return new ResponseEntity<DefaultOrganizationUnitPositions>(organizationUnitPositions, HttpStatus.OK);
             } else {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
