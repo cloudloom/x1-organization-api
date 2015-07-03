@@ -36,7 +36,7 @@ public class DefaultPositionResource extends BaseResource{
         this.code = code;
     }
 
-    @Override
+/*    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -54,5 +54,5 @@ public class DefaultPositionResource extends BaseResource{
         int result = name.hashCode();
         result = 31 * result + code.hashCode();
         return result;
-    }
+    }*/
 }

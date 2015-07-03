@@ -4,7 +4,7 @@
 
     <groupId>com.tracebucket.x1.organization</groupId>
     <artifactId>x1-organization-api</artifactId>
-    <version>1.6.3</version>
+    <version>1.6.4</version>
     <packaging>jar</packaging>
     <name>x1-organization-api</name>
     <description>X1 Organization API and Default implementation</description>
@@ -72,12 +72,12 @@
         <dependency>
             <groupId>com.tracebucket.x1.dictionary</groupId>
             <artifactId>x1-dictionary-api</artifactId>
-            <version>0.9</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>com.tracebucket.tron</groupId>
             <artifactId>tron-ddd-cqrs</artifactId>
-            <version>0.8</version>
+            <version>0.9</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -191,6 +191,18 @@
                         <version>1.8.4</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
