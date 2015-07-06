@@ -143,20 +143,9 @@ public class OrganizationController implements Organization {
         List<DefaultOrganization> organizations = organizationService.findAll();
         if (organizations != null && organizations.size() > 0) {
             Iterator<DefaultOrganization> iterator = organizations.iterator();
-            while (iterator.hasNext()) {
+            while(iterator.hasNext()) {
                 DefaultOrganization organization = iterator.next();
-                Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
-                if (organizationUnits != null) {
-                    Iterator<DefaultOrganizationUnit> iterator1 = organizationUnits.iterator();
-                    while (iterator1.hasNext()) {
-                        DefaultOrganizationUnit organizationUnit = iterator1.next();
-                        if (organizationUnit.getParent() != null) {
-                            iterator1.remove();
-                        } else if(organizationUnit.getParent() == null && organizationUnit.isPassive()) {
-                            iterator1.remove();
-                        }
-                    }
-                }
+                removeDeletedOrganizationUnits(organization);
             }
             Set<DefaultOrganizationResource> resources = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResources(organizations, DefaultOrganizationResource.class);
             return new ResponseEntity<Set<DefaultOrganizationResource>>(resources, HttpStatus.OK);
@@ -199,6 +188,43 @@ public class OrganizationController implements Organization {
                 DefaultOrganizationUnitPositions organizationUnitPositions = new DefaultOrganizationUnitPositions();
                 organizationUnitPositions.setOrgUnitPositions(positionResources);
                 return new ResponseEntity<DefaultOrganizationUnitPositions>(organizationUnitPositions, HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/{organizationUID}/organizationUnit/positions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationUnitPositions> getOrganizationUnitsPositions(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId) {
+        String tenantId = request.getHeader("tenant_id");
+        if (tenantId != null) {
+            HashMap<String, List<Map<String, String>>> organizationUnitPositions = new HashMap<String, List<Map<String, String>>>();
+            Set<DefaultOrganizationUnit> organizationUnits = organizationService.getOrganizationUnits(tenantId, new AggregateId(aggregateId));
+            if (organizationUnits != null && organizationUnits.size() > 0) {
+                organizationUnits.stream().forEach(o -> {
+                    Set<DefaultPosition> positions = o.getPositions();
+                    if(positions != null && positions.size() > 0) {
+                        List<Map<String, String>> positionList = new ArrayList<Map<String, String>>();
+                        positions.stream().forEach(pos -> {
+                            Map<String, String> map = new HashMap<>();
+                            map.put("uid", pos.getEntityId().getId());
+                            map.put("name", pos.getName());
+                            map.put("code", pos.getCode());
+                            map.put("positionType", pos.getPositionType().getAbbreviation());
+                            positionList.add(map);
+                        });
+                        organizationUnitPositions.put("uid:"+o.getEntityId().getId()+";name:"+o.getName(), positionList);
+                    } else {
+                        List<Map<String, String>> positionList = new ArrayList<Map<String, String>>();
+                        organizationUnitPositions.put("uid:"+o.getEntityId().getId()+";name:"+o.getName(), positionList);
+                    }
+                });
+                DefaultOrganizationUnitPositions organizationUnitPositions1 = new DefaultOrganizationUnitPositions();
+                organizationUnitPositions1.setOrganizationUnitPositions(organizationUnitPositions);
+                return new ResponseEntity<DefaultOrganizationUnitPositions>(organizationUnitPositions1, HttpStatus.OK);
             } else {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
@@ -690,5 +716,52 @@ public class OrganizationController implements Organization {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    private DefaultOrganization removeDeletedOrganizationUnits(DefaultOrganization organization) {
+        Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+        if(organizationUnits != null && organizationUnits.size() > 0) {
+            Iterator<DefaultOrganizationUnit> iterator1 = organizationUnits.iterator();
+            while(iterator1.hasNext()) {
+                DefaultOrganizationUnit organizationUnit = iterator1.next();
+                if(organizationUnit.isPassive()) {
+                    iterator1.remove();
+                } else if(!organizationUnit.isPassive() && organizationUnit.getParent() != null) {
+                    iterator1.remove();
+                }
+            }
+            Iterator<DefaultOrganizationUnit> iterator = organizationUnits.iterator();
+            while(iterator.hasNext()) {
+                DefaultOrganizationUnit organizationUnit = iterator.next();
+                Set<DefaultOrganizationUnit> children = organizationUnit.getChildren();
+                if(children != null && children.size() > 0) {
+                    Iterator<DefaultOrganizationUnit> childIterator = children.iterator();
+                    while(childIterator.hasNext()) {
+                        DefaultOrganizationUnit childOrganizationUnit = childIterator.next();
+                        if(childOrganizationUnit.isPassive()) {
+                            childIterator.remove();
+                        } else {
+                            removeDeletedOrganizationUnits(childOrganizationUnit);
+                        }
+                    }
+                }
+            }
+        }
+        return organization;
+    }
+
+    private void removeDeletedOrganizationUnits(DefaultOrganizationUnit organizationUnit) {
+        Set<DefaultOrganizationUnit> children = organizationUnit.getChildren();
+        if(children != null && children.size() > 0) {
+            Iterator<DefaultOrganizationUnit> childIterator = children.iterator();
+            while (childIterator.hasNext()) {
+                DefaultOrganizationUnit childOrganizationUnit = childIterator.next();
+                if (childOrganizationUnit.isPassive()) {
+                    childIterator.remove();
+                } else {
+                    removeDeletedOrganizationUnits(childOrganizationUnit);
+                }
+            }
+        }
     }
 }

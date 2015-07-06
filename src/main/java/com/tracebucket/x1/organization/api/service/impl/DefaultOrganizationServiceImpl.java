@@ -265,8 +265,17 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     public Set<DefaultOrganizationUnit> getOrganizationUnits(String tenantId, AggregateId organizationAggregateId) {
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            Set<DefaultOrganizationUnit> organizationUnits = new HashSet<DefaultOrganizationUnit>();
             if (organization != null) {
-                return organization.getOrganizationUnits();
+                Set<DefaultOrganizationUnit> defaultOrganizationUnits = organization.getOrganizationUnits();
+                if(defaultOrganizationUnits != null) {
+                    defaultOrganizationUnits.stream().forEach(orgUnit -> {
+                        if(!orgUnit.isPassive()) {
+                            organizationUnits.add(orgUnit);
+                        }
+                    });
+                }
+                return organizationUnits;
             }
         }
         return null;
@@ -391,22 +400,24 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         return null;
     }
 
-    private void anyMatch(Boolean found, Boolean hasChildren, DefaultOrganizationUnit search, DefaultOrganizationUnit organizationUnitResource) {
+    private Boolean anyMatch(Boolean found, Boolean hasChildren, DefaultOrganizationUnit search, DefaultOrganizationUnit organizationUnitResource) {
         if(search != null && organizationUnitResource != null) {
             if(!search.getEntityId().getId().equals(organizationUnitResource.getEntityId().getId())) {
                 Set<DefaultOrganizationUnit> children = organizationUnitResource.getChildren();
-                if(children != null && children.size() > 0) {
+                /*if(children != null && children.size() > 0) {
                     hasChildren = true;
-                }
+                }*/
                 if(children != null) {
                     for(DefaultOrganizationUnit child : children) {
-                        anyMatch(found, hasChildren, search, child);
+                        found = anyMatch(found, hasChildren, search, child);
                     }
                 }
             } else if(search.getEntityId().getId().equals(organizationUnitResource.getEntityId().getId())) {
                 found = true;
+                return found;
             }
         }
+        return found;
     }
 
     @Override
@@ -424,24 +435,24 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                             found = false;
                             if (restructureOrganizationUnits != null) {
                                 for (DefaultOrganizationUnit organizationUnit1 : restructureOrganizationUnits) {
-                                    if (!organizationUnit1.getEntityId().getId().equals(orgUnit.getEntityId().getId())) {
+                                    if (!orgUnit.isPassive() && !organizationUnit1.getEntityId().getId().equals(orgUnit.getEntityId().getId())) {
                                         Set<DefaultOrganizationUnit> children = organizationUnit1.getChildren();
-                                        if(children != null && children.size() > 0) {
+                                        /*if(children != null && children.size() > 0) {
                                             hasChildren = true;
                                             break;
-                                        }
+                                        }*/
                                         if(children != null) {
                                             for (DefaultOrganizationUnit child : children) {
-                                                anyMatch(found, hasChildren, orgUnit, child);
+                                                found = anyMatch(found, hasChildren, orgUnit, child);
                                             }
                                         }
-                                    } else if(organizationUnit1.getEntityId().getId().equals(orgUnit.getEntityId().getId())) {
+                                    } else if(!orgUnit.isPassive() && organizationUnit1.getEntityId().getId().equals(orgUnit.getEntityId().getId())) {
                                         found = true;
                                         break;
                                     }
                                 }
                             }
-                            if(!found && !hasChildren) {
+                            if(!found /*&& !hasChildren*/) {
                                 deleteOrganizationUnits.add(orgUnit);
                             }
                         }
