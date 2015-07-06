@@ -206,6 +206,7 @@ public class OrganizationController implements Organization {
             if (organizationUnits != null && organizationUnits.size() > 0) {
                 organizationUnits.stream().forEach(o -> {
                     Set<DefaultPosition> positions = o.getPositions();
+                    String parentUid = "0";
                     if(positions != null && positions.size() > 0) {
                         List<Map<String, String>> positionList = new ArrayList<Map<String, String>>();
                         positions.stream().forEach(pos -> {
@@ -216,10 +217,11 @@ public class OrganizationController implements Organization {
                             map.put("positionType", pos.getPositionType().getAbbreviation());
                             positionList.add(map);
                         });
-                        organizationUnitPositions.put("uid:"+o.getEntityId().getId()+";name:"+o.getName(), positionList);
+                        parentUid = o.getParent() != null ? o.getParent().getEntityId().getId() : "0";
+                        organizationUnitPositions.put("uid:"+o.getEntityId().getId()+";name:"+o.getName()+";parent:"+parentUid, positionList);
                     } else {
                         List<Map<String, String>> positionList = new ArrayList<Map<String, String>>();
-                        organizationUnitPositions.put("uid:"+o.getEntityId().getId()+";name:"+o.getName(), positionList);
+                        organizationUnitPositions.put("uid:"+o.getEntityId().getId()+";name:"+o.getName()+";parent:"+parentUid, positionList);
                     }
                 });
                 DefaultOrganizationUnitPositions organizationUnitPositions1 = new DefaultOrganizationUnitPositions();
