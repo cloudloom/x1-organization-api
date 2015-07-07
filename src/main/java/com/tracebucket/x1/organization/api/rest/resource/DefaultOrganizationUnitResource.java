@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Created by sadath on 31-Mar-15.
  */
-public class DefaultOrganizationUnitResource extends BaseResource {
+public class DefaultOrganizationUnitResource extends BaseResource implements Comparable<DefaultOrganizationUnitResource>{
 
     @NotNull
     @Size(min = 1, max = 250)
@@ -158,5 +158,13 @@ public class DefaultOrganizationUnitResource extends BaseResource {
 
     public void setPositions(Set<DefaultPositionResource> positions) {
         this.positions = positions;
+    }
+
+    @Override
+    public int compareTo(DefaultOrganizationUnitResource o) {
+        if(o != null) {
+            return o.getName().compareTo(this.getName());
+        }
+        return 0;
     }
 }
