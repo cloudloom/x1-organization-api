@@ -3,13 +3,26 @@ package com.tracebucket.x1.organization.api.rest.resource;
 import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 /**
  * @author ffazil
  * @since 16/05/15
  */
 public class DefaultPositionResource extends BaseResource{
+    @NotNull
+    @Size(min = 1, max = 250)
+    @Pattern(regexp = "^[A-Za-z]*$")
     private String name;
+
+    @NotNull
     private PositionType positionType;
+
+    @NotNull
+    @Size(min = 1, max = 250)
+    @Pattern(regexp = "^[A-Za-z0-9\\-]*$")
     private String code;
 
     public String getName() {

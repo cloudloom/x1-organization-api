@@ -59,6 +59,7 @@ public class DefaultOrganizationResource extends BaseResource implements Compara
     @Valid
     private Set<DefaultOrganizationUnitResource> organizationUnits = new HashSet<DefaultOrganizationUnitResource>(0);
 
+    @Valid
     private Set<DefaultPositionResource> positions = new HashSet<DefaultPositionResource>(0);
 
     public String getCode() {

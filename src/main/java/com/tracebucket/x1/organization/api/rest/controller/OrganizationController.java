@@ -273,7 +273,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUID}/position", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> addPosition(HttpServletRequest request, @RequestBody List<DefaultPositionResource> positionResource, @PathVariable("organizationUID") String aggregateId) {
+    public ResponseEntity<DefaultOrganizationResource> addPosition(HttpServletRequest request, @Valid @RequestBody List<DefaultPositionResource> positionResource, @PathVariable("organizationUID") String aggregateId) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             Set<DefaultPosition> position = assemblerResolver.resolveEntityAssembler(DefaultPosition.class, DefaultPositionResource.class).toEntities(positionResource, DefaultPosition.class);
@@ -378,7 +378,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUID}/position/{positionUID}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> updatePosition(HttpServletRequest request, @RequestBody DefaultPositionResource positionResource, @PathVariable("organizationUID") String aggregateId, @PathVariable("positionUID") String entityId) {
+    public ResponseEntity<DefaultOrganizationResource> updatePosition(HttpServletRequest request, @Valid @RequestBody DefaultPositionResource positionResource, @PathVariable("organizationUID") String aggregateId, @PathVariable("positionUID") String entityId) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             DefaultPosition position = assemblerResolver.resolveEntityAssembler(DefaultPosition.class, DefaultPositionResource.class).toEntity(positionResource, DefaultPosition.class);
