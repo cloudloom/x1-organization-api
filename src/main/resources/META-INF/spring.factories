@@ -5,4 +5,5 @@ com.tracebucket.x1.organization.api.autoconfig.JPAConfiguration,\
 com.tracebucket.x1.organization.api.autoconfig.ServiceConfiguration,\
 com.tracebucket.x1.organization.api.autoconfig.WebConfiguration,\
 com.tracebucket.x1.organization.api.autoconfig.ExceptionAdviceConfiguration,\
-com.tracebucket.x1.organization.api.autoconfig.ResourceConfiguration
+com.tracebucket.x1.organization.api.autoconfig.ResourceConfiguration,\
+com.tracebucket.x1.organization.api.autoconfig.I18NConfiguration

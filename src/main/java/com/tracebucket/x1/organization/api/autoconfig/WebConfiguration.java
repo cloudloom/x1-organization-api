@@ -15,17 +15,4 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 @Conditional(value = NonExistingWebBeans.class)
 @ComponentScan(basePackages = {"com.tracebucket.x1.**.api.rest"})
 public class WebConfiguration {
-
-
-    private static final String MESSAGE_SOURCE_BASE_NAME = "i18n/message";
-
-    @Bean
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-
-        messageSource.setBasename(MESSAGE_SOURCE_BASE_NAME);
-        messageSource.setUseCodeAsDefaultMessage(true);
-
-        return messageSource;
-    }
 }
