@@ -138,6 +138,34 @@ public class OrganizationController implements Organization {
         }
     }
 
+    @RequestMapping(value = "/organization/{organizationUid}/organizationUnits/unstructured", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<DefaultOrganizationUnitResource>> getOrganizationUnitsUnstructured(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid) {
+        String tenantId = request.getHeader("tenant_id");
+        if (tenantId != null) {
+            DefaultOrganization organization = organizationService.findOne(tenantId, new AggregateId(organizationUid));
+            Set<DefaultOrganizationUnit> units = organization.getOrganizationUnits();
+            if(units != null && units.size() >0) {
+                Iterator<DefaultOrganizationUnit> iterator = units.iterator();
+                while(iterator.hasNext()) {
+                    DefaultOrganizationUnit unit = iterator.next();
+                    if(unit.isPassive()) {
+                        iterator.remove();
+                    }
+                }
+                Set<DefaultOrganizationUnitResource> organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationUnitResource.class, DefaultOrganizationUnit.class).toResources(units, DefaultOrganizationUnitResource.class);
+                if (organization != null) {
+                    return new ResponseEntity<Set<DefaultOrganizationUnitResource>>(organizationResource, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity(HttpStatus.NOT_FOUND);
+                }
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+    }
+
     @RequestMapping(value = "/organizations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations() {
         List<DefaultOrganization> organizations = organizationService.findAll();
