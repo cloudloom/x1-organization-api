@@ -12,8 +12,8 @@ import javax.validation.constraints.Size;
  */
 public class DefaultAddressResource extends BaseResource {
 
-    @Size(min = 1, max = 250)
-    @Pattern(regexp = "^[a-zA-Z\\-/@&]*$")
+    //@Size(min = 1, max = 250)
+    //@Pattern(regexp = "^[a-zA-Z\\-/@&]*$")
     private String name;
 
     @Size(min = 1, max = 250)
@@ -22,12 +22,12 @@ public class DefaultAddressResource extends BaseResource {
     @Size(min = 1, max = 250)
     private String street;
 
-    @Size(min = 1, max = 250)
+    //@Size(min = 1, max = 250)
     private String region;
 
     @Size(min = 1, max = 250)
     private String city;
-    @Size(min = 1, max = 250)
+    //@Size(min = 1, max = 250)
     private String district;
 
 

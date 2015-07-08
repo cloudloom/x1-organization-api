@@ -220,6 +220,7 @@ public class OrganizationController implements Organization {
                         parentUid = o.getParent() != null ? o.getParent().getEntityId().getId() : "0";
                         organizationUnitPositions.put("uid:"+o.getEntityId().getId()+";name:"+o.getName()+";parent:"+parentUid, positionList);
                     } else {
+                        parentUid = o.getParent() != null ? o.getParent().getEntityId().getId() : "0";
                         List<Map<String, String>> positionList = new ArrayList<Map<String, String>>();
                         organizationUnitPositions.put("uid:"+o.getEntityId().getId()+";name:"+o.getName()+";parent:"+parentUid, positionList);
                     }
