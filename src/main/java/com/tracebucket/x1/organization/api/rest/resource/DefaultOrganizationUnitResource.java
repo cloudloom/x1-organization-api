@@ -36,7 +36,7 @@ public class DefaultOrganizationUnitResource extends BaseResource implements Com
     @Valid
     private Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
 
-    @Valid
+    //@Valid
     private Set<DefaultPersonResource> contactPersons = new HashSet<DefaultPersonResource>(0);
 
     @Valid
@@ -45,10 +45,10 @@ public class DefaultOrganizationUnitResource extends BaseResource implements Com
     @Valid
     private Set<DefaultEmailResource> emails = new HashSet<DefaultEmailResource>(0);
 
-    @Valid
+    //@Valid
     private Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>(0);
 
-    @Valid
+    //@Valid
     private Set<DefaultBusinessLineResource> businessLines = new HashSet<DefaultBusinessLineResource>(0);
 
     @JsonManagedReference

@@ -41,13 +41,13 @@ public class DefaultOrganizationResource extends BaseResource implements Compara
     @Valid
     private Set<DefaultAddressResource> addresses = new HashSet<DefaultAddressResource>(0);
 
-    @Valid
+    //@Valid
     private Set<DefaultCurrencyResource> currencies = new HashSet<DefaultCurrencyResource>(0);
 
-    @Valid
+    //@Valid
     private Set<DefaultTimezoneResource> timezones = new HashSet<DefaultTimezoneResource>(0);
 
-    @Valid
+    //@Valid
     private Set<DefaultPersonResource> contactPersons = new HashSet<DefaultPersonResource>(0);
 
     @Valid
