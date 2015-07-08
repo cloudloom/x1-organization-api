@@ -9,6 +9,8 @@ import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.Organization;
 import com.tracebucket.x1.organization.api.domain.OrganizationUnit;
 import org.dozer.Mapper;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.*;
@@ -44,14 +46,17 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_ADDRESS", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_CURRENCY", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultCurrency> currencies = new HashSet<DefaultCurrency>(0);
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_TIMEZONE", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultTimezone> timezones = new HashSet<DefaultTimezone>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -60,21 +65,26 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
             joinColumns = { @JoinColumn(name = "ORGANIZATION__ID", referencedColumnName = "ID") },
             inverseJoinColumns = { @JoinColumn(name = "PERSON__ID", referencedColumnName = "ID", unique = true) }
     )
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultPerson> contactPersons = new HashSet<DefaultPerson>(0);
 
     @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultOrganizationUnit> organizationUnits = new HashSet<DefaultOrganizationUnit>(0);
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_CONTACT_PHONE", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultPhone> phones = new HashSet<DefaultPhone>(0);
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_CONTACT_EMAIL", joinColumns = @JoinColumn(name = "ORGANIZATION__ID"))
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "ORGANIZATION__ID")
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultPosition> positions = new HashSet<DefaultPosition>(0);
 
     public DefaultOrganization() {

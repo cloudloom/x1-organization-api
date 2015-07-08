@@ -7,6 +7,8 @@ import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPerson;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPhone;
 import com.tracebucket.x1.organization.api.domain.OrganizationFunction;
 import com.tracebucket.x1.organization.api.domain.OrganizationUnit;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -38,10 +40,12 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     @JoinTable(name = "ORGANIZATION_UNIT_FUNCTION", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
     @Enumerated(EnumType.STRING)
     @Column(name = "ORGANIZATION_FUNCTION", nullable = false, columnDefinition = "ENUM('SALES','PURCHASE') default 'SALES'")
+    @Fetch(value = FetchMode.JOIN)
     private Set<OrganizationFunction> organizationFunctions = new HashSet<OrganizationFunction>(0);
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_UNIT_ADDRESS", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultAddress> addresses = new HashSet<DefaultAddress>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
@@ -50,30 +54,37 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
             joinColumns={ @JoinColumn(name="ORGANIZATION_UNIT__ID", referencedColumnName="ID") },
             inverseJoinColumns={ @JoinColumn(name="PERSON__ID", referencedColumnName="ID", unique=true) }
     )
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultPerson> contactPersons = new HashSet<DefaultPerson>(0);
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_UNIT_CONTACT_PHONE", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultPhone> phones = new HashSet<DefaultPhone>(0);
 
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_UNIT_CONTACT_EMAIL", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name="ORGANIZATION_UNIT__ID", referencedColumnName="ID")
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultDepartment> departments = new HashSet<DefaultDepartment>(0);
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name="ORGANIZATION_UNIT__ID", referencedColumnName="ID")
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultBusinessLine> businessLines = new HashSet<DefaultBusinessLine>(0);
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultOrganizationUnit> children = new HashSet<DefaultOrganizationUnit>(0);
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_UNIT_POSITION", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "POSITION__ID", referencedColumnName = "ID"))
+    @Fetch(value = FetchMode.JOIN)
     private Set<DefaultPosition> positions = new HashSet<DefaultPosition>(0);
 
  /*   @OneToMany(mappedBy="organizationUnit", fetch = FetchType.EAGER)
