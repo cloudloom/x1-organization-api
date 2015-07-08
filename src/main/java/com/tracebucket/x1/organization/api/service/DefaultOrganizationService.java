@@ -37,7 +37,7 @@ public interface DefaultOrganizationService {
 	public Set<DefaultPhone> getContactNumbers(String tenantId, AggregateId organizationAggregateId);
 	public Set<DefaultEmail> getEmails(String tenantId, AggregateId organizationAggregateId);
     public List<DefaultOrganization> findAll();
-    public DefaultOrganization addPosition(String tenantId, AggregateId organizationAggregateId, Set<DefaultPosition> position);
+    public DefaultOrganization addPosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position);
     public DefaultOrganization addPositionToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> positions);
     public DefaultOrganization updatePosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position);
     public DefaultOrganization updatePositionsOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> positions);

@@ -244,9 +244,9 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
 
     @Override
     @DomainMethod(event = "AddPosition")
-    public void addPosition(Set<DefaultPosition> position) {
+    public void addPosition(DefaultPosition position) {
         if(position != null) {
-            this.positions.addAll(position);
+            this.positions.add(position);
         }
     }
 
