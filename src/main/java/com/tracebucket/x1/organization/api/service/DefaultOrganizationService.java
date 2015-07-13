@@ -3,10 +3,7 @@ package com.tracebucket.x1.organization.api.service;
 import com.tracebucket.tron.ddd.domain.AggregateId;
 import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.*;
 
 import java.util.*;
 
@@ -50,5 +47,7 @@ public interface DefaultOrganizationService {
     public Set<DefaultOrganizationUnit> searchOrganizationUnits(String tenantId, AggregateId organizationAggregateId, String searchTerm);
     public Set<DefaultPosition> searchPositions(String tenantId, AggregateId organizationAggregateId, String searchTerm);
     public DefaultOrganization restructureOrganizationUnitsPositions(String tenantId, AggregateId organizationAggregateId, ArrayList<HashMap<String, HashMap<String, ArrayList<String>>>> positionStructure);
-
+    public DefaultOrganization addDepartmentToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<DefaultDepartment> departments);
+    public DefaultOrganization updateDepartmentOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<DefaultDepartment> departments);
+    public Set<DefaultDepartment> getDepartmentsOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId);
 }

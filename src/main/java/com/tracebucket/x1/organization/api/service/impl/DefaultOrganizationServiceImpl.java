@@ -4,10 +4,7 @@ import com.tracebucket.tron.ddd.annotation.PersistChanges;
 import com.tracebucket.tron.ddd.domain.AggregateId;
 import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.*;
 import com.tracebucket.x1.organization.api.repository.jpa.DefaultOrganizationRepository;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
 import org.dozer.Mapper;
@@ -630,4 +627,40 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         return null;
     }
 
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization addDepartmentToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<DefaultDepartment> departments) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.addDepartmentToOrganizationUnit(organizationUnitEntityId, departments);
+                return organization;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization updateDepartmentOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<DefaultDepartment> departments) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.updateDepartmentOfOrganizationUnit(organizationUnitEntityId, departments, mapper);
+                return organization;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Set<DefaultDepartment> getDepartmentsOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                return organization.getDepartmentsOfOrganizationUnit(organizationUnitEntityId);
+            }
+        }
+        return null;
+    }
 }

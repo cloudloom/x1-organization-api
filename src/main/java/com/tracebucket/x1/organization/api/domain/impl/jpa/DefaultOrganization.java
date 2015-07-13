@@ -339,6 +339,65 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
+    @DomainMethod(event = "AddDepartmentToOrganizationUnit")
+    public void addDepartmentToOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultDepartment> departments) {
+        Set<DefaultOrganizationUnit> organizationUnits = this.organizationUnits;
+        if(organizationUnits != null) {
+            DefaultOrganizationUnit fetchedOrganizationUnit = organizationUnits.stream()
+                    .filter(organizationUnit -> organizationUnit.getEntityId().getId().equals(organizationUnitEntityId.getId()))
+                    .findFirst()
+                    .orElse(null);
+            if(fetchedOrganizationUnit != null) {
+                if(departments != null && departments.size() > 0) {
+                    fetchedOrganizationUnit.getDepartments().addAll(departments);
+                }
+            }
+        }
+    }
+
+    @Override
+    @DomainMethod(event = "UpdateDepartmentOfOrganizationUnit")
+    public void updateDepartmentOfOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultDepartment> departments, Mapper mapper) {
+        Set<DefaultOrganizationUnit> organizationUnits = this.organizationUnits;
+        if(organizationUnits != null) {
+            DefaultOrganizationUnit fetchedOrganizationUnit = organizationUnits.stream()
+                    .filter(organizationUnit -> organizationUnit.getEntityId().getId().equals(organizationUnitEntityId.getId()))
+                    .findFirst()
+                    .orElse(null);
+            if(fetchedOrganizationUnit != null) {
+                if(departments != null && departments.size() > 0) {
+                    departments.stream().forEach(department -> {
+                        if (department != null && department.getEntityId() != null) {
+                            DefaultDepartment fetchedDepartment = fetchedOrganizationUnit.getDepartments().stream()
+                                    .filter(dept -> dept.getEntityId().getId().equals(department.getEntityId().getId()))
+                                    .findFirst()
+                                    .orElse(null);
+                            if (fetchedDepartment != null) {
+                                mapper.map(department, fetchedDepartment);
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    @Override
+    public Set<DefaultDepartment> getDepartmentsOfOrganizationUnit(EntityId organizationUnitEntityId) {
+        Set<DefaultOrganizationUnit> organizationUnits = this.organizationUnits;
+        if(organizationUnits != null) {
+            DefaultOrganizationUnit fetchedOrganizationUnit = organizationUnits.stream()
+                    .filter(organizationUnit -> organizationUnit.getEntityId().getId().equals(organizationUnitEntityId.getId()))
+                    .findFirst()
+                    .orElse(null);
+            if(fetchedOrganizationUnit != null) {
+                return fetchedOrganizationUnit.getDepartments();
+            }
+        }
+        return null;
+    }
+
+    @Override
     public String getCode() {
         return code;
     }
