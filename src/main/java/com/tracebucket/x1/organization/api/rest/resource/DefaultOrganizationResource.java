@@ -62,6 +62,8 @@ public class DefaultOrganizationResource extends BaseResource implements Compara
     @Valid
     private Set<DefaultPositionResource> positions = new HashSet<DefaultPositionResource>(0);
 
+    private Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>(0);
+
     public String getCode() {
         return code;
     }
@@ -166,6 +168,13 @@ public class DefaultOrganizationResource extends BaseResource implements Compara
         this.positions = positions;
     }
 
+    public Set<DefaultDepartmentResource> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(Set<DefaultDepartmentResource> departments) {
+        this.departments = departments;
+    }
 
     @Override
     public int compareTo(DefaultOrganizationResource o) {

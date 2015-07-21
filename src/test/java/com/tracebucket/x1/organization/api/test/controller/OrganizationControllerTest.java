@@ -2,6 +2,7 @@ package com.tracebucket.x1.organization.api.test.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tracebucket.x1.organization.api.DefaultOrganizationStarter;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import com.tracebucket.x1.organization.api.test.fixture.*;
 import org.junit.After;
@@ -15,13 +16,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -240,7 +244,144 @@ public class OrganizationControllerTest {
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
         Assert.assertEquals(1, organization.getAddresses().size());
+    }
 
+    @Test
+    public void testAddDepartment()throws Exception {
+        createOrganization();
+        Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>();
+        departments.add(DefaultDepartmentResourceFixture.standardDepartment());
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/departments", departments);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getDepartments());
+        Assert.assertEquals(1, organization.getDepartments().size());
+    }
+
+    @Test
+    public void testAddDepartmentToOrganizationUnit()throws Exception {
+        createOrganization();
+
+        DefaultOrganizationUnitResource organizationUnit = DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource();
+        log.info("Add OrganizationUnit : " + objectMapper.writeValueAsString(organizationUnit));
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationunit", organizationUnit);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+
+        DefaultOrganizationUnitResource organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+
+        Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>();
+        departments.add(DefaultDepartmentResourceFixture.standardDepartment());
+
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationUnit/"+organizationUnitResource.getUid()+"/departments", departments);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnitResource.getDepartments());
+        Assert.assertEquals(1, organizationUnitResource.getDepartments().size());
+    }
+
+    @Test
+    public void testUpdateDepartment()throws Exception {
+        createOrganization();
+        Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>();
+        departments.add(DefaultDepartmentResourceFixture.standardDepartment());
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/departments", departments);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getDepartments());
+        Assert.assertEquals(1, organization.getDepartments().size());
+
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/departments/update", organization.getDepartments());
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getDepartments());
+        Assert.assertEquals(1, organization.getDepartments().size());
+    }
+
+    @Test
+    public void testUpdateDepartmentOfOrganizationUnit()throws Exception {
+        createOrganization();
+
+        DefaultOrganizationUnitResource organizationUnit = DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource();
+        log.info("Add OrganizationUnit : " + objectMapper.writeValueAsString(organizationUnit));
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationunit", organizationUnit);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+
+        DefaultOrganizationUnitResource organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+
+        Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>();
+        departments.add(DefaultDepartmentResourceFixture.standardDepartment());
+
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationUnit/"+organizationUnitResource.getUid()+"/departments", departments);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnitResource.getDepartments());
+        Assert.assertEquals(1, organizationUnitResource.getDepartments().size());
+
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationUnit/"+organizationUnitResource.getUid()+"/departments/update", organizationUnitResource.getDepartments());
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnitResource.getDepartments());
+        Assert.assertEquals(1, organizationUnitResource.getDepartments().size());
+    }
+
+    @Test
+    public void testFindDepartment()throws Exception {
+        createOrganization();
+        Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>();
+        departments.add(DefaultDepartmentResourceFixture.standardDepartment());
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/departments", departments);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getDepartments());
+        Assert.assertEquals(1, organization.getDepartments().size());
+        ResponseEntity<DefaultDepartmentResource[]> departmentResources = restTemplate.exchange(basePath + "/organization/" + organization.getUid() + "/departments", HttpMethod.GET, null, DefaultDepartmentResource[].class);
+        Assert.assertNotNull(departmentResources);
+        Assert.assertNotNull(departmentResources.getBody());
+        Assert.assertTrue(departmentResources.getBody().length > 0);
+    }
+
+    @Test
+    public void testFindDepartmentOfOrganizationUnit()throws Exception {
+        createOrganization();
+
+        DefaultOrganizationUnitResource organizationUnit = DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource();
+        log.info("Add OrganizationUnit : " + objectMapper.writeValueAsString(organizationUnit));
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationunit", organizationUnit);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+
+        DefaultOrganizationUnitResource organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+
+        Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>();
+        departments.add(DefaultDepartmentResourceFixture.standardDepartment());
+
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationUnit/"+organizationUnitResource.getUid()+"/departments", departments);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnitResource.getDepartments());
+        Assert.assertEquals(1, organizationUnitResource.getDepartments().size());
+
+        ResponseEntity<DefaultDepartmentResource[]> departmentResources = restTemplate.exchange(basePath + "/organization/" + organization.getUid() + "/organizationUnit" +organizationUnitResource.getUid()+ "/departments", HttpMethod.GET, null, DefaultDepartmentResource[].class);
+        Assert.assertNotNull(departmentResources);
+        Assert.assertNotNull(departmentResources.getBody());
+        Assert.assertEquals(1, departmentResources.getBody().length);
     }
 
     @Test
