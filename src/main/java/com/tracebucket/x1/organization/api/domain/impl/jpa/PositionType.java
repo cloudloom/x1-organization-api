@@ -14,7 +14,8 @@ public enum PositionType {
     FRONT_OFFICE("Front Office", "FRONT_OFFICE"),
     BACK_OFFICE("Back Office", "BACK_OFFICE"),
     FIELD_STAFF("Field Staff", "FIELD_STAFF"),
-    SUPPORT_STAFF("Support Staff", "SUPPORT_STAFF");
+    SUPPORT_STAFF("Support Staff", "SUPPORT_STAFF"),
+    CUSTOMER_SERVICE_AGENT("Customer Service Agent", "CUSTOMER_SERVICE_AGENT");
 
     private final String positionType;
     private final String abbreviation;

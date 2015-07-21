@@ -65,9 +65,15 @@ public interface Organization extends Serializable{
 
     Set<DefaultPosition>  getPositionsOfOrganizationUnit(EntityId organizationUnitEntityId);
 
+    void addDepartmentToOrganization(Set<DefaultDepartment> departments);
+
+    void updateDepartmentOfOrganization(Set<DefaultDepartment> departments, Mapper mapper);
+
+    Set<DefaultDepartment> getDepartmentsOfOrganization();
+
     void addDepartmentToOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultDepartment> departments);
 
-    void updateDepartmentOfOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultDepartment> departments, Mapper mapper);
+    void updateDepartmentOfOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultDepartment> departments);
 
     Set<DefaultDepartment> getDepartmentsOfOrganizationUnit(EntityId organizationUnitEntityId);
 

@@ -67,8 +67,9 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
     @Fetch(value = FetchMode.JOIN)
     private Set<DefaultEmail> emails = new HashSet<DefaultEmail>(0);
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name="ORGANIZATION_UNIT__ID", referencedColumnName="ID")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "ORGANIZATION_UNIT_DEPARTMENT", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "DEPARTMENT__ID", referencedColumnName = "ID"))
     @Fetch(value = FetchMode.JOIN)
     private Set<DefaultDepartment> departments = new HashSet<DefaultDepartment>(0);
 

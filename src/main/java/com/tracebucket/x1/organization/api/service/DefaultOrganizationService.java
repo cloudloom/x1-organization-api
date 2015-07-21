@@ -47,7 +47,12 @@ public interface DefaultOrganizationService {
     public Set<DefaultOrganizationUnit> searchOrganizationUnits(String tenantId, AggregateId organizationAggregateId, String searchTerm);
     public Set<DefaultPosition> searchPositions(String tenantId, AggregateId organizationAggregateId, String searchTerm);
     public DefaultOrganization restructureOrganizationUnitsPositions(String tenantId, AggregateId organizationAggregateId, ArrayList<HashMap<String, HashMap<String, ArrayList<String>>>> positionStructure);
-    public DefaultOrganization addDepartmentToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<DefaultDepartment> departments);
-    public DefaultOrganization updateDepartmentOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<DefaultDepartment> departments);
+
+    public DefaultOrganization addDepartmentToOrganization(String tenantId, AggregateId organizationAggregateId, Set<DefaultDepartment> departments);
+    public DefaultOrganization updateDepartmentOfOrganization(String tenantId, AggregateId organizationAggregateId, Set<DefaultDepartment> departments);
+    public Set<DefaultDepartment> getDepartmentsOfOrganization(String tenantId, AggregateId organizationAggregateId);
+
+    public DefaultOrganization addDepartmentToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> departments);
+    public DefaultOrganization updateDepartmentOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> departments);
     public Set<DefaultDepartment> getDepartmentsOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId);
 }

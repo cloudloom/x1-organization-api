@@ -629,11 +629,11 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization addDepartmentToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<DefaultDepartment> departments) {
+    public DefaultOrganization addDepartmentToOrganization(String tenantId, AggregateId organizationAggregateId, Set<DefaultDepartment> departments) {
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
             if (organization != null) {
-                organization.addDepartmentToOrganizationUnit(organizationUnitEntityId, departments);
+                organization.addDepartmentToOrganization(departments);
                 return organization;
             }
         }
@@ -642,12 +642,67 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
-    public DefaultOrganization updateDepartmentOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<DefaultDepartment> departments) {
+    public DefaultOrganization updateDepartmentOfOrganization(String tenantId, AggregateId organizationAggregateId, Set<DefaultDepartment> departments) {
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
             if (organization != null) {
-                organization.updateDepartmentOfOrganizationUnit(organizationUnitEntityId, departments, mapper);
+                organization.updateDepartmentOfOrganization(departments, mapper);
                 return organization;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Set<DefaultDepartment> getDepartmentsOfOrganization(String tenantId, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                return organization.getDepartmentsOfOrganization();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization addDepartmentToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> departments) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                Set<DefaultDepartment> departments1 = organization.getDepartmentsOfOrganization();
+                if(departments1 != null) {
+                    Set<DefaultDepartment> department = new HashSet<DefaultDepartment>();
+                    departments1.stream().forEach(p -> {
+                        if(departments.contains(p.getEntityId().getId())) {
+                            department.add(p);
+                        }
+                    });
+                    organization.addDepartmentToOrganizationUnit(organizationUnitEntityId, department);
+                    return organization;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization updateDepartmentOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> departments) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                Set<DefaultDepartment> departments1 = organization.getDepartmentsOfOrganization();
+                if(departments1 != null) {
+                    Set<DefaultDepartment> department = new HashSet<DefaultDepartment>();
+                    departments1.stream().forEach(p -> {
+                        if(departments.contains(p.getEntityId().getId())) {
+                            department.add(p);
+                        }
+                    });
+                    organization.updateDepartmentOfOrganizationUnit(organizationUnitEntityId, department);
+                    return organization;
+                }
             }
         }
         return null;

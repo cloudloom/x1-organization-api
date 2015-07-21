@@ -165,14 +165,78 @@ public class OrganizationController implements Organization {
     }
 
     @Override
-    @RequestMapping(value = "/organization/{organizationUid}/organizationUnit/{organizationUnitUid}/departments", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @PathVariable("organizationUnitUid") String organizationUnitEntityId, @RequestBody Set<DefaultDepartmentResource> departments) {
+    @RequestMapping(value = "/organization/{organizationUid}/departments", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, Set<DefaultDepartmentResource> departments) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             Set<DefaultDepartment> defaultDepartments = assemblerResolver.resolveEntityAssembler(DefaultDepartment.class, DefaultDepartmentResource.class).toEntities(departments, DefaultDepartment.class);
             DefaultOrganization organization = null;
             try {
-                organization = organizationService.addDepartmentToOrganizationUnit(tenantId, new AggregateId(organizationAggregateId), new EntityId(organizationUnitEntityId), defaultDepartments);
+                organization = organizationService.addDepartmentToOrganization(tenantId, new AggregateId(organizationAggregateId), defaultDepartments);
+                removeDeletedOrganizationUnits(organization);
+            } catch (DataIntegrityViolationException dive) {
+                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.CONFLICT);
+            }
+            DefaultOrganizationResource organizationResource = null;
+            if (organization != null) {
+                organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/{organizationUid}/departments/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, Set<DefaultDepartmentResource> departments) {
+        String tenantId = request.getHeader("tenant_id");
+        if (tenantId != null) {
+            Set<DefaultDepartment> defaultDepartments = assemblerResolver.resolveEntityAssembler(DefaultDepartment.class, DefaultDepartmentResource.class).toEntities(departments, DefaultDepartment.class);
+            DefaultOrganization organization = null;
+            try {
+                organization = organizationService.updateDepartmentOfOrganization(tenantId, new AggregateId(organizationAggregateId), defaultDepartments);
+                removeDeletedOrganizationUnits(organization);
+            } catch (DataIntegrityViolationException dive) {
+                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.CONFLICT);
+            }
+            DefaultOrganizationResource organizationResource = null;
+            if (organization != null) {
+                organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/{organizationUid}/departments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<DefaultDepartmentResource>> getDepartmentsOfOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId) {
+        String tenantId = request.getHeader("tenant_id");
+        if (tenantId != null) {
+            Set<DefaultDepartment> departments = organizationService.getDepartmentsOfOrganization(tenantId, new AggregateId(organizationAggregateId));
+            if (departments != null && departments.size() > 0) {
+                Set<DefaultDepartmentResource> departmentResources = assemblerResolver.resolveResourceAssembler(DefaultDepartmentResource.class, DefaultDepartment.class).toResources(departments, DefaultDepartmentResource.class);
+                return new ResponseEntity<Set<DefaultDepartmentResource>>(departmentResources, HttpStatus.OK);
+            } else {
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/{organizationUid}/organizationUnit/{organizationUnitUid}/departments", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @PathVariable("organizationUnitUid") String organizationUnitEntityId, @RequestBody Set<String> departments) {
+        String tenantId = request.getHeader("tenant_id");
+        if (tenantId != null) {
+            DefaultOrganization organization = null;
+            try {
+                organization = organizationService.addDepartmentToOrganizationUnit(tenantId, new AggregateId(organizationAggregateId), new EntityId(organizationUnitEntityId), departments);
                 removeDeletedOrganizationUnits(organization);
             } catch (DataIntegrityViolationException dive) {
                 throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.CONFLICT);
@@ -190,13 +254,12 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/organizationUnit/{organizationUnitUid}/departments/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @PathVariable("organizationUnitUid") String organizationUnitEntityId, @RequestBody Set<DefaultDepartmentResource> departments) {
+    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @PathVariable("organizationUnitUid") String organizationUnitEntityId, @RequestBody Set<String> departments) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
-            Set<DefaultDepartment> defaultDepartments = assemblerResolver.resolveEntityAssembler(DefaultDepartment.class, DefaultDepartmentResource.class).toEntities(departments, DefaultDepartment.class);
             DefaultOrganization organization = null;
             try {
-                organization = organizationService.updateDepartmentOfOrganizationUnit(tenantId, new AggregateId(organizationAggregateId), new EntityId(organizationUnitEntityId), defaultDepartments);
+                organization = organizationService.updateDepartmentOfOrganizationUnit(tenantId, new AggregateId(organizationAggregateId), new EntityId(organizationUnitEntityId), departments);
                 removeDeletedOrganizationUnits(organization);
             } catch (DataIntegrityViolationException dive) {
                 throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.CONFLICT);

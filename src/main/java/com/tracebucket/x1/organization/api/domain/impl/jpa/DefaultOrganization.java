@@ -87,6 +87,11 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Fetch(value = FetchMode.JOIN)
     private Set<DefaultPosition> positions = new HashSet<DefaultPosition>(0);
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="ORGANIZATION__ID")
+    @Fetch(value = FetchMode.JOIN)
+    private Set<DefaultDepartment> departments = new HashSet<DefaultDepartment>(0);
+
     public DefaultOrganization() {
     }
 
@@ -339,6 +344,37 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
+    @DomainMethod(event = "AddDepartmentToOrganization")
+    public void addDepartmentToOrganization(Set<DefaultDepartment> departments) {
+        if(departments != null && departments.size() > 0) {
+            this.departments.addAll(departments);
+        }
+    }
+
+    @Override
+    @DomainMethod(event = "UpdateDepartmentOfOrganization")
+    public void updateDepartmentOfOrganization(Set<DefaultDepartment> departments, Mapper mapper) {
+        if(departments != null && departments.size() > 0) {
+            departments.stream().forEach(department -> {
+                if(this.departments != null && this.departments.size() > 0) {
+                    DefaultDepartment fetchedDepartment = this.departments.stream()
+                            .filter(t -> t.getEntityId().getId().equals(department.getEntityId().getId()))
+                            .findFirst()
+                            .orElse(null);
+                    if(fetchedDepartment != null) {
+                        mapper.map(department, fetchedDepartment);
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public Set<DefaultDepartment> getDepartmentsOfOrganization() {
+        return this.departments;
+    }
+
+    @Override
     @DomainMethod(event = "AddDepartmentToOrganizationUnit")
     public void addDepartmentToOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultDepartment> departments) {
         Set<DefaultOrganizationUnit> organizationUnits = this.organizationUnits;
@@ -357,7 +393,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
 
     @Override
     @DomainMethod(event = "UpdateDepartmentOfOrganizationUnit")
-    public void updateDepartmentOfOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultDepartment> departments, Mapper mapper) {
+    public void updateDepartmentOfOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultDepartment> departments) {
         Set<DefaultOrganizationUnit> organizationUnits = this.organizationUnits;
         if(organizationUnits != null) {
             DefaultOrganizationUnit fetchedOrganizationUnit = organizationUnits.stream()
@@ -365,20 +401,27 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
                     .findFirst()
                     .orElse(null);
             if(fetchedOrganizationUnit != null) {
-                if(departments != null && departments.size() > 0) {
-                    departments.stream().forEach(department -> {
-                        if (department != null && department.getEntityId() != null) {
-                            DefaultDepartment fetchedDepartment = fetchedOrganizationUnit.getDepartments().stream()
-                                    .filter(dept -> dept.getEntityId().getId().equals(department.getEntityId().getId()))
-                                    .findFirst()
-                                    .orElse(null);
-                            if (fetchedDepartment != null) {
-                                mapper.map(department, fetchedDepartment);
-                            }
+                Set<DefaultDepartment> departments1 = fetchedOrganizationUnit.getDepartments();
+                if(departments1 != null) {
+                    Iterator<DefaultDepartment> iterator = departments1.iterator();
+                    while(iterator.hasNext()) {
+                        DefaultDepartment d =iterator.next();
+                        if (departments != null && !departments.contains(d)) {
+                            departments1.remove(d);
                         }
-                    });
+                    }
+                }
+                if(departments != null) {
+                    Iterator<DefaultDepartment> iterator = departments.iterator();
+                    while(iterator.hasNext()){
+                        DefaultDepartment d = iterator.next();
+                        if(!departments1.contains(d)) {
+                            departments1.add(d);
+                        }
+                    };
                 }
             }
+
         }
     }
 

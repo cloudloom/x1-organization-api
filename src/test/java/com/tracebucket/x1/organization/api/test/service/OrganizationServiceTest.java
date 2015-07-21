@@ -1,6 +1,7 @@
 package com.tracebucket.x1.organization.api.test.service;
 
 import com.tracebucket.x1.organization.api.DefaultOrganizationStarter;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
@@ -16,6 +17,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by sadath on 13-Jan-15.
@@ -162,6 +165,140 @@ public class OrganizationServiceTest {
         organization = organizationService.moveHeadOfficeTo(organization.getAggregateId().getAggregateId(), DefaultAddressFixture.standardAddress(), organization.getAggregateId());
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getHeadOfficeAddress());
+    }
+
+    @Test
+    public void testAddDepartment()throws Exception {
+        createOrganization();
+        Set<DefaultDepartment> departments = new HashSet<DefaultDepartment>();
+        departments.add(DefaultDepartmentFixture.standardDepartment());
+        organization = organizationService.addDepartmentToOrganization(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), departments);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getDepartmentsOfOrganization());
+        Assert.assertEquals(1, organization.getDepartmentsOfOrganization().size());
+    }
+
+    @Test
+    public void testAddDepartmentToOrganizationUnit() throws Exception {
+        createOrganization();
+        organization = organizationService.addOrganizationUnit(organization.getAggregateId().getAggregateId(), DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+        DefaultOrganizationUnit organizationUnit = organizationUnits.stream().findAny().get();
+        Set<String> departments = new HashSet<String>();
+        organizationUnit.getDepartments().stream().forEach(department -> {
+            departments.add(department.getEntityId().getId());
+        });
+        organization = organizationService.addDepartmentToOrganizationUnit(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), organizationUnit.getEntityId(), departments);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        organizationUnit = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnit.getDepartments());
+        Assert.assertEquals(1, organizationUnit.getDepartments().size());
+    }
+
+    @Test
+    public void testUpdateDepartmentOfOrganizationUnit() throws Exception {
+        createOrganization();
+        organization = organizationService.addOrganizationUnit(organization.getAggregateId().getAggregateId(), DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+        DefaultOrganizationUnit organizationUnit = organizationUnits.stream().findAny().get();
+        final Set<String> departments = new HashSet<String>();
+        organizationUnit.getDepartments().stream().forEach(department -> {
+            departments.add(department.getEntityId().getId());
+        });
+        organization = organizationService.addDepartmentToOrganizationUnit(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), organizationUnit.getEntityId(), departments);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        organizationUnit = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnit.getDepartments());
+        Assert.assertEquals(1, organizationUnit.getDepartments().size());
+
+        organizationUnits = organization.getOrganizationUnits();
+        organizationUnit = organizationUnits.stream().findAny().get();
+        departments.clear();
+        organizationUnit.getDepartments().stream().forEach(department -> {
+            departments.add(department.getEntityId().getId());
+        });
+        organization = organizationService.updateDepartmentOfOrganizationUnit(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), organizationUnit.getEntityId(), departments);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        organizationUnit = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnit.getDepartments());
+        Assert.assertEquals(1, organizationUnit.getDepartments().size());
+    }
+
+    @Test
+    public void testUpdateDepartment()throws Exception {
+        createOrganization();
+        Set<DefaultDepartment> departments = new HashSet<DefaultDepartment>();
+        departments.add(DefaultDepartmentFixture.standardDepartment());
+        organization = organizationService.addDepartmentToOrganization(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), departments);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getDepartmentsOfOrganization());
+        Assert.assertEquals(1, organization.getDepartmentsOfOrganization().size());
+        organization = organizationService.updateDepartmentOfOrganization(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), organization.getDepartmentsOfOrganization());
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getDepartmentsOfOrganization());
+        Assert.assertEquals(1, organization.getDepartmentsOfOrganization().size());
+    }
+
+    @Test
+    public void testFindDepartment()throws Exception {
+        createOrganization();
+        Set<DefaultDepartment> departments = new HashSet<DefaultDepartment>();
+        departments.add(DefaultDepartmentFixture.standardDepartment());
+        organization = organizationService.addDepartmentToOrganization(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), departments);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getDepartmentsOfOrganization());
+        Assert.assertEquals(1, organization.getDepartmentsOfOrganization().size());
+        Set<DefaultDepartment> departmentsSet = organizationService.getDepartmentsOfOrganization(organization.getAggregateId().getAggregateId(),  organization.getAggregateId());
+        Assert.assertNotNull(departmentsSet);
+        Assert.assertEquals(1, departmentsSet.size());
+    }
+
+    @Test
+    public void testFindDepartmentOfOrganizationUnit()throws Exception {
+        createOrganization();
+        Set<DefaultDepartment> departments = new HashSet<DefaultDepartment>();
+        departments.add(DefaultDepartmentFixture.standardDepartment());
+        organization = organizationService.addDepartmentToOrganization(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), departments);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getDepartmentsOfOrganization());
+        Assert.assertEquals(1, organization.getDepartmentsOfOrganization().size());
+        Set<DefaultDepartment> departmentsSet = organizationService.getDepartmentsOfOrganization(organization.getAggregateId().getAggregateId(),  organization.getAggregateId());
+        Assert.assertNotNull(departmentsSet);
+        Assert.assertEquals(1, departmentsSet.size());
+
+        organization = organizationService.addOrganizationUnit(organization.getAggregateId().getAggregateId(), DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+        DefaultOrganizationUnit organizationUnit = organizationUnits.stream().findAny().get();
+        final Set<String> departments1 = new HashSet<String>();
+        organizationUnit.getDepartments().stream().forEach(department -> {
+            departments1.add(department.getEntityId().getId());
+        });
+        organization = organizationService.addDepartmentToOrganizationUnit(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), organizationUnit.getEntityId(), departments1);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        organizationUnit = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnit.getDepartments());
+        Assert.assertEquals(1, organizationUnit.getDepartments().size());
+
+        departmentsSet = organizationService.getDepartmentsOfOrganizationUnit(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), organizationUnit.getEntityId());
+        Assert.assertNotNull(departmentsSet);
+        Assert.assertEquals(1, departmentsSet.size());
     }
 
     @Test
