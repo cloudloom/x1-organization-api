@@ -166,7 +166,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/departments", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, Set<DefaultDepartmentResource> departments) {
+    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, HashSet<DefaultDepartmentResource> departments) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             Set<DefaultDepartment> defaultDepartments = assemblerResolver.resolveEntityAssembler(DefaultDepartment.class, DefaultDepartmentResource.class).toEntities(departments, DefaultDepartment.class);
@@ -190,7 +190,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/departments/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, Set<DefaultDepartmentResource> departments) {
+    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, HashSet<DefaultDepartmentResource> departments) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             Set<DefaultDepartment> defaultDepartments = assemblerResolver.resolveEntityAssembler(DefaultDepartment.class, DefaultDepartmentResource.class).toEntities(departments, DefaultDepartment.class);
@@ -231,7 +231,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/organizationUnit/{organizationUnitUid}/departments", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @PathVariable("organizationUnitUid") String organizationUnitEntityId, @RequestBody Set<String> departments) {
+    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @PathVariable("organizationUnitUid") String organizationUnitEntityId, @RequestBody HashSet<String> departments) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             DefaultOrganization organization = null;
@@ -254,7 +254,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/organizationUnit/{organizationUnitUid}/departments/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @PathVariable("organizationUnitUid") String organizationUnitEntityId, @RequestBody Set<String> departments) {
+    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @PathVariable("organizationUnitUid") String organizationUnitEntityId, @RequestBody HashSet<String> departments) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             DefaultOrganization organization = null;

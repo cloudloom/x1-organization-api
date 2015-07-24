@@ -358,7 +358,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Override
     @DomainMethod(event = "AddDepartmentToOrganization")
     public void addDepartmentToOrganization(Set<DefaultDepartment> departments) {
-        if(departments != null && departments.size() > 0) {
+        if(departments != null) {
             this.departments.addAll(departments);
         }
     }
@@ -366,7 +366,7 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     @Override
     @DomainMethod(event = "UpdateDepartmentOfOrganization")
     public void updateDepartmentOfOrganization(Set<DefaultDepartment> departments, Mapper mapper) {
-        if(departments != null && departments.size() > 0) {
+        if(departments != null) {
             departments.stream().forEach(department -> {
                 if(this.departments != null && this.departments.size() > 0) {
                     DefaultDepartment fetchedDepartment = this.departments.stream()
