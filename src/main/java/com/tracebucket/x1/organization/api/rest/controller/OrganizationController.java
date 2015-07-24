@@ -166,7 +166,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/departments", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, HashSet<DefaultDepartmentResource> departments) {
+    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @RequestBody HashSet<DefaultDepartmentResource> departments) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             Set<DefaultDepartment> defaultDepartments = assemblerResolver.resolveEntityAssembler(DefaultDepartment.class, DefaultDepartmentResource.class).toEntities(departments, DefaultDepartment.class);
@@ -190,7 +190,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/departments/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, HashSet<DefaultDepartmentResource> departments) {
+    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @RequestBody HashSet<DefaultDepartmentResource> departments) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             Set<DefaultDepartment> defaultDepartments = assemblerResolver.resolveEntityAssembler(DefaultDepartment.class, DefaultDepartmentResource.class).toEntities(departments, DefaultDepartment.class);
