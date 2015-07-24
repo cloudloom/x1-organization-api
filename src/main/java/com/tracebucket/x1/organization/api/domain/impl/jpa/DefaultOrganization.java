@@ -266,6 +266,18 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
+    @DomainMethod(event = "AddPositionBelow")
+    public void addPositionBelow(DefaultPosition position, DefaultPosition parentPosition) {
+        DefaultPosition parentPositionFetched = positions.stream()
+                .filter(t -> t.getId().equals(parentPosition.getEntityId().getId()))
+                .findFirst()
+                .orElse(null);
+        if(parentPositionFetched != null) {
+            parentPositionFetched.addChild(position);
+        }
+    }
+
+    @Override
     @DomainMethod(event = "UpdatePosition")
     public void updatePosition(DefaultPosition position, Mapper mapper) {
         if(position != null) {

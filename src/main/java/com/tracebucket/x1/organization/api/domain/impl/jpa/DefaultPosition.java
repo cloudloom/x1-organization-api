@@ -2,8 +2,12 @@ package com.tracebucket.x1.organization.api.domain.impl.jpa;
 
 import com.tracebucket.tron.ddd.domain.BaseEntity;
 import com.tracebucket.x1.organization.api.domain.Position;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author ffazil
@@ -24,6 +28,13 @@ public class DefaultPosition extends BaseEntity implements Position{
     @Column(name = "CODE", nullable = false, unique = true)
     @Basic(fetch = FetchType.EAGER)
     private String code;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private DefaultPosition parent;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", fetch = FetchType.EAGER, orphanRemoval = true)
+    @Fetch(value = FetchMode.JOIN)
+    private Set<DefaultPosition> children = new HashSet<DefaultPosition>(0);
 
     @Override
     public String getName() {
@@ -56,6 +67,12 @@ public class DefaultPosition extends BaseEntity implements Position{
     }
 
     @Override
+    public void addChild(DefaultPosition child) {
+        child.setParent(this);
+        this.children.add(child);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -73,5 +90,26 @@ public class DefaultPosition extends BaseEntity implements Position{
         int result = name.hashCode();
         result = 31 * result + code.hashCode();
         return result;
+    }
+
+    public DefaultPosition getParent() {
+        return parent;
+    }
+
+    public void setParent(DefaultPosition parent) {
+        this.parent = parent;
+    }
+
+    public Set<DefaultPosition> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<DefaultPosition> children) {
+        if(children != null && children.size() > 0) {
+            children.stream().forEach(child -> {
+                child.setParent(this);
+            });
+            this.children = children;
+        }
     }
 }

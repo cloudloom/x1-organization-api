@@ -42,6 +42,7 @@ public interface Organization {
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations();
     public ResponseEntity<Set<DefaultPositionResource>> getPositions(HttpServletRequest request, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> addPosition(HttpServletRequest request, DefaultPositionResource position, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> addPositionBelow(HttpServletRequest request, DefaultPositionResource position, String parentPositionEntityId, String aggregateId);
     public ResponseEntity<DefaultPositionResource> getPosition(HttpServletRequest request, String aggregateId, String entityId);
     public ResponseEntity<DefaultOrganizationResource> updatePosition(HttpServletRequest request, DefaultPositionResource position, String aggregateId, String entityId);
     public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnits(HttpServletRequest request, DefaultOrganizationResource organizationResource);

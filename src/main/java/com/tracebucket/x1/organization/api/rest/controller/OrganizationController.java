@@ -450,6 +450,24 @@ public class OrganizationController implements Organization {
     }
 
     @Override
+    @RequestMapping(value = "/organization/{organizationUid}/position/{parentPositionUid}/below", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> addPositionBelow(HttpServletRequest request, @RequestBody DefaultPositionResource positionResource, @PathVariable("parentPositionUid") String parentPositionEntityId, @PathVariable("organizationUid") String organizationUid) {
+        String tenantId = request.getHeader("tenant_id");
+        if (tenantId != null) {
+            DefaultPosition position = assemblerResolver.resolveEntityAssembler(DefaultPosition.class, DefaultPositionResource.class).toEntity(positionResource, DefaultPosition.class);
+            DefaultOrganization organization = organizationService.addPositionBelow(tenantId, position, new EntityId(parentPositionEntityId), new AggregateId(organizationUid));
+            DefaultOrganizationResource organizationResource = null;
+            if (organization != null) {
+                organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
     @RequestMapping(value = "/organization/{organizationUID}/position/{positionUID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultPositionResource> getPosition(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId, @PathVariable("positionUID") String entityId) {
         String tenantId = request.getHeader("tenant_id");

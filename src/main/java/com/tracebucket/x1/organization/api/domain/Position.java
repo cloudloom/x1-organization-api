@@ -1,5 +1,6 @@
 package com.tracebucket.x1.organization.api.domain;
 
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
 
 /**
@@ -12,4 +13,5 @@ public interface Position {
     public void setPositionType(PositionType positionType);
     public String getCode();
     public void setCode(String code);
+    public void addChild(DefaultPosition child);
 }

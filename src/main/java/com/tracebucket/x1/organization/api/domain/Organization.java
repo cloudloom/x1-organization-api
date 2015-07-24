@@ -57,6 +57,8 @@ public interface Organization extends Serializable{
 
     void addPosition(DefaultPosition position);
 
+    void addPositionBelow(DefaultPosition position, DefaultPosition parentPosition);
+
     void updatePosition(DefaultPosition position, Mapper mapper);
 
     void addPositionToOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultPosition> position);

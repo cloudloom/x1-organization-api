@@ -35,6 +35,8 @@ public interface DefaultOrganizationService {
 	public Set<DefaultEmail> getEmails(String tenantId, AggregateId organizationAggregateId);
     public List<DefaultOrganization> findAll();
     public DefaultOrganization addPosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position);
+    public DefaultOrganization addPositionBelow(String tenantId, DefaultPosition position,
+                                                        EntityId parentPositionEntityId, AggregateId organizationAggregateId);
     public DefaultOrganization addPositionToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> positions);
     public DefaultOrganization updatePosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position);
     public DefaultOrganization updatePositionsOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> positions);

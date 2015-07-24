@@ -320,6 +320,24 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization addPositionBelow(String tenantId, DefaultPosition position, EntityId parentPositionEntityId, AggregateId organizationAggregateId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            final DefaultPosition parentPosition = organization.getPositions()
+                    .stream()
+                    .filter(t -> t.getEntityId().equals(parentPositionEntityId))
+                    .findFirst()
+                    .orElse(null);
+            if (parentPosition != null) {
+                organization.addPositionBelow(position, parentPosition);
+                return organization;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
     public DefaultOrganization addPositionToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> positions) {
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
