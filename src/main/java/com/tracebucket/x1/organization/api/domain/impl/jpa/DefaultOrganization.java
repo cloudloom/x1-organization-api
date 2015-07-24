@@ -158,6 +158,10 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
                 organizationUnitFetched.setName(organizationUnit.getName());
                 organizationUnitFetched.setDescription(organizationUnit.getDescription());
                 //mapper.map(organizationUnit, organizationUnitFetched);
+                organizationUnitFetched.getDepartments().clear();
+                if(organizationUnit.getDepartments() != null) {
+                    organizationUnitFetched.getDepartments().addAll(organizationUnit.getDepartments());
+                }
                 organizationUnitFetched.setOrganization(this);
             }
         }
