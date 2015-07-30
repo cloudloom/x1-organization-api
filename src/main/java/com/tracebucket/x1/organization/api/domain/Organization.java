@@ -7,11 +7,9 @@ import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUn
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import org.dozer.Mapper;
 
-import javax.swing.text.html.parser.Entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 /**

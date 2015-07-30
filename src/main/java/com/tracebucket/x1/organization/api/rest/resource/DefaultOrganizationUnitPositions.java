@@ -1,8 +1,8 @@
 package com.tracebucket.x1.organization.api.rest.resource;
 
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sadath on 03-Jul-2015.

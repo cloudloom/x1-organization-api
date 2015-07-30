@@ -6,6 +6,7 @@ import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.*;
 import com.tracebucket.x1.organization.api.repository.jpa.DefaultOrganizationRepository;
+import com.tracebucket.x1.organization.api.rest.resource.DefaultOrganizationNameByIds;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -47,6 +48,11 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
             return organizationRepository.findOne(aggregateId);
         }
         return null;
+    }
+
+    @Override
+    public DefaultOrganization findOne(String tenantId) {
+        return organizationRepository.findOne(new AggregateId(tenantId));
     }
 
     @Override
@@ -735,5 +741,53 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
             }
         }
         return null;
+    }
+
+    @Override
+    public DefaultOrganizationNameByIds getOrganizationNameDetailsByUIDS(String tenantId, DefaultOrganizationNameByIds resource) {
+        DefaultOrganization organization = findOne(tenantId);
+        if(organization != null) {
+            if(resource.getOrganizations() != null && resource.getOrganizations().size() > 0) {
+                if (resource.getOrganizations().containsKey(organization.getAggregateId().getAggregateId())) {
+                    resource.getOrganizations().put(organization.getAggregateId().getAggregateId(), organization.getName());
+                }
+            }
+            if(resource.getOrganizationUnits() != null && resource.getOrganizationUnits().size() > 0) {
+                if(organization.getOrganizationUnits() != null && organization.getOrganizationUnits().size() > 0) {
+                    resource.getOrganizationUnits().entrySet().stream().forEach(entry -> {
+                        organization.getOrganizationUnits().stream().forEach(organizationUnit -> {
+                            if(organizationUnit.getEntityId().getId().equals(entry)) {
+                                entry.setValue(organizationUnit.getName());
+                            }
+                        });
+                    });
+                }
+            }
+            if(resource.getDepartments() != null && resource.getDepartments().size() > 0) {
+                if(organization.getDepartmentsOfOrganization() != null && organization.getDepartmentsOfOrganization().size() > 0) {
+                    resource.getDepartments().entrySet().stream().forEach(entry -> {
+                        organization.getDepartmentsOfOrganization().stream().forEach(department -> {
+                            if(department.getEntityId().getId().equals(entry)) {
+                                entry.setValue(department.getName());
+                            }
+                        });
+                    });
+                }
+            }
+            if(resource.getPositions() != null && resource.getPositions().size() > 0) {
+                if(organization.getPositions() != null && organization.getPositions().size() > 0) {
+                    resource.getPositions().entrySet().stream().forEach(entry -> {
+                        organization.getPositions().stream().forEach(position -> {
+                            if(position.getEntityId().getId().equals(entry)) {
+                                entry.setValue(position.getName());
+                            }
+                        });
+                    });
+                }
+            }
+            Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+
+        }
+        return resource;
     }
 }

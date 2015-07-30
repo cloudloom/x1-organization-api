@@ -4,6 +4,7 @@ import com.tracebucket.tron.ddd.domain.AggregateId;
 import com.tracebucket.tron.ddd.domain.EntityId;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.*;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.*;
+import com.tracebucket.x1.organization.api.rest.resource.DefaultOrganizationNameByIds;
 
 import java.util.*;
 
@@ -13,6 +14,7 @@ import java.util.*;
 public interface DefaultOrganizationService {
 	public DefaultOrganization save(DefaultOrganization organization);
 	public DefaultOrganization findOne(String tenantId, AggregateId aggregateId);
+    public DefaultOrganization findOne(String tenantId);
 	public boolean delete(String tenantId, AggregateId organizationAggregateId);
 	public DefaultOrganization addBaseCurrency(String tenantId, DefaultCurrency baseCurrency, AggregateId organizationAggregateId);
 	public DefaultOrganization addTimezone(String tenantId, DefaultTimezone timezone, AggregateId organizationAggregateId);
@@ -57,4 +59,5 @@ public interface DefaultOrganizationService {
     public DefaultOrganization addDepartmentToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> departments);
     public DefaultOrganization updateDepartmentOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> departments);
     public Set<DefaultDepartment> getDepartmentsOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId);
+    public DefaultOrganizationNameByIds getOrganizationNameDetailsByUIDS(String tenantId, DefaultOrganizationNameByIds resource);
 }

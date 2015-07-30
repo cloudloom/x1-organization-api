@@ -2,17 +2,13 @@ package com.tracebucket.x1.organization.api.rest.controller;
 
 import com.tracebucket.tron.ddd.domain.AggregateId;
 import com.tracebucket.tron.ddd.domain.EntityId;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -63,4 +59,5 @@ public interface Organization {
     public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitEntityId, HashSet<String> departments);
     public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitEntityId, HashSet<String> departments);
     public ResponseEntity<Set<DefaultDepartmentResource>> getDepartmentsOfOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitEntityId);
+    public ResponseEntity<DefaultOrganizationNameByIds> getOrganizationNameDetailsByUIDS(HttpServletRequest request, DefaultOrganizationNameByIds resource);
 }

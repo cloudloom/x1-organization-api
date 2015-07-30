@@ -292,6 +292,25 @@ public class OrganizationController implements Organization {
         }
     }
 
+    @Override
+    @RequestMapping(value = "/organization/ids/names", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationNameByIds> getOrganizationNameDetailsByUIDS(HttpServletRequest request, @RequestBody DefaultOrganizationNameByIds resource) {
+        String tenantId = request.getHeader("tenant_id");
+        if (tenantId != null) {
+            if(resource != null) {
+                DefaultOrganizationNameByIds idNames = organizationService.getOrganizationNameDetailsByUIDS(tenantId, resource);
+                if (idNames != null) {
+                    return new ResponseEntity<DefaultOrganizationNameByIds>(idNames, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity(HttpStatus.NOT_FOUND);
+                }
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
     @RequestMapping(value = "/organizations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations() {
         List<DefaultOrganization> organizations = organizationService.findAll();
