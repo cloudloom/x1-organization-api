@@ -756,7 +756,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                 if(organization.getOrganizationUnits() != null && organization.getOrganizationUnits().size() > 0) {
                     resource.getOrganizationUnits().entrySet().stream().forEach(entry -> {
                         organization.getOrganizationUnits().stream().forEach(organizationUnit -> {
-                            if(organizationUnit.getEntityId().getId().equals(entry)) {
+                            if(organizationUnit.getEntityId().getId().equals(entry.getKey())) {
                                 entry.setValue(organizationUnit.getName());
                             }
                         });
@@ -767,7 +767,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                 if(organization.getDepartmentsOfOrganization() != null && organization.getDepartmentsOfOrganization().size() > 0) {
                     resource.getDepartments().entrySet().stream().forEach(entry -> {
                         organization.getDepartmentsOfOrganization().stream().forEach(department -> {
-                            if(department.getEntityId().getId().equals(entry)) {
+                            if(department.getEntityId().getId().equals(entry.getKey())) {
                                 entry.setValue(department.getName());
                             }
                         });
@@ -778,7 +778,7 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                 if(organization.getPositions() != null && organization.getPositions().size() > 0) {
                     resource.getPositions().entrySet().stream().forEach(entry -> {
                         organization.getPositions().stream().forEach(position -> {
-                            if(position.getEntityId().getId().equals(entry)) {
+                            if(position.getEntityId().getId().equals(entry.getKey())) {
                                 entry.setValue(position.getName());
                             }
                         });
