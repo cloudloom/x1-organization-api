@@ -196,7 +196,8 @@ public class OrganizationControllerTest {
         createOrganization();
         DefaultPositionResource position = DefaultPositionResourceFixture.standardPositionResource();
         log.info("Add PositionBelow : " + objectMapper.writeValueAsString(position));
-        restTemplate.put(basePath + "/organization/" + organization.getUid() + "/position", position);        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        restTemplate.put(basePath + "/organization/" + organization.getUid() + "/position", position);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getUid());
         Assert.assertEquals(1, organization.getPositions().size());
