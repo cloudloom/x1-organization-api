@@ -1,11 +1,15 @@
 package com.tracebucket.x1.organization.api.rest.resource;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tracebucket.tron.assembler.BaseResource;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author ffazil
@@ -24,6 +28,12 @@ public class DefaultPositionResource extends BaseResource{
     @Size(min = 1, max = 250)
     @Pattern(regexp = "^[A-Za-z0-9\\-]*$")
     private String code;
+
+    @JsonBackReference
+    private DefaultPositionResource parent;
+
+    @JsonManagedReference
+    private Set<DefaultPositionResource> children = new HashSet<DefaultPositionResource>(0);
 
     public String getName() {
         return name;
@@ -49,7 +59,23 @@ public class DefaultPositionResource extends BaseResource{
         this.code = code;
     }
 
-/*    @Override
+    public DefaultPositionResource getParent() {
+        return parent;
+    }
+
+    public void setParent(DefaultPositionResource parent) {
+        this.parent = parent;
+    }
+
+    public Set<DefaultPositionResource> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<DefaultPositionResource> children) {
+        this.children = children;
+    }
+
+    /*    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
