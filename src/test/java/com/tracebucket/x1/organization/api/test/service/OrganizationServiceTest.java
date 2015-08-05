@@ -4,6 +4,7 @@ import com.tracebucket.x1.organization.api.DefaultOrganizationStarter;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganization;
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultOrganizationUnit;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import com.tracebucket.x1.organization.api.service.DefaultOrganizationService;
 import com.tracebucket.x1.organization.api.test.fixture.*;
 import org.junit.After;
@@ -33,6 +34,8 @@ public class OrganizationServiceTest {
 
     private DefaultOrganization organization = null;
 
+    private DefaultPosition position = null;
+
     @Before
     public void setUp() throws Exception{
 
@@ -40,8 +43,10 @@ public class OrganizationServiceTest {
 
     private void createOrganization() throws Exception{
         organization = DefaultOrganizationFixture.standardOrganization();
+        position = DefaultPositionFixture.standardPosition();
         organization = organizationService.save(organization);
     }
+
 
     @Test
     public void testCreate() throws Exception {
@@ -56,6 +61,17 @@ public class OrganizationServiceTest {
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getOrganizationUnits());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());
+    }
+
+    @Test
+    public void testAddPosition() throws Exception {
+        createOrganization();
+        organization = organizationService.addPosition(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(),DefaultPositionFixture.standardPosition());
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getPositions());
+        Assert.assertEquals(1, organization.getPositions().size());
+
+
     }
 
     @Test
@@ -74,6 +90,28 @@ public class OrganizationServiceTest {
         Assert.assertNotNull(organization);
         Assert.assertNotNull(organization.getOrganizationUnits());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());
+    }
+
+    @Test
+    public void testAddPositionBelow() throws Exception {
+        createOrganization();
+        DefaultPosition position2 = DefaultPositionFixture.standardPosition2();
+        organization = organizationService.addPosition(organization.getAggregateId().getAggregateId(), organization.getAggregateId(), position2);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getPositions());
+        Assert.assertEquals(1, organization.getPositions().size());
+
+        DefaultPosition childPosition = DefaultPositionFixture.standardPosition();
+        DefaultPosition parentPosition = null;
+        for(DefaultPosition position1 : organization.getPositions()) {
+            parentPosition = position1;
+        }
+
+        organization = organizationService.addPositionBelow(organization.getAggregateId().getAggregateId(), childPosition, parentPosition.getEntityId(), organization.getAggregateId());
+
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getPositions());
+        Assert.assertEquals(1, organization.getPositions().size());
     }
 
     @Test
@@ -201,6 +239,28 @@ public class OrganizationServiceTest {
     }
 
     @Test
+    public void testAddPositionToOrganizationUnit() throws Exception {
+        createOrganization();
+        organization = organizationService.addOrganizationUnit(organization.getAggregateId().getAggregateId(), DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+        DefaultOrganizationUnit organizationUnit = organizationUnits.stream().findAny().get();
+        Set<String> positions = new HashSet<String>();
+        organizationUnit.getPositions().stream().forEach(position -> {
+            positions.add(position.getEntityId().getId());
+        });
+        organization = organizationService.addPositionToOrganizationUnit(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), organizationUnit.getEntityId(), positions);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        organizationUnit = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnit.getPositions());
+        Assert.assertEquals(1, organizationUnit.getPositions().size());
+    }
+
+    @Test
     public void testUpdateDepartmentOfOrganizationUnit() throws Exception {
         createOrganization();
         organization = organizationService.addOrganizationUnit(organization.getAggregateId().getAggregateId(), DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
@@ -236,6 +296,43 @@ public class OrganizationServiceTest {
         Assert.assertEquals(1, organizationUnit.getDepartments().size());
     }
 
+
+    @Test
+    public void testUpdatePositionsOfOrganizationUnit() throws Exception {
+        createOrganization();
+        organization = organizationService.addOrganizationUnit(organization.getAggregateId().getAggregateId(), DefaultOrganizationUnitFixture.standardOrganizationUnit(), organization.getAggregateId());
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+        DefaultOrganizationUnit organizationUnit = organizationUnits.stream().findAny().get();
+        final Set<String> positions = new HashSet<String>();
+        organizationUnit.getPositions().stream().forEach(position -> {
+            positions.add(position.getEntityId().getId());
+        });
+        organization = organizationService.addPositionToOrganizationUnit(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), organizationUnit.getEntityId(), positions);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        organizationUnit = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnit.getPositions());
+        Assert.assertEquals(1, organizationUnit.getPositions().size());
+
+        organizationUnits = organization.getOrganizationUnits();
+        organizationUnit = organizationUnits.stream().findAny().get();
+        positions.clear();
+        organizationUnit.getDepartments().stream().forEach(position -> {
+            positions.add(position.getEntityId().getId());
+        });
+        organization = organizationService.updatePositionsOfOrganizationUnit(organization.getAggregateId().getAggregateId(),  organization.getAggregateId(), organizationUnit.getEntityId(), positions);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+        organizationUnit = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnit.getPositions());
+        Assert.assertEquals(1, organizationUnit.getPositions().size());
+    }
+
     @Test
     public void testUpdateDepartment()throws Exception {
         createOrganization();
@@ -250,6 +347,7 @@ public class OrganizationServiceTest {
         Assert.assertNotNull(organization.getDepartmentsOfOrganization());
         Assert.assertEquals(1, organization.getDepartmentsOfOrganization().size());
     }
+
 
     @Test
     public void testFindDepartment()throws Exception {
@@ -344,6 +442,16 @@ public class OrganizationServiceTest {
         Assert.assertNotNull(organization.getOrganizationUnits());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());
     }
+
+    @Test
+    public void testGetPositions() throws Exception {
+        createOrganization();
+        organization = organizationService.addPosition(organization.getAggregateId().getAggregateId(), organization.getAggregateId(), DefaultPositionFixture.standardPosition());
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getPositions());
+        Assert.assertEquals(1, organization.getPositions().size());
+    }
+
 
     @Test
     public void testFindById() throws Exception {

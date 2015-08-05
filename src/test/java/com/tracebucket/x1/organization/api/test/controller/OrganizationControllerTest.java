@@ -2,6 +2,8 @@ package com.tracebucket.x1.organization.api.test.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tracebucket.x1.organization.api.DefaultOrganizationStarter;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultDepartment;
+import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import com.tracebucket.x1.organization.api.rest.resource.*;
 import com.tracebucket.x1.organization.api.test.fixture.*;
 import org.junit.After;
@@ -46,6 +48,8 @@ public class OrganizationControllerTest {
     private ObjectMapper objectMapper;
 
     private DefaultOrganizationResource organization = null;
+
+    private DefaultPositionResource position = null;
 
     @Before
     public void setUp() {
@@ -97,6 +101,17 @@ public class OrganizationControllerTest {
     }
 
     @Test
+    public void testAddPosition() throws Exception{
+        createOrganization();
+        DefaultPositionResource position = DefaultPositionResourceFixture.standardPositionResource();
+        log.info("Add Position : " + objectMapper.writeValueAsString(position));
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/position", position);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getPositions().size());
+    }
+
+    @Test
     public void testUpdateOrganizationUnit() throws Exception{
         createOrganization();
         DefaultOrganizationUnitResource organizationUnit = DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource();
@@ -112,6 +127,25 @@ public class OrganizationControllerTest {
         Assert.assertNotNull(organization.getUid());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());
     }
+
+    @Test
+    public void testUpdatePosition() throws Exception{
+        createOrganization();
+        DefaultPositionResource positionResource = DefaultPositionResourceFixture.standardPositionResource();
+        log.info("Update Position : " + objectMapper.writeValueAsString(positionResource));
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/position", positionResource);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getPositions().size());
+
+        Set<DefaultPositionResource> positionSet = organization.getPositions();
+        DefaultPositionResource positionResource1 = positionSet.stream().findFirst().get();
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/position/"+positionResource.getUid(), positionResource1);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getPositions().size());
+    }
+
 
     @Test
     public void testAddBaseCurrency() throws Exception{
@@ -156,6 +190,30 @@ public class OrganizationControllerTest {
         Assert.assertNotNull(organization.getOrganizationUnits());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());
     }
+
+    @Test
+    public void testAddPositionBelow() throws Exception{
+        createOrganization();
+        DefaultPositionResource position = DefaultPositionResourceFixture.standardPositionResource();
+        log.info("Add PositionBelow : " + objectMapper.writeValueAsString(position));
+        restTemplate.put(basePath + "/organization/" + organization.getUid() + "/position", position);        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getPositions().size());
+
+        DefaultPositionResource childPositionResource = DefaultPositionResourceFixture.standardPositionResource();
+        DefaultPositionResource parentPositionResource = null;
+        for(DefaultPositionResource positionResource : organization.getPositions()) {
+            parentPositionResource = positionResource;
+        }
+
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/position/"+parentPositionResource.getUid()+"/below", childPositionResource);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getPositions());
+        Assert.assertEquals(1, organization.getPositions().size());
+    }
+
 
     @Test
     public void testAddContactPerson() throws Exception{
@@ -284,6 +342,32 @@ public class OrganizationControllerTest {
     }
 
     @Test
+    public void testAddPositionToOrganizationUnit()throws Exception {
+        createOrganization();
+
+        DefaultOrganizationUnitResource organizationUnit = DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource();
+        log.info("Add OrganizationUnit : " + objectMapper.writeValueAsString(organizationUnit));
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationunit", organizationUnit);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+
+        DefaultOrganizationUnitResource organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+
+        Set<DefaultPositionResource> positions = new HashSet<DefaultPositionResource>();
+        positions.add(DefaultPositionResourceFixture.standardPositionResource());
+
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationUnit/"+organizationUnitResource.getUid()+"/position", positions);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnitResource.getPositions());
+        Assert.assertEquals(1, organizationUnitResource.getPositions().size());
+    }
+
+    @Test
     public void testUpdateDepartment()throws Exception {
         createOrganization();
         Set<DefaultDepartmentResource> departments = new HashSet<DefaultDepartmentResource>();
@@ -335,6 +419,43 @@ public class OrganizationControllerTest {
         Assert.assertNotNull(organizationUnitResource.getDepartments());
         Assert.assertEquals(1, organizationUnitResource.getDepartments().size());
     }
+
+
+    @Test
+    public void testUpdatePositionsOfOrganizationUnit()throws Exception {
+        createOrganization();
+
+        DefaultOrganizationUnitResource organizationUnit = DefaultOrganizationUnitResourceFixture.standardOrganizationUnitResource();
+        log.info("Add OrganizationUnit : " + objectMapper.writeValueAsString(organizationUnit));
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationunit", organizationUnit);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getOrganizationUnits().size());
+
+        DefaultOrganizationUnitResource organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+
+        Set<DefaultPositionResource> positions = new HashSet<DefaultPositionResource>();
+        positions.add(DefaultPositionResourceFixture.standardPositionResource());
+
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationUnits/"+organizationUnit.getUid()+"/position", positions);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnitResource.getPositions());
+        Assert.assertEquals(1, organizationUnitResource.getPositions().size());
+
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/organizationUnit/"+organizationUnitResource.getUid()+"/position", organizationUnitResource.getPositions());
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+
+        Assert.assertNotNull(organization);
+        Assert.assertNotNull(organization.getOrganizationUnits());
+        organizationUnitResource = organization.getOrganizationUnits().stream().findAny().get();
+        Assert.assertNotNull(organizationUnitResource.getPositions());
+        Assert.assertEquals(1, organizationUnitResource.getPositions().size());
+    }
+
 
     @Test
     public void testFindDepartment()throws Exception {
@@ -414,6 +535,17 @@ public class OrganizationControllerTest {
         organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
         Assert.assertNotNull(organization.getUid());
         Assert.assertEquals(1, organization.getOrganizationUnits().size());
+    }
+
+    @Test
+    public void testGetPositions() throws Exception{
+        createOrganization();
+        DefaultPositionResource position = DefaultPositionResourceFixture.standardPositionResource();
+        log.info("Get Positions : " + objectMapper.writeValueAsString(position));
+        restTemplate.put(basePath+"/organization/"+organization.getUid()+"/position", position);
+        organization = restTemplate.getForObject(basePath + "/organization/" + organization.getUid(), DefaultOrganizationResource.class);
+        Assert.assertNotNull(organization.getUid());
+        Assert.assertEquals(1, organization.getPositions().size());
     }
 
     @Test
