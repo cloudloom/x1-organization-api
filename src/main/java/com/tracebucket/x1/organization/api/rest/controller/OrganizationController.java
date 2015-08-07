@@ -311,6 +311,29 @@ public class OrganizationController implements Organization {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
+    @Override
+    @RequestMapping(value = "/organization/{organizationUid}/position/hierarchy", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<DefaultPositionResource>> restructurePositionHierarchy(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid, @RequestBody List<DefaultPositionResource> positionsHierarchy) {
+        String tenantId = request.getHeader("tenant_id");
+        if (tenantId != null) {
+            Set<DefaultPosition> positions = null;
+            try {
+                positions = assemblerResolver.resolveEntityAssembler(DefaultPosition.class, DefaultPositionResource.class).toEntities(positionsHierarchy, DefaultPosition.class);
+                DefaultOrganization organization = organizationService.restructurePositionHierarchy(tenantId, new AggregateId(organizationUid), positions);
+                if (organization.getPositions() != null && organization.getPositions().size() > 0) {
+                    positions = organization.getPositions();
+                    Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
+                    return new ResponseEntity<Set<DefaultPositionResource>>(positionResources, HttpStatus.ACCEPTED);
+                }
+            } catch (DataIntegrityViolationException dive) {
+                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
     @RequestMapping(value = "/organizations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations() {
         List<DefaultOrganization> organizations = organizationService.findAll();

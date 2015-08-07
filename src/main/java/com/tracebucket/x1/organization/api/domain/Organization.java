@@ -140,6 +140,8 @@ public interface Organization extends Serializable{
 
     void restructureOrganizationUnits(String rootOrganizationUnit, String parentOrganizationUnitUid, String childOrganizationUnitUid);
 
+    void restructurePositionHierarchy(String rootOrganizationUnit, String parentPositionUid, String childPositionUid);
+
     void restructureOrganizationUnitsPositions(ArrayList<HashMap<String, HashMap<String, ArrayList<String>>>> positionsInput);
 
     void restructureOrganizationUnits(Set<DefaultOrganizationUnit> organizationUnits);

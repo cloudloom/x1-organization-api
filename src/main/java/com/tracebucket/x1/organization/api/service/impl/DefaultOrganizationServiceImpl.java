@@ -790,4 +790,41 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         }
         return resource;
     }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization restructurePositionHierarchy(String tenantId, AggregateId organizationAggregateId, Set<DefaultPosition> positionsHierarchy) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                if(positionsHierarchy != null && positionsHierarchy.size() > 0) {
+                    positionsHierarchy.stream().forEach(position -> {
+                        Set<DefaultPosition> children = position.getChildren();
+                        if(children != null && children.size() > 0) {
+                            children.stream().forEach(child -> {
+                                organization.restructurePositionHierarchy(null, position.getEntityId().getId(), child.getEntityId().getId());
+                                restructurePositionHierarchy(organization, position, child);
+                            });
+                        } else {
+                            organization.restructurePositionHierarchy(null, position.getEntityId().getId(), null);
+                        }
+                    });
+                }
+                return organization;
+            }
+        }
+        return null;
+    }
+
+    private void restructurePositionHierarchy(DefaultOrganization organization, DefaultPosition parentPosition, DefaultPosition childPosition) {
+        Set<DefaultPosition> children = childPosition.getChildren();
+        if(children != null && children.size() > 0) {
+            children.stream().forEach(child -> {
+                organization.restructureOrganizationUnits(parentPosition.getEntityId().getId(), childPosition.getEntityId().getId(), child.getEntityId().getId());
+                restructurePositionHierarchy(organization, childPosition, child);
+            });
+        } else {
+            organization.restructurePositionHierarchy(parentPosition.getEntityId().getId(), childPosition.getEntityId().getId(), null);
+        }
+    }
 }

@@ -692,6 +692,47 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
+    @DomainMethod(event = "RestructurePositionHierarchy")
+    public void restructurePositionHierarchy(String rootOrganizationUnit, String parentPositionUid, String childPositionUid) {
+        DefaultPosition root = null, parent = null, child = null;
+        List<DefaultPosition> fetchedPositions = positions.stream()
+                .filter(t -> t.getEntityId().getId().equals(parentPositionUid)
+                        || childPositionUid != null && t.getEntityId().getId().equals(childPositionUid)
+                        || rootOrganizationUnit != null && t.getEntityId().getId().equals(rootOrganizationUnit))
+                .collect(Collectors.toList());
+        if(fetchedPositions != null && fetchedPositions.size() > 0) {
+            for(DefaultPosition position : fetchedPositions) {
+                if(rootOrganizationUnit != null && position.getEntityId().getId().equals(rootOrganizationUnit)) {
+                    root = position;
+                } else if(position.getEntityId().getId().equals(parentPositionUid)) {
+                    parent = position;
+                } else if(childPositionUid != null && position.getEntityId().getId().equals(childPositionUid)) {
+                    child = position;
+                }
+            }
+        }
+        if(parent != null && child != null) {
+            child.setParent(parent);
+            if(root != null) {
+                parent.setParent(root);
+            } else {
+                parent.setParent(null);
+            }
+        } else if(parent != null && child == null) {
+            // parent.setParent(null);
+            if(root != null) {
+                parent.setParent(root);
+            } else {
+                parent.setParent(null);
+            }
+            Set<DefaultPosition> childPos = parent.getChildren();
+            if(childPos != null) {
+                childPos.stream().forEach(childOrg -> childOrg.setParent(null));
+            }
+        }
+    }
+
+    @Override
     @DomainMethod(event = "RestructureOrganizationUnitsPositions")
     public void restructureOrganizationUnitsPositions(ArrayList<HashMap<String, HashMap<String, ArrayList<String>>>> positionsInput) {
         if(positionsInput != null) {
