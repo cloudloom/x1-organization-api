@@ -72,7 +72,7 @@ public class DefaultPosition extends BaseEntity implements Position{
         this.children.add(child);
     }
 
-    @Override
+/*    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -89,6 +89,26 @@ public class DefaultPosition extends BaseEntity implements Position{
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + code.hashCode();
+        return result;
+    }*/
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DefaultPosition position = (DefaultPosition) o;
+
+        if (code != null ? !code.equals(position.code) : position.code != null) return false;
+        if (name != null ? !name.equals(position.name) : position.name != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (code != null ? code.hashCode() : 0);
         return result;
     }
 
