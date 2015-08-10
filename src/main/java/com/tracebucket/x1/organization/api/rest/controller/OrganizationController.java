@@ -321,6 +321,7 @@ public class OrganizationController implements Organization {
                 positions = assemblerResolver.resolveEntityAssembler(DefaultPosition.class, DefaultPositionResource.class).toEntities(positionsHierarchy, DefaultPosition.class);
                 DefaultOrganization organization = organizationService.restructurePositionHierarchy(tenantId, new AggregateId(organizationUid), positions);
                 if (organization.getPositions() != null && organization.getPositions().size() > 0) {
+                    removeDeletedPositions(organization);
                     positions = organization.getPositions();
                     Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
                     return new ResponseEntity<Set<DefaultPositionResource>>(positionResources, HttpStatus.ACCEPTED);
@@ -354,10 +355,16 @@ public class OrganizationController implements Organization {
     public ResponseEntity<Set<DefaultPositionResource>> getPositions(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
-            Set<DefaultPosition> positions = organizationService.getPositions(tenantId, new AggregateId(aggregateId));
-            if (positions != null && positions.size() > 0) {
-                Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
-                return new ResponseEntity<Set<DefaultPositionResource>>(positionResources, HttpStatus.OK);
+            DefaultOrganization organization = organizationService.findOne(tenantId, new AggregateId(aggregateId));
+            if(organization != null) {
+                removeDeletedPositions(organization);
+                Set<DefaultPosition> positions = organization.getPositions();
+                if (positions != null && positions.size() > 0) {
+                    Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
+                    return new ResponseEntity<Set<DefaultPositionResource>>(positionResources, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity(HttpStatus.NOT_FOUND);
+                }
             } else {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
@@ -977,6 +984,53 @@ public class OrganizationController implements Organization {
                     childIterator.remove();
                 } else {
                     removeDeletedOrganizationUnits(childOrganizationUnit);
+                }
+            }
+        }
+    }
+
+    private DefaultOrganization removeDeletedPositions(DefaultOrganization organization) {
+        Set<DefaultPosition> positions = organization.getPositions();
+        if(positions != null && positions.size() > 0) {
+            Iterator<DefaultPosition> iterator1 = positions.iterator();
+            while(iterator1.hasNext()) {
+                DefaultPosition position = iterator1.next();
+                if(position.isPassive()) {
+                    iterator1.remove();
+                } else if(!position.isPassive() && position.getParent() != null) {
+                    iterator1.remove();
+                }
+            }
+            Iterator<DefaultPosition> iterator = positions.iterator();
+            while(iterator.hasNext()) {
+                DefaultPosition position = iterator.next();
+                Set<DefaultPosition> children = position.getChildren();
+                if(children != null && children.size() > 0) {
+                    Iterator<DefaultPosition> childIterator = children.iterator();
+                    while(childIterator.hasNext()) {
+                        DefaultPosition childPosition = childIterator.next();
+                        if(childPosition.isPassive()) {
+                            childIterator.remove();
+                        } else {
+                            removeDeletedPositions(childPosition);
+                        }
+                    }
+                }
+            }
+        }
+        return organization;
+    }
+
+    private void removeDeletedPositions(DefaultPosition position) {
+        Set<DefaultPosition> children = position.getChildren();
+        if(children != null && children.size() > 0) {
+            Iterator<DefaultPosition> childIterator = children.iterator();
+            while (childIterator.hasNext()) {
+                DefaultPosition childPosition = childIterator.next();
+                if (childPosition.isPassive()) {
+                    childIterator.remove();
+                } else {
+                    removeDeletedPositions(childPosition);
                 }
             }
         }
