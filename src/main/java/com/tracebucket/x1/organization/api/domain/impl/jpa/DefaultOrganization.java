@@ -290,7 +290,10 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
                     .findFirst()
                     .orElse(null);
             if(positionFetched != null) {
-                mapper.map(position, positionFetched);
+                positionFetched.setPositionType(position.getPositionType());
+                positionFetched.setName(position.getName());
+                positionFetched.setCode(position.getCode());
+                //mapper.map(position, positionFetched);
             }
         }
     }
