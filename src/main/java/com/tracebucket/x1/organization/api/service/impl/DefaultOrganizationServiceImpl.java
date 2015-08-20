@@ -70,6 +70,39 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
 
     @Override
     @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization deleteOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.deleteOrganizationUnit(organizationUnitEntityId);
+                return organization;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean organizationUnitStatus(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+                if(organizationUnits != null) {
+                    DefaultOrganizationUnit fetchedOrganizationUnit = organizationUnits.stream()
+                            .filter(organizationUnit -> organizationUnit.getEntityId().getId().equals(organizationUnitEntityId.getId()))
+                            .findFirst()
+                            .orElse(null);
+                    if(fetchedOrganizationUnit != null) {
+                        return fetchedOrganizationUnit.isPassive();
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
     public DefaultOrganization addBaseCurrency(String tenantId, DefaultCurrency baseCurrency, AggregateId organizationAggregateId) {
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
@@ -133,6 +166,36 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
             if (organization != null) {
                 organization.addOrganizationUnitBelow(organizationUnit, parentOrganizationUnit);
                 return organization;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization restructureOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, EntityId parentOrganizationUnitEntityId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if(organization != null) {
+                if(parentOrganizationUnitEntityId != null) {
+                    final DefaultOrganizationUnit parentOrganizationUnit = organization.getOrganizationUnits()
+                            .stream()
+                            .filter(t -> t.getEntityId().equals(parentOrganizationUnitEntityId))
+                            .findFirst()
+                            .orElse(null);
+                    final DefaultOrganizationUnit organizationUnit = organization.getOrganizationUnits()
+                            .stream()
+                            .filter(t -> t.getEntityId().equals(organizationUnitEntityId))
+                            .findFirst()
+                            .orElse(null);
+                    if (parentOrganizationUnit != null && organizationUnit != null) {
+                        organization.addOrganizationUnitBelow(organizationUnit, parentOrganizationUnit);
+                        return organization;
+                    }
+                } else if(parentOrganizationUnitEntityId == null) {
+                    organization.markOrganizationUnitAsRoot(organizationUnitEntityId);
+                    return organization;
+                }
             }
         }
         return null;

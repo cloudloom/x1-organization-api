@@ -631,6 +631,18 @@ public class OrganizationController implements Organization {
         }
     }
 
+    @Override
+    @RequestMapping(value = "/organization/{organizationUid}/organizationUnit/{organizationUnitUid}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> deleteOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @PathVariable("organizationUnitUid") String organizationUnitEntityId) {
+        String tenantId = request.getHeader("tenant_id");
+        if (tenantId != null) {
+            organizationService.deleteOrganizationUnit(tenantId, new AggregateId(organizationAggregateId), new EntityId(organizationUnitEntityId));
+            return new ResponseEntity<Boolean>(organizationService.organizationUnitStatus(tenantId, new AggregateId(organizationAggregateId), new EntityId(organizationUnitEntityId)), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
 
     @RequestMapping(value = "/organization/{organizationUid}/basecurrency", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> addBaseCurrency(HttpServletRequest request, @Valid @RequestBody DefaultCurrencyResource baseCurrency, @PathVariable("organizationUid") String aggregateId) {
@@ -673,6 +685,23 @@ public class OrganizationController implements Organization {
         if (tenantId != null) {
             DefaultOrganizationUnit organizationUnit1 = assemblerResolver.resolveEntityAssembler(DefaultOrganizationUnit.class, DefaultOrganizationUnitResource.class).toEntity(organizationUnit, DefaultOrganizationUnit.class);
             DefaultOrganization organization = organizationService.addOrganizationUnitBelow(tenantId, organizationUnit1, new EntityId(parentOrganizationUnitUid), new AggregateId(aggregateId));
+            DefaultOrganizationResource organizationResource = null;
+            if (organization != null) {
+                organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    @RequestMapping(value = "/organization/organizationUnit/restructure", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnit(HttpServletRequest request, @RequestBody DefaultOrganizationUnitRestructureResource restructureResource) {
+        String tenantId = request.getHeader("tenant_id");
+        if (tenantId != null) {
+            DefaultOrganization organization = organizationService.restructureOrganizationUnit(tenantId, new AggregateId(restructureResource.getOrganizationUid()), new EntityId(restructureResource.getOrganizationUnitUid()), restructureResource.getParentUid() != null ? new EntityId(restructureResource.getParentUid()) : null);
             DefaultOrganizationResource organizationResource = null;
             if (organization != null) {
                 organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);

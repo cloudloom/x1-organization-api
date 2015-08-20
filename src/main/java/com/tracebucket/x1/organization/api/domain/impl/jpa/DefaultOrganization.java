@@ -135,6 +135,21 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
+    @DomainMethod(event = "OrganizationUnitDeleted")
+    public void deleteOrganizationUnit(EntityId organizationUnitEntityId) {
+        Set<DefaultOrganizationUnit> organizationUnits = this.organizationUnits;
+        if(organizationUnits != null) {
+            DefaultOrganizationUnit fetchedOrganizationUnit = organizationUnits.stream()
+                    .filter(organizationUnit -> organizationUnit.getEntityId().getId().equals(organizationUnitEntityId.getId()))
+                    .findFirst()
+                    .orElse(null);
+            if(fetchedOrganizationUnit != null) {
+                fetchedOrganizationUnit.setPassive(true);
+            }
+        }
+    }
+
+    @Override
     @DomainMethod(event = "OrganizationUnitUpdated")
     public void updateOrganizationUnit(DefaultOrganizationUnit organizationUnit, Mapper mapper) {
         if(organizationUnit != null) {
@@ -216,6 +231,19 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
             stream.forEach(t -> t.setDefaultPhone(false));
             defaultContactNumber.setDefaultPhone(true);
             this.phones.add(defaultContactNumber);
+        }
+    }
+
+    @Override
+    @DomainMethod(event = "MarkOrganizationUnitAsRoot")
+    public void markOrganizationUnitAsRoot(EntityId organizationUnitEntityId) {
+        final DefaultOrganizationUnit organizationUnit = organizationUnits
+                .stream()
+                .filter(t -> t.getEntityId().equals(organizationUnitEntityId))
+                .findFirst()
+                .orElse(null);
+        if (organizationUnit != null) {
+            organizationUnit.setParent(null);
         }
     }
 
@@ -329,7 +357,8 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
                     while(iterator.hasNext()) {
                         DefaultPosition p =iterator.next();
                             if (position != null && !position.contains(p)) {
-                                positions1.remove(p);
+                                //positions1.remove(p);
+                                iterator.remove();
                             }
                     }
                 }

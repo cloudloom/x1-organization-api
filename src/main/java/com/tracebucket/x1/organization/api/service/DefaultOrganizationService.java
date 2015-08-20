@@ -16,12 +16,15 @@ public interface DefaultOrganizationService {
 	public DefaultOrganization findOne(String tenantId, AggregateId aggregateId);
     public DefaultOrganization findOne(String tenantId);
 	public boolean delete(String tenantId, AggregateId organizationAggregateId);
-	public DefaultOrganization addBaseCurrency(String tenantId, DefaultCurrency baseCurrency, AggregateId organizationAggregateId);
+    public DefaultOrganization deleteOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId);
+    public boolean organizationUnitStatus(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId);
+    public DefaultOrganization addBaseCurrency(String tenantId, DefaultCurrency baseCurrency, AggregateId organizationAggregateId);
 	public DefaultOrganization addTimezone(String tenantId, DefaultTimezone timezone, AggregateId organizationAggregateId);
 	public DefaultOrganization addOrganizationUnit(String tenantId, DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
     public DefaultOrganization updateOrganizationUnit(String tenantId, DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
     public DefaultOrganization addOrganizationUnitBelow(String tenantId, DefaultOrganizationUnit organizationUnit,
 			EntityId parentOrganizationUnitEntityId, AggregateId organizationAggregateId);
+    public DefaultOrganization restructureOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, EntityId parentOrganizationUnitEntityId);
 	public DefaultOrganization addContactPerson(String tenantId, DefaultPerson person, AggregateId organizationAggregateId);
 	public DefaultOrganization setDefaultContactPerson(String tenantId, DefaultPerson person, AggregateId organizationAggregateId);
 	public DefaultOrganization addContactNumber(String tenantId, DefaultPhone phone, AggregateId organizationAggregateId);

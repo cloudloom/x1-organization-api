@@ -25,6 +25,8 @@ public interface Organization extends Serializable{
 
 	void addOrganizationUnit(DefaultOrganizationUnit organizationUnit);
 
+    void deleteOrganizationUnit(EntityId organizationUnitEntityId);
+
     void updateOrganizationUnit(DefaultOrganizationUnit organizationUnit, Mapper mapper);
 
 	void addOrganizationUnitBelow(DefaultOrganizationUnit organizationUnit, DefaultOrganizationUnit parentOrganizationUnit);
@@ -41,6 +43,7 @@ public interface Organization extends Serializable{
 
 	void setDefaultContactNumber(DefaultPhone defaultContactNumber);
 
+    void markOrganizationUnitAsRoot(EntityId organizationUnit);
 
 	void addEmail(DefaultEmail email);
 

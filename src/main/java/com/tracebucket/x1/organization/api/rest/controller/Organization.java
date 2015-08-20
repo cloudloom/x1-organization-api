@@ -18,11 +18,13 @@ public interface Organization {
     public ResponseEntity<DefaultOrganizationResource> createOrganization(DefaultOrganizationResource organization);
     public ResponseEntity<DefaultOrganizationResource> getOrganization(HttpServletRequest request, String aggregateId);
     public ResponseEntity<Boolean> deleteOrganization(HttpServletRequest request, String aggregateId);
+    public ResponseEntity<Boolean> deleteOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitntityId);
     public ResponseEntity<DefaultOrganizationResource> addBaseCurrency(HttpServletRequest request, DefaultCurrencyResource baseCurrency, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> addTimezone(HttpServletRequest request, DefaultTimezoneResource timezone, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> addOrganizationUnit(HttpServletRequest request, String aggregateId, DefaultOrganizationUnitResource organizationUnit);
     public ResponseEntity<DefaultOrganizationResource> addOrganizationUnitBelow(HttpServletRequest request, DefaultOrganizationUnitResource organizationUnit,
                                                         String parentOrganizationUnitEntityId, String aggregateId);
+    public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnit(HttpServletRequest request, DefaultOrganizationUnitRestructureResource restructureResource);
     public ResponseEntity<DefaultOrganizationResource> addContactPerson(HttpServletRequest request, DefaultPersonResource person, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> setDefaultContactPerson(HttpServletRequest request, DefaultPersonResource person, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> addContactNumber(HttpServletRequest request, DefaultPhoneResource phone, String aggregateId);
