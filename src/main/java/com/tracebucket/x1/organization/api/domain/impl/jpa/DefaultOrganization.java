@@ -377,6 +377,24 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
+    @DomainMethod(event = "UpdatePositionsOfOrganizationUnit")
+    public void removePositionsOfOrganizationUnit(EntityId organizationUnitEntityId, Set<DefaultPosition> position) {
+        Set<DefaultOrganizationUnit> organizationUnits = this.organizationUnits;
+        if(organizationUnits != null) {
+            DefaultOrganizationUnit fetchedOrganizationUnit = organizationUnits.stream()
+                    .filter(organizationUnit -> organizationUnit.getEntityId().getId().equals(organizationUnitEntityId.getId()))
+                    .findFirst()
+                    .orElse(null);
+            if (fetchedOrganizationUnit != null) {
+                Set<DefaultPosition> positions1 = fetchedOrganizationUnit.getPositions();
+                if(positions1 != null && positions1.size() > 0) {
+                    positions1.removeAll(position);
+                }
+            }
+        }
+    }
+
+    @Override
     public Set<DefaultPosition> getPositionsOfOrganizationUnit(EntityId organizationUnitEntityId) {
         Set<DefaultOrganizationUnit> organizationUnits = this.organizationUnits;
         if(organizationUnits != null) {

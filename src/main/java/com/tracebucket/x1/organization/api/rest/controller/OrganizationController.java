@@ -582,6 +582,22 @@ public class OrganizationController implements Organization {
     }
 
     @Override
+    @RequestMapping(value = "/organization/{organizationUID}/organizationUnits/{organizationUnitUID}/position/remove", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DefaultOrganizationResource> removePositionsOfOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUID") AggregateId organizationAggregateId, @PathVariable("organizationUnitUID") EntityId organizationUnitEntityId, @RequestBody List<String> positions) {
+        String tenantId = request.getHeader("tenant_id");
+        if (tenantId != null) {
+            DefaultOrganization organization = organizationService.removePositionsOfOrganizationUnit(tenantId, organizationAggregateId, organizationUnitEntityId, new HashSet<>(positions));
+            if (organization != null) {
+                DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
     @RequestMapping(value = "/organization/{organizationUID}/organizationUnit/{organizationUnitUID}/positions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultPositionResource>> getPositionsOfOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUID") AggregateId organizationAggregateId, @PathVariable("organizationUnitUID") EntityId organizationUnitEntityId) {
         String tenantId = request.getHeader("tenant_id");

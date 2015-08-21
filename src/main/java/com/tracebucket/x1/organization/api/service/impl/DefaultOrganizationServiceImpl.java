@@ -463,6 +463,28 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     }
 
     @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization removePositionsOfOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> positions) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                Set<DefaultPosition> positions1 = organization.getPositions();
+                if(positions1 != null) {
+                    Set<DefaultPosition> position = new HashSet<DefaultPosition>();
+                    positions1.stream().forEach(p -> {
+                        if(positions.contains(p.getEntityId().getId())) {
+                            position.add(p);
+                        }
+                    });
+                    organization.removePositionsOfOrganizationUnit(organizationUnitEntityId, position);
+                    return organization;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public Set<DefaultPosition> getPositions(String tenantId, AggregateId organizationAggregateId) {
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
