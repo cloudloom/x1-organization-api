@@ -15,7 +15,7 @@ import java.util.Set;
  * @author ffazil
  * @since 16/05/15
  */
-public class DefaultPositionResource extends BaseResource{
+public class DefaultPositionResource extends BaseResource implements Comparable<DefaultPositionResource>{
     @NotNull
     @Size(min = 1, max = 250)
     @Pattern(regexp = "^[A-Za-z ]*$")
@@ -73,6 +73,17 @@ public class DefaultPositionResource extends BaseResource{
 
     public void setChildren(Set<DefaultPositionResource> children) {
         this.children = children;
+    }
+
+    @Override
+    public int compareTo(DefaultPositionResource o) {
+        if(o != null) {
+            if (this == o) {
+                return 0;
+            }
+            return this.name.compareTo(o.getName());
+        }
+        return -1;
     }
 
     /*    @Override

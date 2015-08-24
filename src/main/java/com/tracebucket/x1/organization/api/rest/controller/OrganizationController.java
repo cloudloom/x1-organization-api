@@ -313,7 +313,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/position/hierarchy", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<DefaultPositionResource>> restructurePositionHierarchy(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid, @RequestBody List<DefaultPositionResource> positionsHierarchy) {
+    public ResponseEntity<List<DefaultPositionResource>> restructurePositionHierarchy(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid, @RequestBody List<DefaultPositionResource> positionsHierarchy) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             Set<DefaultPosition> positions = null;
@@ -324,7 +324,9 @@ public class OrganizationController implements Organization {
                     removeDeletedPositions(organization);
                     positions = organization.getPositions();
                     Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
-                    return new ResponseEntity<Set<DefaultPositionResource>>(positionResources, HttpStatus.ACCEPTED);
+                    List<DefaultPositionResource> resourceList = new ArrayList<DefaultPositionResource>(positionResources);
+                    Collections.sort(resourceList);
+                    return new ResponseEntity<List<DefaultPositionResource>>(resourceList, HttpStatus.ACCEPTED);
                 }
             } catch (DataIntegrityViolationException dive) {
                 throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -352,7 +354,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/{organizationUID}/positions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<DefaultPositionResource>> getPositions(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId) {
+    public ResponseEntity<List<DefaultPositionResource>> getPositions(HttpServletRequest request, @PathVariable("organizationUID") String aggregateId) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             DefaultOrganization organization = organizationService.findOne(tenantId, new AggregateId(aggregateId));
@@ -361,7 +363,9 @@ public class OrganizationController implements Organization {
                 Set<DefaultPosition> positions = organization.getPositions();
                 if (positions != null && positions.size() > 0) {
                     Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
-                    return new ResponseEntity<Set<DefaultPositionResource>>(positionResources, HttpStatus.OK);
+                    List<DefaultPositionResource> resourceList = new ArrayList<DefaultPositionResource>(positionResources);
+                    Collections.sort(resourceList);
+                    return new ResponseEntity<List<DefaultPositionResource>>(resourceList, HttpStatus.OK);
                 } else {
                     return new ResponseEntity(HttpStatus.NOT_FOUND);
                 }

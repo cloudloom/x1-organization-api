@@ -39,7 +39,7 @@ public interface Organization {
     public ResponseEntity<Set<DefaultPhoneResource>> getContactNumbers(HttpServletRequest request, String aggregateId);
     public ResponseEntity<Set<DefaultEmailResource>> getEmails(HttpServletRequest request, String aggregateId);
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations();
-    public ResponseEntity<Set<DefaultPositionResource>> getPositions(HttpServletRequest request, String aggregateId);
+    public ResponseEntity<List<DefaultPositionResource>> getPositions(HttpServletRequest request, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> addPosition(HttpServletRequest request, DefaultPositionResource position, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> addPositionBelow(HttpServletRequest request, DefaultPositionResource position, String parentPositionEntityId, String aggregateId);
     public ResponseEntity<DefaultPositionResource> getPosition(HttpServletRequest request, String aggregateId, String entityId);
@@ -63,5 +63,5 @@ public interface Organization {
     public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitEntityId, HashSet<String> departments);
     public ResponseEntity<Set<DefaultDepartmentResource>> getDepartmentsOfOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitEntityId);
     public ResponseEntity<DefaultOrganizationNameByIds> getOrganizationNameDetailsByUIDS(HttpServletRequest request, DefaultOrganizationNameByIds resource);
-    public ResponseEntity<Set<DefaultPositionResource>> restructurePositionHierarchy(HttpServletRequest request, String organizationUid, List<DefaultPositionResource> positionsHierarchy);
+    public ResponseEntity<List<DefaultPositionResource>> restructurePositionHierarchy(HttpServletRequest request, String organizationUid, List<DefaultPositionResource> positionsHierarchy);
 }
