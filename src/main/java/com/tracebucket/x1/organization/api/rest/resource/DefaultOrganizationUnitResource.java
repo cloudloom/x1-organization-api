@@ -19,7 +19,7 @@ public class DefaultOrganizationUnitResource extends BaseResource implements Com
 
     @NotNull
     @Size(min = 1, max = 250)
-    @Pattern(regexp = "^[a-zA-Z \\-/@&]*$")
+    @Pattern(regexp = "^[a-zA-Z0-9 \\-/@&]*$")
     private String name;
 
     @Size(min = 0, max = 255)

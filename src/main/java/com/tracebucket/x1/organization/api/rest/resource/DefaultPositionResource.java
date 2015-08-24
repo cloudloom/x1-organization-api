@@ -18,7 +18,7 @@ import java.util.Set;
 public class DefaultPositionResource extends BaseResource{
     @NotNull
     @Size(min = 1, max = 250)
-    @Pattern(regexp = "^[A-Za-z]*$")
+    @Pattern(regexp = "^[A-Za-z ]*$")
     private String name;
 
     @NotNull

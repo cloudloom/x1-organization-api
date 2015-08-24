@@ -23,7 +23,7 @@ public class DefaultOrganizationResource extends BaseResource implements Compara
 
     @NotNull
     @Size(min = 1, max = 250)
-    @Pattern(regexp = "^[a-zA-Z0-9\\-@&]*$")//alphanumeric @ - &
+    @Pattern(regexp = "^[a-zA-Z0-9 \\-@&]*$")//alphanumeric @ - &
     private String name;
 
     @Size(min = 0, max = 255)

@@ -56,8 +56,8 @@ public interface Organization {
     public ResponseEntity<Set<DefaultPositionResource>> searchPositions(HttpServletRequest request, String organizationAggregateId, String searchTerm);
     public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnitsPositions(HttpServletRequest request, String organizationUid, DefaultPositionRestructureResource positionStructure);
     public ResponseEntity<Set<DefaultOrganizationUnitResource>> getOrganizationUnitsUnstructured(HttpServletRequest request, String organizationUid);
-    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganization(HttpServletRequest request, String organizationAggregateId, HashSet<DefaultDepartmentResource> departments);
-    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganization(HttpServletRequest request, String organizationAggregateId, HashSet<DefaultDepartmentResource> departments);
+    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganization(HttpServletRequest request, String organizationAggregateId, DefaultDepartmentResources departments);
+    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganization(HttpServletRequest request, String organizationAggregateId, DefaultDepartmentResources departments);
     public ResponseEntity<Set<DefaultDepartmentResource>> getDepartmentsOfOrganization(HttpServletRequest request, String organizationAggregateId);
     public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitEntityId, HashSet<String> departments);
     public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitEntityId, HashSet<String> departments);

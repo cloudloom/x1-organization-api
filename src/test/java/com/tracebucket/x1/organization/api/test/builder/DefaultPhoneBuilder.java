@@ -7,8 +7,8 @@ import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPhone;
  * Created by sadath on 25-Nov-14.
  */
 public class DefaultPhoneBuilder {
-    private Long number;
-    private Integer extension;
+    private String number;
+    private String extension;
     private PhoneType phoneType;
     private boolean defaultPhone;
 
@@ -18,12 +18,12 @@ public class DefaultPhoneBuilder {
         return new DefaultPhoneBuilder();
     }
 
-    public DefaultPhoneBuilder withNumber(Long number){
+    public DefaultPhoneBuilder withNumber(String number){
         this.number = number;
         return this;
     }
 
-    public DefaultPhoneBuilder withExtension(Integer extension){
+    public DefaultPhoneBuilder withExtension(String extension){
         this.extension = extension;
         return this;
     }

@@ -14,7 +14,7 @@ public class DefaultBusinessLineResource extends BaseResource {
 
     @NotNull
     @Size(min = 1, max = 250)
-    @Pattern(regexp = "^[A-Za-z]*$")
+    @Pattern(regexp = "^[A-Za-z ]*$")
     private String name;
 
     @Size(min = 1, max = 255)
