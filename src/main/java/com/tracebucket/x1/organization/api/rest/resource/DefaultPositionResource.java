@@ -10,6 +10,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * @author ffazil
@@ -68,7 +70,9 @@ public class DefaultPositionResource extends BaseResource implements Comparable<
     }
 
     public Set<DefaultPositionResource> getChildren() {
-        return children;
+        SortedSet<DefaultPositionResource> sortedSet = new TreeSet<DefaultPositionResource>();
+        sortedSet.addAll(this.children);
+        return sortedSet;
     }
 
     public void setChildren(Set<DefaultPositionResource> children) {
@@ -81,7 +85,9 @@ public class DefaultPositionResource extends BaseResource implements Comparable<
             if (this == o) {
                 return 0;
             }
-            return this.name.compareTo(o.getName());
+            if(this.name != null && o.getName() != null) {
+                return this.name.compareTo(o.getName());
+            }
         }
         return -1;
     }

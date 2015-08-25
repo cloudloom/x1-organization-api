@@ -489,7 +489,12 @@ public class OrganizationController implements Organization {
             try {
                 organization = organizationService.addPosition(tenantId, new AggregateId(aggregateId), position);
             } catch (DataIntegrityViolationException dive) {
+                if(dive.getRootCause().getMessage().contains("Duplicate entry")) {
+                    throw new X1Exception("Duplicate Entry '" + positionResource.getCode() + "' for Code", HttpStatus.INTERNAL_SERVER_ERROR);
+                }
                 throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            } catch(Exception e) {
+                throw new X1Exception(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
             DefaultOrganizationResource organizationResource = null;
             if (organization != null) {
@@ -628,7 +633,12 @@ public class OrganizationController implements Organization {
             try {
                 organization = organizationService.updatePosition(tenantId, new AggregateId(aggregateId), position);
             } catch (DataIntegrityViolationException dive) {
+                if(dive.getRootCause().getMessage().contains("Duplicate entry")) {
+                    throw new X1Exception("Duplicate Entry '" + positionResource.getCode() + "' for Code", HttpStatus.INTERNAL_SERVER_ERROR);
+                }
                 throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            } catch (Exception e) {
+                throw new X1Exception(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
             DefaultOrganizationResource organizationResource = null;
             if (organization != null) {
