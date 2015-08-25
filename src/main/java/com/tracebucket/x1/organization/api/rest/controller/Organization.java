@@ -64,4 +64,6 @@ public interface Organization {
     public ResponseEntity<Set<DefaultDepartmentResource>> getDepartmentsOfOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitEntityId);
     public ResponseEntity<DefaultOrganizationNameByIds> getOrganizationNameDetailsByUIDS(HttpServletRequest request, DefaultOrganizationNameByIds resource);
     public ResponseEntity<List<DefaultPositionResource>> restructurePositionHierarchy(HttpServletRequest request, String organizationUid, List<DefaultPositionResource> positionsHierarchy);
+    public ResponseEntity<List<DefaultPositionResource>> restructurePositionHierarchy(HttpServletRequest request, DefaultPositionStructureResource positionStructure);
+
 }

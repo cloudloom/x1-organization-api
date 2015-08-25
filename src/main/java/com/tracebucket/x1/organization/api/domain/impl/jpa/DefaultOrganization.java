@@ -783,6 +783,24 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
     }
 
     @Override
+    @DomainMethod(event = "RestructurePositionHierarchy")
+    public void restructurePositionHierarchy(EntityId parentPositionEntityId, EntityId childPositionEntityId) {
+        if(parentPositionEntityId != null && childPositionEntityId != null && positions != null) {
+            DefaultPosition parentPosition = positions.stream()
+                    .filter(t -> t.getEntityId().getId().equals(parentPositionEntityId.getId()))
+                    .findFirst()
+                    .orElse(null);
+            DefaultPosition childPosition = positions.stream()
+                    .filter(t -> t.getEntityId().getId().equals(childPositionEntityId.getId()))
+                    .findFirst()
+                    .orElse(null);
+            if(parentPosition != null && childPosition != null) {
+                childPosition.setParent(parentPosition);
+            }
+        }
+    }
+
+    @Override
     @DomainMethod(event = "RestructureOrganizationUnitsPositions")
     public void restructureOrganizationUnitsPositions(ArrayList<HashMap<String, HashMap<String, ArrayList<String>>>> positionsInput) {
         if(positionsInput != null) {

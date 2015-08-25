@@ -66,4 +66,7 @@ public interface DefaultOrganizationService {
     public DefaultOrganizationNameByIds getOrganizationNameDetailsByUIDS(String tenantId, DefaultOrganizationNameByIds resource);
 
     public DefaultOrganization restructurePositionHierarchy(String tenantId, AggregateId organizationAggregateId, Set<DefaultPosition> positionsHierarchy);
+    public DefaultOrganization restructurePositionHierarchy(String tenantId, AggregateId organizationAggregateId, EntityId parentPositionEntityId, EntityId childPositionEntityId);
+
+
 }

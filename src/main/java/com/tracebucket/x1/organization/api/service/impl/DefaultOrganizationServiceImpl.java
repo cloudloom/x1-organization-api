@@ -901,6 +901,19 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         return null;
     }
 
+    @Override
+    @PersistChanges(repository = "organizationRepository")
+    public DefaultOrganization restructurePositionHierarchy(String tenantId, AggregateId organizationAggregateId, EntityId parentPositionEntityId, EntityId childPositionEntityId) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                organization.restructurePositionHierarchy(parentPositionEntityId, childPositionEntityId);
+                return organization;
+            }
+        }
+        return null;
+    }
+
     private void restructurePositionHierarchy(DefaultOrganization organization, DefaultPosition parentPosition, DefaultPosition childPosition) {
         Set<DefaultPosition> children = childPosition.getChildren();
         if(children != null && children.size() > 0) {
