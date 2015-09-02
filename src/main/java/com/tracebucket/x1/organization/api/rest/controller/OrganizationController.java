@@ -339,7 +339,7 @@ public class OrganizationController implements Organization {
 
     @Override
     @RequestMapping(value = "/organization/position/hierarchy", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<DefaultPositionResource>> restructurePositionHierarchy(HttpServletRequest request, DefaultPositionStructureResource positionStructure) {
+    public ResponseEntity<List<DefaultPositionResource>> restructurePositionHierarchy(HttpServletRequest request, @RequestBody DefaultPositionStructureResource positionStructure) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
             Set<DefaultPosition> positions = null;
