@@ -342,16 +342,21 @@ public class OrganizationController implements Organization {
     public ResponseEntity<List<DefaultPositionResource>> restructurePositionHierarchy(HttpServletRequest request, @RequestBody DefaultPositionStructureResource positionStructure) {
         String tenantId = request.getHeader("tenant_id");
         if (tenantId != null) {
-            Set<DefaultPosition> positions = null;
             try {
                 DefaultOrganization organization = organizationService.restructurePositionHierarchy(tenantId, new AggregateId(positionStructure.getOrganizationUid()), new EntityId(positionStructure.getParentUid()), new EntityId(positionStructure.getUid()));
-                if (organization.getPositions() != null && organization.getPositions().size() > 0) {
+                if(organization != null) {
                     removeDeletedPositions(organization);
-                    positions = organization.getPositions();
-                    Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
-                    List<DefaultPositionResource> resourceList = new ArrayList<DefaultPositionResource>(positionResources);
-                    Collections.sort(resourceList);
-                    return new ResponseEntity<List<DefaultPositionResource>>(resourceList, HttpStatus.ACCEPTED);
+                    Set<DefaultPosition> positions = organization.getPositions();
+                    if (positions != null && positions.size() > 0) {
+                        Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
+                        List<DefaultPositionResource> resourceList = new ArrayList<DefaultPositionResource>(positionResources);
+                        Collections.sort(resourceList);
+                        return new ResponseEntity<List<DefaultPositionResource>>(resourceList, HttpStatus.OK);
+                    } else {
+                        return new ResponseEntity(HttpStatus.NOT_FOUND);
+                    }
+                } else {
+                    return new ResponseEntity(HttpStatus.BAD_REQUEST);
                 }
             } catch (DataIntegrityViolationException dive) {
                 throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -359,7 +364,6 @@ public class OrganizationController implements Organization {
         } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/organizations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
