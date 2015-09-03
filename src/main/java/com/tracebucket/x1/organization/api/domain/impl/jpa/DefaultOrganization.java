@@ -797,6 +797,8 @@ public class DefaultOrganization extends BaseAggregateRoot implements Organizati
             if(parentPosition != null && childPosition != null) {
                 childPosition.setParent(parentPosition);
                 parentPosition.getChildren().add(childPosition);
+            } else if(parentPositionEntityId != null && parentPositionEntityId.getId().equals("0") && childPosition != null) {
+                childPosition.setParent(null);
             }
         }
     }
