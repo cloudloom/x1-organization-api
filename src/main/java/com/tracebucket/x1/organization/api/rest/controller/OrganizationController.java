@@ -320,13 +320,17 @@ public class OrganizationController implements Organization {
             try {
                 positions = assemblerResolver.resolveEntityAssembler(DefaultPosition.class, DefaultPositionResource.class).toEntities(positionsHierarchy, DefaultPosition.class);
                 DefaultOrganization organization = organizationService.restructurePositionHierarchy(tenantId, new AggregateId(organizationUid), positions);
-                if (organization.getPositions() != null && organization.getPositions().size() > 0) {
+                if(organization != null) {
                     removeDeletedPositions(organization);
                     positions = organization.getPositions();
-                    Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
-                    List<DefaultPositionResource> resourceList = new ArrayList<DefaultPositionResource>(positionResources);
-                    Collections.sort(resourceList);
-                    return new ResponseEntity<List<DefaultPositionResource>>(resourceList, HttpStatus.ACCEPTED);
+                    if (positions != null && positions.size() > 0) {
+                        Set<DefaultPositionResource> positionResources = assemblerResolver.resolveResourceAssembler(DefaultPositionResource.class, DefaultPosition.class).toResources(positions, DefaultPositionResource.class);
+                        List<DefaultPositionResource> resourceList = new ArrayList<DefaultPositionResource>(positionResources);
+                        Collections.sort(resourceList);
+                        return new ResponseEntity<List<DefaultPositionResource>>(resourceList, HttpStatus.OK);
+                    } else {
+                        return new ResponseEntity(HttpStatus.NOT_FOUND);
+                    }
                 }
             } catch (DataIntegrityViolationException dive) {
                 throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -344,6 +348,7 @@ public class OrganizationController implements Organization {
         if (tenantId != null) {
             try {
                 DefaultOrganization organization = organizationService.restructurePositionHierarchy(tenantId, new AggregateId(positionStructure.getOrganizationUid()), new EntityId(positionStructure.getParentUid()), new EntityId(positionStructure.getUid()));
+                organization = organizationService.findOne(tenantId, organization.getAggregateId());
                 if(organization != null) {
                     removeDeletedPositions(organization);
                     Set<DefaultPosition> positions = organization.getPositions();
@@ -356,7 +361,7 @@ public class OrganizationController implements Organization {
                         return new ResponseEntity(HttpStatus.NOT_FOUND);
                     }
                 } else {
-                    return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity(HttpStatus.NOT_FOUND);
                 }
             } catch (DataIntegrityViolationException dive) {
                 throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
