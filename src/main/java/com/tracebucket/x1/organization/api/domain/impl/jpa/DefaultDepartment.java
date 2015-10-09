@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name = "DEPARTMENT")
 public class DefaultDepartment extends BaseEntity implements Department {
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME", nullable = false, unique = true)
     @Basic(fetch = FetchType.EAGER)
     private String name;
 

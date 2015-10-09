@@ -17,7 +17,7 @@ import java.util.Set;
 @Table(name = "POSITION")
 public class DefaultPosition extends BaseEntity implements Position{
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME", nullable = false, unique = true)
     @Basic(fetch = FetchType.EAGER)
     private String name;
 

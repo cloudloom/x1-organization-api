@@ -21,6 +21,7 @@ public interface DefaultOrganizationService {
     public DefaultOrganization addBaseCurrency(String tenantId, DefaultCurrency baseCurrency, AggregateId organizationAggregateId);
 	public DefaultOrganization addTimezone(String tenantId, DefaultTimezone timezone, AggregateId organizationAggregateId);
 	public DefaultOrganization addOrganizationUnit(String tenantId, DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
+    public DefaultOrganizationUnit getOrganizationUnitByName(String tenantId, AggregateId organizationAggregateId, String organizationUnitName);
     public DefaultOrganization updateOrganizationUnit(String tenantId, DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId);
     public DefaultOrganization addOrganizationUnitBelow(String tenantId, DefaultOrganizationUnit organizationUnit,
 			EntityId parentOrganizationUnitEntityId, AggregateId organizationAggregateId);
@@ -40,6 +41,7 @@ public interface DefaultOrganizationService {
 	public Set<DefaultEmail> getEmails(String tenantId, AggregateId organizationAggregateId);
     public List<DefaultOrganization> findAll();
     public DefaultOrganization addPosition(String tenantId, AggregateId organizationAggregateId, DefaultPosition position);
+    public DefaultPosition getPositionByName(String tenantId, AggregateId organizationAggregateId, String position);
     public DefaultOrganization addPositionBelow(String tenantId, DefaultPosition position,
                                                         EntityId parentPositionEntityId, AggregateId organizationAggregateId);
     public DefaultOrganization addPositionToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> positions);
@@ -58,6 +60,7 @@ public interface DefaultOrganizationService {
 
     public DefaultOrganization addDepartmentToOrganization(String tenantId, AggregateId organizationAggregateId, Set<DefaultDepartment> departments);
     public DefaultOrganization updateDepartmentOfOrganization(String tenantId, AggregateId organizationAggregateId, Set<DefaultDepartment> departments);
+    public Set<DefaultDepartment> getOrganizationDepartmentsByName(String tenantId, AggregateId organizationAggregateId, List<String> departments);
     public Set<DefaultDepartment> getDepartmentsOfOrganization(String tenantId, AggregateId organizationAggregateId);
 
     public DefaultOrganization addDepartmentToOrganizationUnit(String tenantId, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, Set<String> departments);

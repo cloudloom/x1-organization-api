@@ -21,7 +21,7 @@ import java.util.Set;
 @Table(name = "ORGANIZATION_UNIT")
 public class DefaultOrganizationUnit extends BaseEntity implements OrganizationUnit {
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = "NAME", nullable = false, unique = true)
     @Basic(fetch = FetchType.EAGER)
     private String name;
 

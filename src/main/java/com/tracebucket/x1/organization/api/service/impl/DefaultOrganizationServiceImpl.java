@@ -141,6 +141,20 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
     }
 
     @Override
+    public DefaultOrganizationUnit getOrganizationUnitByName(String tenantId, AggregateId organizationAggregateId, String organizationUnitName) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                Set<DefaultOrganizationUnit> organizationUnits = organization.getOrganizationUnits();
+                if(organizationUnits != null && organizationUnits.size() > 0) {
+                    return organizationUnits.stream().filter(organizationUnit -> organizationUnit.getName().equals(organizationUnitName)).findFirst().orElse(null);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     @PersistChanges(repository = "organizationRepository")
     public DefaultOrganization updateOrganizationUnit(String tenantId, DefaultOrganizationUnit organizationUnit, AggregateId organizationAggregateId) {
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
@@ -382,6 +396,20 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
             if (organization != null) {
                 organization.addPosition(position);
                 return organization;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public DefaultPosition getPositionByName(String tenantId, AggregateId organizationAggregateId, String position) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                Set<DefaultPosition> positions = organization.getPositions();
+                if(positions != null && positions.size() > 0) {
+                    return positions.stream().filter(pos -> pos.getName().equals(position)).findFirst().orElse(null);
+                }
             }
         }
         return null;
@@ -757,6 +785,28 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
             if (organization != null) {
                 organization.updateDepartmentOfOrganization(departments, mapper);
                 return organization;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Set<DefaultDepartment> getOrganizationDepartmentsByName(String tenantId, AggregateId organizationAggregateId, List<String> departments) {
+        if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            if (organization != null) {
+                Set<DefaultDepartment> defaultDepartments = organization.getDepartmentsOfOrganization();
+                if(defaultDepartments != null && defaultDepartments.size() > 0) {
+                    if(departments != null && departments.size() > 0) {
+                        final Set<DefaultDepartment> fetchedDepartments = new HashSet<DefaultDepartment>();
+                        defaultDepartments.stream().forEach(defaultDepartment -> {
+                            if(departments.contains(defaultDepartment.getName())) {
+                                fetchedDepartments.add(defaultDepartment);
+                            }
+                        });
+                        return fetchedDepartments;
+                    }
+                }
             }
         }
         return null;

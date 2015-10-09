@@ -21,7 +21,7 @@ public interface Organization {
     public ResponseEntity<Boolean> deleteOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitntityId);
     public ResponseEntity<DefaultOrganizationResource> addBaseCurrency(HttpServletRequest request, DefaultCurrencyResource baseCurrency, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> addTimezone(HttpServletRequest request, DefaultTimezoneResource timezone, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> addOrganizationUnit(HttpServletRequest request, String aggregateId, DefaultOrganizationUnitResource organizationUnit);
+    public ResponseEntity<DefaultOrganizationUnitResource> addOrganizationUnit(HttpServletRequest request, String aggregateId, DefaultOrganizationUnitResource organizationUnit);
     public ResponseEntity<DefaultOrganizationResource> addOrganizationUnitBelow(HttpServletRequest request, DefaultOrganizationUnitResource organizationUnit,
                                                         String parentOrganizationUnitEntityId, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnit(HttpServletRequest request, DefaultOrganizationUnitRestructureResource restructureResource);
@@ -40,10 +40,10 @@ public interface Organization {
     public ResponseEntity<Set<DefaultEmailResource>> getEmails(HttpServletRequest request, String aggregateId);
     public ResponseEntity<Set<DefaultOrganizationResource>> getOrganizations();
     public ResponseEntity<List<DefaultPositionResource>> getPositions(HttpServletRequest request, String aggregateId);
-    public ResponseEntity<DefaultOrganizationResource> addPosition(HttpServletRequest request, DefaultPositionResource position, String aggregateId);
+    public ResponseEntity<DefaultPositionResource> addPosition(HttpServletRequest request, DefaultPositionResource position, String aggregateId);
     public ResponseEntity<DefaultOrganizationResource> addPositionBelow(HttpServletRequest request, DefaultPositionResource position, String parentPositionEntityId, String aggregateId);
     public ResponseEntity<DefaultPositionResource> getPosition(HttpServletRequest request, String aggregateId, String entityId);
-    public ResponseEntity<DefaultOrganizationResource> updatePosition(HttpServletRequest request, DefaultPositionResource position, String aggregateId, String entityId);
+    public ResponseEntity<DefaultPositionResource> updatePosition(HttpServletRequest request, DefaultPositionResource position, String aggregateId, String entityId);
     public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnits(HttpServletRequest request, DefaultOrganizationResource organizationResource);
     public ResponseEntity<PositionType[]> getPositionTypes(HttpServletRequest request);
     public ResponseEntity<DefaultOrganizationResource> addPositionToOrganizationUnit(HttpServletRequest request, AggregateId organizationAggregateId, EntityId organizationUnitEntityId, List<String> positions);
@@ -56,8 +56,8 @@ public interface Organization {
     public ResponseEntity<Set<DefaultPositionResource>> searchPositions(HttpServletRequest request, String organizationAggregateId, String searchTerm);
     public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnitsPositions(HttpServletRequest request, String organizationUid, DefaultPositionRestructureResource positionStructure);
     public ResponseEntity<Set<DefaultOrganizationUnitResource>> getOrganizationUnitsUnstructured(HttpServletRequest request, String organizationUid);
-    public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganization(HttpServletRequest request, String organizationAggregateId, DefaultDepartmentResources departments);
-    public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganization(HttpServletRequest request, String organizationAggregateId, DefaultDepartmentResources departments);
+    public ResponseEntity<Set<DefaultDepartmentResource>> addDepartmentToOrganization(HttpServletRequest request, String organizationAggregateId, DefaultDepartmentResources departments);
+    public ResponseEntity<Set<DefaultDepartmentResource>> updateDepartmentOfOrganization(HttpServletRequest request, String organizationAggregateId, DefaultDepartmentResources departments);
     public ResponseEntity<Set<DefaultDepartmentResource>> getDepartmentsOfOrganization(HttpServletRequest request, String organizationAggregateId);
     public ResponseEntity<DefaultOrganizationResource> addDepartmentToOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitEntityId, HashSet<String> departments);
     public ResponseEntity<DefaultOrganizationResource> updateDepartmentOfOrganizationUnit(HttpServletRequest request, String organizationAggregateId, String organizationUnitEntityId, HashSet<String> departments);
