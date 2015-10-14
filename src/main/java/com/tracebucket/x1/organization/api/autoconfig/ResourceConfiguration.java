@@ -34,6 +34,7 @@ public class ResourceConfiguration extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.PATCH, "/**").access("#oauth2.hasScope('organization-write')")
                 .antMatchers(HttpMethod.PUT, "/**").access("#oauth2.hasScope('organization-write')")
                 .antMatchers(HttpMethod.DELETE, "/**").access("#oauth2.hasScope('organization-write')")
+                .antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('scheduler-read')")
                 .and()
 
                         // Add headers required for CORS requests.
