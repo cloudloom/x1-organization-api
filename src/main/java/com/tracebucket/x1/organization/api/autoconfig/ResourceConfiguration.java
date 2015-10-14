@@ -29,12 +29,11 @@ public class ResourceConfiguration extends ResourceServerConfigurerAdapter {
                 // will respond with an HTTP 401 nonetheless.
                 // So we just put all other requests types under OAuth control and exclude OPTIONS.
 				.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('organization-read')")
+                .antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasAnyScopeMatching('organization-read', 'scheduler-read')")
                 .antMatchers(HttpMethod.POST, "/**").access("#oauth2.hasScope('organization-write')")
                 .antMatchers(HttpMethod.PATCH, "/**").access("#oauth2.hasScope('organization-write')")
                 .antMatchers(HttpMethod.PUT, "/**").access("#oauth2.hasScope('organization-write')")
                 .antMatchers(HttpMethod.DELETE, "/**").access("#oauth2.hasScope('organization-write')")
-                .antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('scheduler-read')")
                 .and()
 
                         // Add headers required for CORS requests.
