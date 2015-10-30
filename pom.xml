@@ -4,7 +4,7 @@
 
     <groupId>com.tracebucket.x1.organization</groupId>
     <artifactId>x1-organization-api</artifactId>
-    <version>1.8.7</version>
+    <version>1.8.8</version>
     <packaging>jar</packaging>
     <name>x1-organization-api</name>
     <description>X1 Organization API and Default implementation</description>
@@ -77,7 +77,7 @@
         <dependency>
             <groupId>com.tracebucket.tron</groupId>
             <artifactId>tron-ddd-cqrs</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
