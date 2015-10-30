@@ -1,6 +1,6 @@
 package com.tracebucket.x1.organization.api.autoconfig;
 
-import com.tracebucket.tron.autoconfig.NonExistingJpaBeans;
+import com.tracebucket.tron.autoconfig.NonExistingJpaDevBeans;
 import com.tracebucket.tron.ddd.jpa.CustomRepositoryFactoryBean;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.orm.jpa.EntityScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -28,15 +25,16 @@ import java.beans.PropertyVetoException;
  * Date: 4/3/14
  * Time: 4:00 PM
  */
+@Profile("dev")
 @Configuration
-@Conditional(value = NonExistingJpaBeans.class)
+@Conditional(value = NonExistingJpaDevBeans.class)
 @EnableJpaRepositories(basePackages = {"com.tracebucket.x1.**.api.repository.jpa"}, repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
 @EntityScan(basePackages = {"com.tracebucket.x1.**.api.domain", "com.tracebucket.x1.dictionary.api.domain.jpa.impl"})
-@PropertySource(value = "classpath:jpa.properties")
+@PropertySource(value = "classpath:jpa-dev.properties")
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaAuditing
-public class JPAConfiguration {
-    private static final Logger log = LoggerFactory.getLogger(JPAConfiguration.class);
+public class JpaDevConfiguration {
+    private static final Logger log = LoggerFactory.getLogger(JpaDevConfiguration.class);
 
     @Value("${connection.driver_class}")
     private String driverClass;
