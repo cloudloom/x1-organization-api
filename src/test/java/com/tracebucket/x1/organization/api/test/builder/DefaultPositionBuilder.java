@@ -1,7 +1,6 @@
 package com.tracebucket.x1.organization.api.test.builder;
 
 import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
-import com.tracebucket.x1.organization.api.domain.impl.jpa.PositionType;
 
 import java.util.HashSet;
 import java.util.Set;

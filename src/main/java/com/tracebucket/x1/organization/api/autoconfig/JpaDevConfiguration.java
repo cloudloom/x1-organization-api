@@ -2,8 +2,7 @@ package com.tracebucket.x1.organization.api.autoconfig;
 
 import com.tracebucket.tron.autoconfig.NonExistingJpaDevBeans;
 import com.tracebucket.tron.ddd.jpa.CustomRepositoryFactoryBean;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import com.tracebucket.tron.embedded.mysql.EmbeddedMysqlDatabaseBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +17,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 
 /**
@@ -36,10 +36,12 @@ import java.beans.PropertyVetoException;
 public class JpaDevConfiguration {
     private static final Logger log = LoggerFactory.getLogger(JpaDevConfiguration.class);
 
-    @Value("${connection.driver_class}")
-    private String driverClass;
-    @Value("${connection.url}")
-    private String jdbcUrl;
+    @Value("${db.host}")
+    private String dbHost;
+    @Value("${db.name}")
+    private String dbName;
+    @Value("${db.port}")
+    private int dbPort;
     @Value("${connection.username}")
     private String user;
     @Value("${connection.password}")
@@ -63,7 +65,7 @@ public class JpaDevConfiguration {
     @Value("${generateDdl}")
     private String generateDdl;
 
-    @Bean
+/*    @Bean
     public HikariDataSource dataSource() throws PropertyVetoException
     {
         HikariConfig config = new HikariConfig();
@@ -75,7 +77,7 @@ public class JpaDevConfiguration {
 
         HikariDataSource dataSource = new HikariDataSource(config);
         return dataSource;
-    }
+    }*/
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter()
@@ -102,6 +104,11 @@ public class JpaDevConfiguration {
         factoryBean.setDataSource(dataSource());
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
         return factoryBean;
+    }
+
+    @Bean(destroyMethod="shutdown")
+    public DataSource dataSource() {
+        return new EmbeddedMysqlDatabaseBuilder(this.dbHost, this.dbName, this.dbPort, this.user, this.password).build();
     }
 
 }

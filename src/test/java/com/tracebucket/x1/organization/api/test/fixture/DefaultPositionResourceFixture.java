@@ -1,8 +1,6 @@
 package com.tracebucket.x1.organization.api.test.fixture;
 
-import com.tracebucket.x1.organization.api.domain.impl.jpa.DefaultPosition;
 import com.tracebucket.x1.organization.api.rest.resource.DefaultPositionResource;
-import com.tracebucket.x1.organization.api.test.builder.DefaultPositionBuilder;
 import com.tracebucket.x1.organization.api.test.builder.DefaultPositionResourceBuilder;
 
 import java.util.HashSet;
