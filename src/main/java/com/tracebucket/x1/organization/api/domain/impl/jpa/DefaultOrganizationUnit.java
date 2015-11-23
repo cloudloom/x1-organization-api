@@ -7,6 +7,7 @@ import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPerson;
 import com.tracebucket.x1.dictionary.api.domain.jpa.impl.DefaultPhone;
 import com.tracebucket.x1.organization.api.domain.OrganizationFunction;
 import com.tracebucket.x1.organization.api.domain.OrganizationUnit;
+import com.tracebucket.x1.organization.api.enums.converter.OrganizationFunctionConverter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -38,8 +39,8 @@ public class DefaultOrganizationUnit extends BaseEntity implements OrganizationU
 
     @ElementCollection(targetClass=OrganizationFunction.class, fetch = FetchType.EAGER)
     @JoinTable(name = "ORGANIZATION_UNIT_FUNCTION", joinColumns = @JoinColumn(name = "ORGANIZATION_UNIT__ID"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ORGANIZATION_FUNCTION", nullable = false, columnDefinition = "ENUM('SALES','PURCHASE') default 'SALES'")
+    @Convert(converter = OrganizationFunctionConverter.class)
+    @Column(name = "ORGANIZATION_FUNCTION")
     @Fetch(value = FetchMode.JOIN)
     private Set<OrganizationFunction> organizationFunctions = new HashSet<OrganizationFunction>(0);
 

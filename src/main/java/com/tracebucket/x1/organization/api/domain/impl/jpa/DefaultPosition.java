@@ -2,6 +2,7 @@ package com.tracebucket.x1.organization.api.domain.impl.jpa;
 
 import com.tracebucket.tron.ddd.domain.BaseEntity;
 import com.tracebucket.x1.organization.api.domain.Position;
+import com.tracebucket.x1.organization.api.enums.converter.PositionTypeConverter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -21,8 +22,8 @@ public class DefaultPosition extends BaseEntity implements Position{
     @Basic(fetch = FetchType.EAGER)
     private String name;
 
-    @Column(name = "POSITION_TYPE", nullable = false, columnDefinition = "ENUM('TOP_LEVEL_EXECUTIVES', 'MID_LEVEL_EXECUTIVES', 'MANAGERIAL', 'FRONT_OFFICE', 'BACK_OFFICE', 'FIELD_STAFF', 'SUPPORT_STAFF', 'CUSTOMER_SERVICE_AGENT') default 'SUPPORT_STAFF'")
-    @Enumerated(EnumType.STRING)
+    @Column(name = "POSITION_TYPE")
+    @Convert(converter = PositionTypeConverter.class)
     private PositionType positionType;
 
     @Column(name = "CODE", nullable = false, unique = true)

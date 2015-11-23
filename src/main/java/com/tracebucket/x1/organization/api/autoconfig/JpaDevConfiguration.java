@@ -10,6 +10,9 @@ import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -36,28 +39,6 @@ import java.beans.PropertyVetoException;
 public class JpaDevConfiguration {
     private static final Logger log = LoggerFactory.getLogger(JpaDevConfiguration.class);
 
-    @Value("${db.host}")
-    private String dbHost;
-    @Value("${db.name}")
-    private String dbName;
-    @Value("${db.port}")
-    private int dbPort;
-    @Value("${connection.username}")
-    private String user;
-    @Value("${connection.password}")
-    private String password;
-    @Value("${minPoolSize}")
-    private String minPoolSize;
-    @Value("${maxPoolSize}")
-    private String maxPoolSize;
-    @Value("${checkoutTimeout}")
-    private String checkoutTimeout;
-    @Value("${maxStatements}")
-    private String maxStatements;
-    @Value("${idleConnectionTestPeriod}")
-    private String idleConnectionTestPeriod;
-    @Value("${preferredTestQuery}")
-    private String preferredTestQuery;
     @Value("${dialect}")
     private String dialect;
     @Value("${show_sql}")
@@ -65,19 +46,10 @@ public class JpaDevConfiguration {
     @Value("${generateDdl}")
     private String generateDdl;
 
-/*    @Bean
-    public HikariDataSource dataSource() throws PropertyVetoException
-    {
-        HikariConfig config = new HikariConfig();
-        config.setMaximumPoolSize(Integer.parseInt(maxPoolSize));
-        config.setDriverClassName(driverClass);
-        config.setJdbcUrl(jdbcUrl);
-        config.setUsername(user);
-        config.setPassword(password);
-
-        HikariDataSource dataSource = new HikariDataSource(config);
-        return dataSource;
-    }*/
+    @Bean(destroyMethod = "shutdown")
+    public EmbeddedDatabase dataSource() {
+        return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
+    }
 
     @Bean
     public JpaVendorAdapter jpaVendorAdapter()
@@ -105,10 +77,4 @@ public class JpaDevConfiguration {
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
         return factoryBean;
     }
-
-    @Bean(destroyMethod="shutdown")
-    public DataSource dataSource() {
-        return new EmbeddedMysqlDatabaseBuilder(this.dbHost, this.dbName, this.dbPort, this.user, this.password).build();
-    }
-
 }
