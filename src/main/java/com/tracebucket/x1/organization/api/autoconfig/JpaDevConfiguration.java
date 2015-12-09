@@ -59,7 +59,7 @@ public class JpaDevConfiguration {
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
         dataSource.setUsername(userName);
         dataSource.setPassword(password);
-        dataSource.setUrl("jdbc:h2:file:" + homeDirectory + "/" + dbName + ";AUTO_SERVER=TRUE;DB_CLOSE_DELAY=10");
+        dataSource.setUrl("jdbc:h2:file:" + homeDirectory + "/" + dbName + ";AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1");
         dataSource.setDriverClass(Driver.class);
         return dataSource;
     }
