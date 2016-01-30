@@ -1,6 +1,7 @@
 package com.tracebucket.x1.organization.api.autoconfig;
 
 import com.tracebucket.tron.autoconfig.NonExistingJpaProdBeans;
+import com.tracebucket.tron.autoconfig.NonExistingJpaStagingBeans;
 import com.tracebucket.tron.ddd.jpa.CustomRepositoryFactoryBean;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -27,7 +28,7 @@ import java.beans.PropertyVetoException;
  */
 @Profile("staging")
 @Configuration
-@Conditional(value = NonExistingJpaProdBeans.class)
+@Conditional(value = NonExistingJpaStagingBeans.class)
 @EnableJpaRepositories(basePackages = {"com.tracebucket.x1.**.api.repository.jpa"}, repositoryFactoryBeanClass = CustomRepositoryFactoryBean.class)
 @EntityScan(basePackages = {"com.tracebucket.x1.**.api.domain", "com.tracebucket.x1.dictionary.api.domain.jpa.impl"})
 @PropertySource(value = "classpath:jpa-staging.properties")
