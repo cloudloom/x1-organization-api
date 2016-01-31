@@ -3,6 +3,7 @@ com.tracebucket.x1.organization.api.autoconfig.AssemblerConfiguration,\
 com.tracebucket.x1.organization.api.autoconfig.InfrastructureConfiguration,\
 com.tracebucket.x1.organization.api.autoconfig.JpaDevConfiguration,\
 com.tracebucket.x1.organization.api.autoconfig.JpaProdConfiguration,\
+com.tracebucket.x1.organization.api.autoconfig.JpaStagingConfiguration,\
 com.tracebucket.x1.organization.api.autoconfig.ServiceConfiguration,\
 com.tracebucket.x1.organization.api.autoconfig.WebConfiguration,\
 com.tracebucket.x1.organization.api.autoconfig.ExceptionAdviceConfiguration,\
