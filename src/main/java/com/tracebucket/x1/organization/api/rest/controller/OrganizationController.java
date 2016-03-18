@@ -41,7 +41,7 @@ public class OrganizationController implements Organization {
         try {
             organization = organizationService.save(organization);
         } catch (DataIntegrityViolationException dive) {
-            throw new X1Exception("Organization With Name : " + organizationResource.getName() + "Exists", HttpStatus.CONFLICT);
+            throw new X1Exception("Organization With Name : " + organizationResource.getName() + " Might Have Already Been Taken.", HttpStatus.CONFLICT);
         }
         if (organization != null) {
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
@@ -66,7 +66,7 @@ public class OrganizationController implements Organization {
                     return new ResponseEntity(HttpStatus.NOT_MODIFIED);
                 }
             } catch (DataIntegrityViolationException dive) {
-                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.CONFLICT);
+                throw new X1Exception("Organization Unit With Name : " + organizationUnit.getName() + " Might Have Already Been Taken.", HttpStatus.CONFLICT);
             }
         } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
@@ -89,7 +89,7 @@ public class OrganizationController implements Organization {
                     return new ResponseEntity(HttpStatus.NOT_MODIFIED);
                 }
             } catch (DataIntegrityViolationException dive) {
-                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.CONFLICT);
+                throw new X1Exception("Organization Unit With Name : " + organizationUnit.getName() + " Might Have Already Been Taken.", HttpStatus.CONFLICT);
             }
         } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
