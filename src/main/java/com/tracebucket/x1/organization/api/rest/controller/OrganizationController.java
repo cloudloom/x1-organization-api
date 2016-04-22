@@ -162,7 +162,7 @@ public class OrganizationController implements Organization {
                     return new ResponseEntity(HttpStatus.NOT_MODIFIED);
                 }
             } catch (DataIntegrityViolationException dive) {
-                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.CONFLICT);
+                throw new X1Exception("Department Name Is Unique, Check If Duplicate Department Name Is Specified.", HttpStatus.CONFLICT);
             }
         } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
@@ -189,8 +189,7 @@ public class OrganizationController implements Organization {
                     return new ResponseEntity(HttpStatus.NOT_MODIFIED);
                 }
             } catch (DataIntegrityViolationException dive) {
-                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.CONFLICT);
-            }
+                throw new X1Exception("Department Name Is Unique, Check If Duplicate Department Name Is Specified.", HttpStatus.CONFLICT);            }
         } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
@@ -223,8 +222,7 @@ public class OrganizationController implements Organization {
                 organization = organizationService.addDepartmentToOrganizationUnit(tenantId, new AggregateId(organizationAggregateId), new EntityId(organizationUnitEntityId), departments);
                 removeDeletedOrganizationUnits(organization);
             } catch (DataIntegrityViolationException dive) {
-                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.CONFLICT);
-            }
+                throw new X1Exception("Department Name Is Unique, Check If Duplicate Department Name Is Specified.", HttpStatus.CONFLICT);            }
             DefaultOrganizationResource organizationResource = null;
             if (organization != null) {
                 organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
@@ -246,8 +244,7 @@ public class OrganizationController implements Organization {
                 organization = organizationService.updateDepartmentOfOrganizationUnit(tenantId, new AggregateId(organizationAggregateId), new EntityId(organizationUnitEntityId), departments);
                 removeDeletedOrganizationUnits(organization);
             } catch (DataIntegrityViolationException dive) {
-                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.CONFLICT);
-            }
+                throw new X1Exception("Department Name Is Unique, Check If Duplicate Department Name Is Specified.", HttpStatus.CONFLICT);            }
             DefaultOrganizationResource organizationResource = null;
             if (organization != null) {
                 organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
@@ -514,7 +511,7 @@ public class OrganizationController implements Organization {
                     return new ResponseEntity(HttpStatus.NOT_MODIFIED);
                 }
             } catch (DataIntegrityViolationException dive) {
-                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new X1Exception("Position Name Is Unique, Check If Duplicate Position Name Is Specified.", HttpStatus.CONFLICT);
             } catch(Exception e) {
                 throw new X1Exception(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -656,7 +653,7 @@ public class OrganizationController implements Organization {
                     return new ResponseEntity(HttpStatus.NOT_MODIFIED);
                 }
             } catch (DataIntegrityViolationException dive) {
-                throw new X1Exception(dive.getRootCause().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                throw new X1Exception("Position Name Is Unique, Check If Duplicate Position Name Is Specified.", HttpStatus.CONFLICT);
             } catch (Exception e) {
                 throw new X1Exception(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
