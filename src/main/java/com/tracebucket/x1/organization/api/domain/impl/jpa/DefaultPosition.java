@@ -13,6 +13,7 @@ import java.util.Set;
 /**
  * @author ffazil
  * @since 16/05/15
+ * JPA Entity For Position
  */
 @Entity
 @Table(name = "POSITION")
@@ -37,39 +38,69 @@ public class DefaultPosition extends BaseEntity implements Position{
     @Fetch(value = FetchMode.JOIN)
     private Set<DefaultPosition> children = new HashSet<DefaultPosition>(0);
 
+    /**
+     * Get Name
+     * @return
+     */
     @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * Set Name
+     * @param name
+     */
     @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get PositionType
+     * @return
+     */
     @Override
     public PositionType getPositionType() {
         return positionType;
     }
 
+    /**
+     * Set PositionType
+     * @param positionType
+     */
     @Override
     public void setPositionType(PositionType positionType) {
         this.positionType = positionType;
     }
 
+    /**
+     * Get Code
+     * @return
+     */
     @Override
     public String getCode() {
         return code;
     }
 
+    /**
+     * Set Code
+     * @param code
+     */
     @Override
     public void setCode(String code) {
         this.code = code;
     }
 
+    /**
+     * Add Child Position
+     * @param child
+     */
     @Override
     public void addChild(DefaultPosition child) {
+        //set childs parent as 'this' defaultPosition
         child.setParent(this);
+        //add child to 'this' children
         this.children.add(child);
     }
 
@@ -113,20 +144,38 @@ public class DefaultPosition extends BaseEntity implements Position{
         return result;
     }
 
+    /**
+     * Get Parent
+     * @return
+     */
     public DefaultPosition getParent() {
         return parent;
     }
 
+    /**
+     * Set Parent
+     * @param parent
+     */
     public void setParent(DefaultPosition parent) {
         this.parent = parent;
     }
 
+    /**
+     * Get Children
+     * @return
+     */
     public Set<DefaultPosition> getChildren() {
         return children;
     }
 
+    /**
+     * Set Children
+     * @param children
+     */
     public void setChildren(Set<DefaultPosition> children) {
+        //if children is not null and children size is greater than zero
         if(children != null && children.size() > 0) {
+            // stream children and set parent of all children as 'this'
             children.stream().forEach(child -> {
                 child.setParent(this);
             });

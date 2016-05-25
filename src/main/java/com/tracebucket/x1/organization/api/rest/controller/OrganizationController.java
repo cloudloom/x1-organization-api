@@ -35,31 +35,55 @@ public class OrganizationController implements Organization {
     @Autowired
     private AssemblerResolver assemblerResolver;
 
+    /**
+     * Create Organization If Valid DefaultOrganizationResource Is Sent
+     * @param organizationResource
+     * @return DefaultOrganizationResource
+     */
     @RequestMapping(value = "/organization", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> createOrganization(@Valid @RequestBody DefaultOrganizationResource organizationResource) {
+        //Map DefaultOrganizationResource To DefaultOrganization Entity
         DefaultOrganization organization = assemblerResolver.resolveEntityAssembler(DefaultOrganization.class, DefaultOrganizationResource.class).toEntity(organizationResource, DefaultOrganization.class);
         try {
+            //save organization
             organization = organizationService.save(organization);
         } catch (DataIntegrityViolationException dive) {
             throw new X1Exception("Organization With Name : " + organizationResource.getName() + " Might Have Already Been Taken.", HttpStatus.CONFLICT);
         }
+        //if organization is saved successfully
         if (organization != null) {
+            //Map DefaultOrganization Entity To DefaultOrganizationResource
             organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+            //return DefaultOrganziationResource
             return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.CREATED);
         }
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Add OrganizationUnit
+     * @param request
+     * @param organizationUid
+     * @param organizationUnitResource
+     * @return
+     */
     @RequestMapping(value = "/organization/{organizationUid}/organizationunit", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationUnitResource> addOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid, @Valid @RequestBody DefaultOrganizationUnitResource organizationUnitResource) {
+        //tenantId
         String tenantId = request.getHeader("tenant_id");
+        //if tenantId is not null, else raise an exception
         if (tenantId != null) {
+            //Map DefaultOrganizationResource To DefaultOrganization Entity
             DefaultOrganizationUnit organizationUnit = assemblerResolver.resolveEntityAssembler(DefaultOrganizationUnit.class, DefaultOrganizationUnitResource.class).toEntity(organizationUnitResource, DefaultOrganizationUnit.class);
             DefaultOrganization organization = null;
             try {
+                //add OrganizationUnit To Organization
                 organization = organizationService.addOrganizationUnit(tenantId, organizationUnit, new AggregateId(organizationUid));
+                //cross validation : get DefaultOrganizationUnitResource By Name
                 DefaultOrganizationUnit organizationUnit1 = organizationService.getOrganizationUnitByName(tenantId, new AggregateId(organizationUid), organizationUnit.getName());
+                //if organizationUnit is fetched by name, else raise an exception
                 if(organizationUnit1 != null) {
+                    //Map DefaultOrganization Entity To DefaultOrganizationResource
                     DefaultOrganizationUnitResource organizationUnitResource1 = assemblerResolver.resolveResourceAssembler(DefaultOrganizationUnitResource.class, DefaultOrganizationUnit.class).toResource(organizationUnit1, DefaultOrganizationUnitResource.class);
                     return new ResponseEntity<DefaultOrganizationUnitResource>(organizationUnitResource1, HttpStatus.CREATED);
                 } else {
@@ -73,16 +97,30 @@ public class OrganizationController implements Organization {
         }
     }
 
+    /**
+     * Update Organization Unit
+     * @param request
+     * @param organizationUid
+     * @param organizationUnitResource
+     * @return DefaultOrganizationUnitResource
+     */
     @RequestMapping(value = "/organization/{organizationUid}/organizationunit/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationUnitResource> updateOrganizationUnit(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid, @Valid @RequestBody DefaultOrganizationUnitResource organizationUnitResource) {
+        //tenantId
         String tenantId = request.getHeader("tenant_id");
+        //if tenantId is not null, else raise an exception
         if (tenantId != null) {
+            //Map DefaultOrganizationUnitResource to DefaultOrganizationUnit Entity
             DefaultOrganizationUnit organizationUnit = assemblerResolver.resolveEntityAssembler(DefaultOrganizationUnit.class, DefaultOrganizationUnitResource.class).toEntity(organizationUnitResource, DefaultOrganizationUnit.class);
             DefaultOrganization organization = null;
             try {
+                //update organizationUnit
                 organization = organizationService.updateOrganizationUnit(tenantId, organizationUnit, new AggregateId(organizationUid));
+                //cross validation : get DefaultOrganizationUnitResource By Name
                 DefaultOrganizationUnit organizationUnit1 = organizationService.getOrganizationUnitByName(tenantId, new AggregateId(organizationUid), organizationUnit.getName());
+                //if organizationUnit is fetched by name, else raise an exception
                 if(organizationUnit1 != null) {
+                    //Map DefaultOrganization Entity To DefaultOrganizationResource
                     DefaultOrganizationUnitResource organizationUnitResource1 = assemblerResolver.resolveResourceAssembler(DefaultOrganizationUnitResource.class, DefaultOrganizationUnit.class).toResource(organizationUnit1, DefaultOrganizationUnitResource.class);
                     return new ResponseEntity<DefaultOrganizationUnitResource>(organizationUnitResource1, HttpStatus.CREATED);
                 } else {
@@ -96,13 +134,23 @@ public class OrganizationController implements Organization {
         }
     }
 
+    /**
+     * Get OrganizationUnit By Uid
+     * @param request
+     * @param organizationUid
+     * @return DefaultOrganizationResource
+     */
     @RequestMapping(value = "/organization/{organizationUid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> getOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid) {
+        //tenantId
         String tenantId = request.getHeader("tenant_id");
+        //if tenantId is not null, else raise an exception
         if (tenantId != null) {
+            //find organization unit by uid
             DefaultOrganization organization = organizationService.findOne(tenantId, new AggregateId(organizationUid));
             DefaultOrganizationResource organizationResource = null;
             if (organization != null) {
+                //Map DefaultOrganization Entity To DefaultOrganizationResource
                 organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
                 return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.OK);
             } else {
@@ -113,22 +161,37 @@ public class OrganizationController implements Organization {
         }
     }
 
+    /**
+     * Get OrganizationUnits Unstructured (Get All Organization Units With No Parent Child Relationship)
+     * @param request
+     * @param organizationUid
+     * @return Set<DefaultOrganizationUnitResource>
+     */
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/organizationUnits/unstructured", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultOrganizationUnitResource>> getOrganizationUnitsUnstructured(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid) {
+        //tenantId
         String tenantId = request.getHeader("tenant_id");
+        //if tenantId is not null
         if (tenantId != null) {
+            //fetch organization by uid
             DefaultOrganization organization = organizationService.findOne(tenantId, new AggregateId(organizationUid));
+            //get organizations organizationUnits
             Set<DefaultOrganizationUnit> units = organization.getOrganizationUnits();
+            //if organizationUnits is not null and size > 0
             if(units != null && units.size() >0) {
+                //organizationUnits iterator
                 Iterator<DefaultOrganizationUnit> iterator = units.iterator();
                 while(iterator.hasNext()) {
                     DefaultOrganizationUnit unit = iterator.next();
+                    //check if organizationUnit is deleted, if yes then remove it
                     if(unit.isPassive()) {
                         iterator.remove();
                     }
                 }
+                //Map DefaultOrganization Entities To DefaultOrganizationResources
                 Set<DefaultOrganizationUnitResource> organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationUnitResource.class, DefaultOrganizationUnit.class).toResources(units, DefaultOrganizationUnitResource.class);
+                //if organization is not null return, else raise an exception
                 if (organization != null) {
                     return new ResponseEntity<Set<DefaultOrganizationUnitResource>>(organizationResource, HttpStatus.OK);
                 } else {
@@ -138,25 +201,43 @@ public class OrganizationController implements Organization {
         } else {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
+        //If reached here, there was some problem with the request, send http status 400
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
 
     }
 
+    /**
+     * Add Departments To Organization
+     * @param request
+     * @param organizationAggregateId
+     * @param departments
+     * @return Set<DefaultDepartmentResource>
+     */
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/departments", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<DefaultDepartmentResource>> addDepartmentToOrganization(HttpServletRequest request, @PathVariable("organizationUid") String organizationAggregateId, @Valid @RequestBody DefaultDepartmentResources departments) {
+        //tenantId
         String tenantId = request.getHeader("tenant_id");
+        //if tenantId is not null, else raise an exception
         if (tenantId != null) {
+            //Map DefaultDepartmentResources to DefaultDepartment Entities
             Set<DefaultDepartment> defaultDepartments = assemblerResolver.resolveEntityAssembler(DefaultDepartment.class, DefaultDepartmentResource.class).toEntities(departments.getDepartments(), DefaultDepartment.class);
             DefaultOrganization organization = null;
             try {
+                //add department to organization
                 organization = organizationService.addDepartmentToOrganization(tenantId, new AggregateId(organizationAggregateId), defaultDepartments);
+                //list of departmentNames
                 List<String> departmentNames = new ArrayList<String>();
                 HashSet<DefaultDepartmentResource> defaultDepartmentResources = departments.getDepartments();
+                //stream defaultDepartmentResources and for each get department name and add it to departmentNames
                 defaultDepartmentResources.stream().forEach(defaultDepartmentResource -> departmentNames.add(defaultDepartmentResource.getName()));
+                //getOrganizationsDepartments By Name
                 Set<DefaultDepartment> fetchedDepartments = organizationService.getOrganizationDepartmentsByName(tenantId, new AggregateId(organizationAggregateId), departmentNames);
+                //if fetchedDepartments is not null and size > 0, else raise an exception
                 if(fetchedDepartments != null && fetchedDepartments.size() > 0) {
+                    //Map DefaultDepartment Entities To DefaultDepartmentResources
                     Set<DefaultDepartmentResource> departmentResources = assemblerResolver.resolveResourceAssembler(DefaultDepartmentResource.class, DefaultDepartment.class).toResources(fetchedDepartments, DefaultDepartmentResource.class);
+                    //return DepartmentResources
                     return new ResponseEntity<Set<DefaultDepartmentResource>>(departmentResources, HttpStatus.OK);
                 } else {
                     return new ResponseEntity(HttpStatus.NOT_MODIFIED);
