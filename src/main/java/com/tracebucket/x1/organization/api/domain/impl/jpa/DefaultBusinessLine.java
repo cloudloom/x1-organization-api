@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 /**
  * Created by Vishwajit on 13-04-2015.
+ * JPA BusinessLine
  */
 
 @Entity

@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 /**
  * Created by Vishwajit on 14-04-2015.
+ * JPA Entity For Department
  */
 @Entity
 @Table(name = "DEPARTMENT")
