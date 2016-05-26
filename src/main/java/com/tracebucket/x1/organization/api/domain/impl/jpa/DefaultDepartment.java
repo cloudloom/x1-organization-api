@@ -21,21 +21,37 @@ public class DefaultDepartment extends BaseEntity implements Department {
     @Basic(fetch = FetchType.EAGER)
     private String description;
 
+    /**
+     * Get Name
+     * @return
+     */
     @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * Set Name
+     * @param name
+     */
     @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get Description
+     * @return
+     */
     @Override
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Set Description
+     * @param description
+     */
     @Override
     public void setDescription(String description) {
         this.description = description;
