@@ -973,17 +973,31 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
         return found;
     }
 
+    /**
+     * Restructure Organization Units
+     * @param tenantId
+     * @param organizationAggregateId
+     * @param restructureOrganizationUnits
+     * @return DefaultOrganizationResource
+     */
     @Override
     @PersistChanges(repository = "organizationRepository")
     public DefaultOrganization restructureOrganizationUnits(String tenantId, AggregateId organizationAggregateId, Set<DefaultOrganizationUnit> restructureOrganizationUnits) {
+        //if tenantId equals organization uid
         if(tenantId.equals(organizationAggregateId.getAggregateId())) {
+            //fetch organization
             DefaultOrganization organization = organizationRepository.findOne(organizationAggregateId);
+            //if organization found
             if (organization != null) {
+                //if incoming organizationUnits found
                 if(restructureOrganizationUnits != null && restructureOrganizationUnits.size() > 0) {
+                    //track all deleted organizationUnits
                     Set<DefaultOrganizationUnit> deleteOrganizationUnits = new HashSet<>();
                     Boolean found = false;
                     Boolean hasChildren = false;
+                    //if organizations organizationUnits exist
                     if(organization.getOrganizationUnits() != null) {
+                        //for every organizationUnit of organization
                         for (DefaultOrganizationUnit orgUnit : organization.getOrganizationUnits()) {
                             found = false;
                             if (restructureOrganizationUnits != null) {
@@ -1031,7 +1045,9 @@ public class DefaultOrganizationServiceImpl implements DefaultOrganizationServic
                             updateOrganizationUnitPositions(organization, child);
                         });
                     });
-                } else {
+                }
+                //no incoming organizationUnits, delete all organizationUnits
+                else {
                     organization.deleteOrganizationUnits(organization.getOrganizationUnits());
                 }
                 return organization;

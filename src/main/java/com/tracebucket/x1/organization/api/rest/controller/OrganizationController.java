@@ -1567,7 +1567,7 @@ public class OrganizationController implements Organization {
     public ResponseEntity<Set<DefaultPhoneResource>> getContactNumbers(HttpServletRequest request, @PathVariable("organizationUid") String aggregateId) {
         //tenantId
         String tenantId = request.getHeader("tenant_id");
-        //if tenantId is not null
+        //if tenantId is not null, else raise an exception
         if (tenantId != null) {
             //get contact numbers of an organization
             Set<DefaultPhone> phones = organizationService.getContactNumbers(tenantId, new AggregateId(aggregateId));
@@ -1594,7 +1594,7 @@ public class OrganizationController implements Organization {
     public ResponseEntity<Set<DefaultEmailResource>> getEmails(HttpServletRequest request, @PathVariable("organizationUid") String aggregateId) {
         //tenantID
         String tenantId = request.getHeader("tenant_id");
-        //if tenantId is not null
+        //if tenantId is not null, else raise an exception
         if (tenantId != null) {
             //get emails of organization
             Set<DefaultEmail> emails = organizationService.getEmails(tenantId, new AggregateId(aggregateId));
@@ -1611,17 +1611,30 @@ public class OrganizationController implements Organization {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Restructure Organization Units
+     * @param request
+     * @param organizationResource
+     * @return DefaultOrganizationResource
+     */
     @Override
     @RequestMapping(value = "/organization/organizationUnits/restructure", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnits(HttpServletRequest request, @RequestBody DefaultOrganizationResource organizationResource) {
+        //tenantId
         String tenantId = request.getHeader("tenant_id");
+        //if tenantId is not null, else raise an exception
         if (tenantId != null) {
             DefaultOrganization organization = null;
             try {
+                //Map DefaultOrganizationResource to DefaultOrganization Entity
                 organization = assemblerResolver.resolveEntityAssembler(DefaultOrganization.class, DefaultOrganizationResource.class).toEntity(organizationResource, DefaultOrganization.class);
+                //restructure organization units
                 organization = organizationService.restructureOrganizationUnits(tenantId, organization.getAggregateId(), organization.getOrganizationUnits());
+                //if restructured
                 if (organization != null) {
+                    //Map DefaultOrganization Entity to DefaultOrganizationResource
                     organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                    //return organizationResource
                     return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.ACCEPTED);
                 }
             } catch (DataIntegrityViolationException dive) {
@@ -1633,16 +1646,29 @@ public class OrganizationController implements Organization {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Restructure Organization Units Positions
+     * @param request
+     * @param organizationUid
+     * @param positionStructure
+     * @return DefaultOrganizationResource
+     */
     @Override
     @RequestMapping(value = "/organization/{organizationUid}/positions/restructure", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DefaultOrganizationResource> restructureOrganizationUnitsPositions(HttpServletRequest request, @PathVariable("organizationUid") String organizationUid, @RequestBody DefaultPositionRestructureResource positionStructure) {
+        //tenantID
         String tenantId = request.getHeader("tenant_id");
+        //if tenantId is not null, else raise an exception
         if (tenantId != null) {
             DefaultOrganization organization = null;
             try {
+                //restructure organizationUnits Positions
                 organization = organizationService.restructureOrganizationUnitsPositions(tenantId, new AggregateId(organizationUid), positionStructure.getPositionStructure());
+                //if restructured
                 if (organization != null) {
+                    //Map DefaultOrganization Entity to DefaultOrganizationResource
                     DefaultOrganizationResource organizationResource = assemblerResolver.resolveResourceAssembler(DefaultOrganizationResource.class, DefaultOrganization.class).toResource(organization, DefaultOrganizationResource.class);
+                    //return organizationResource
                     return new ResponseEntity<DefaultOrganizationResource>(organizationResource, HttpStatus.ACCEPTED);
                 }
             } catch (DataIntegrityViolationException dive) {
